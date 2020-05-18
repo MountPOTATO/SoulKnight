@@ -26,9 +26,15 @@
 #define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
+#include "controller/HRocker.h"
+
 
 class HelloWorld : public cocos2d::Scene
 {
+	//5.18加入CCSYNTHESIZE 控制器类
+	CC_SYNTHESIZE(HRocker*, _rocker, Rocker);
+
+
 public:
     static cocos2d::Scene* createScene();
 
@@ -39,6 +45,9 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
+
+private:
+	void initHRocker();
 };
 
 #endif // __HELLOWORLD_SCENE_H__
