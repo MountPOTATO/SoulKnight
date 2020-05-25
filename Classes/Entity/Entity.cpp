@@ -18,3 +18,17 @@ void Entity::bindSprite(Sprite* sprite) {
 Sprite* Entity::getSprite() {
 	return this->m_sprite;
 }
+
+void Entity::setController(ControllByKeyboard* controller) {
+	this->m_controller = controller;
+	m_controller->setControllerListener(this);
+	
+
+}
+Point Entity::getTagPosition() {
+	return getPosition();
+}
+
+void Entity::setTagPosition(int x, int y) {
+	setPosition(Point(x, y));
+}
