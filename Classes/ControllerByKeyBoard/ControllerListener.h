@@ -8,6 +8,6 @@ public:
 	virtual void setTagPosition(int x, int y) = 0;
 
 	/*获取目标位置*/
-	virtual void getTagPosition() = 0;
+	virtual Point getTagPosition() = 0;
 
 };
