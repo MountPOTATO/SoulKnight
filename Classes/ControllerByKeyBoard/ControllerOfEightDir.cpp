@@ -36,26 +36,36 @@ void ControllerOfEightDir::update(float delta) {
 	if (keys[moveLeft]&&keys[moveUp]) {//左上
 		Point pos = m_controllerListener->getTagPosition();
 		pos.x -= sqrt(m_iSpeed); pos.y += sqrt(m_iSpeed);
+
+		m_controllerListener->setFaceDirByMoveDir(0);
 		m_controllerListener->setTagPosition(pos.x, pos.y);
 	}
 	else if (keys[moveRight]&&keys[moveUp]){//右上
 		Point pos = m_controllerListener->getTagPosition();
 		pos.x += sqrt(m_iSpeed); pos.y += sqrt(m_iSpeed);
+
+		m_controllerListener->setFaceDirByMoveDir(1);
 		m_controllerListener->setTagPosition(pos.x, pos.y);
 	}
 	else if (keys[moveRight] && keys[moveDown]) {//右下
 		Point pos = m_controllerListener->getTagPosition();
 		pos.x += sqrt(m_iSpeed); pos.y -= sqrt(m_iSpeed);
+
+		m_controllerListener->setFaceDirByMoveDir(1);
 		m_controllerListener->setTagPosition(pos.x, pos.y);
 	}
 	else if (keys[moveLeft] && keys[moveDown]) {//左下
 		Point pos = m_controllerListener->getTagPosition();
 		pos.x -= sqrt(m_iSpeed); pos.y -= sqrt(m_iSpeed);
+
+		m_controllerListener->setFaceDirByMoveDir(0);
 		m_controllerListener->setTagPosition(pos.x, pos.y);
 	}
 	else if (keys[moveLeft]) {//左
 		Point pos = m_controllerListener->getTagPosition();
 		pos.x -= m_iSpeed;
+
+		m_controllerListener->setFaceDirByMoveDir(0);
 		m_controllerListener->setTagPosition(pos.x, pos.y);
 	}
 	else if (keys[moveUp]) {//上
@@ -66,6 +76,8 @@ void ControllerOfEightDir::update(float delta) {
 	else if (keys[moveRight]) {//右
 		Point pos = m_controllerListener->getTagPosition();
 		pos.x += m_iSpeed;
+
+		m_controllerListener->setFaceDirByMoveDir(1);
 		m_controllerListener->setTagPosition(pos.x, pos.y);
 	}
 	else if (keys[moveDown]) {//下

@@ -32,3 +32,12 @@ Point Entity::getTagPosition() {
 void Entity::setTagPosition(int x, int y) {
 	setPosition(Point(x, y));
 }
+
+void Entity::setFaceDirByMoveDir(int dir) {
+	if (dir == 0) {
+		m_sprite->setFlippedX(true);
+	}
+	else {
+		m_sprite->setFlippedX(false);
+	}
+}

@@ -16,7 +16,7 @@ public:
 	void setController(ControllByKeyboard* controller);
 	virtual void setTagPosition(int x, int y);
 	virtual Point getTagPosition();
-
+	virtual void setFaceDirByMoveDir(int dir);
 private:
 	Sprite* m_sprite;//°ó¶¨µÄ¾«Áé
 	ControllByKeyboard* m_controller;
