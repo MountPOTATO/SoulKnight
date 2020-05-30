@@ -30,8 +30,10 @@
 
 #include "cocos2d.h"
 #include "Controller/HRocker.h"
-#include "Arms/Weapon.h"
 
+#include "Arms/Gun.h"
+#include "Arms/Melee.h"
+#include "LongRangeAttack/Bullet.h"
 class Weapon;
 
 class HelloWorld : public cocos2d::Scene
@@ -39,9 +41,8 @@ class HelloWorld : public cocos2d::Scene
 	//5.18加入CCSYNTHESIZE 控制器类
 	CC_SYNTHESIZE(HRocker*, _rocker, Rocker);
 
-	//5.23尝试加入武器初始化类
 
-	CC_SYNTHESIZE(Weapon*,_testweapon,TestWeapon);
+	
 
 public:
 	static cocos2d::Scene* createScene();
@@ -54,9 +55,42 @@ public:
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
 
-private:
+	virtual void update(float delta);//更新状态
+	void updateBullet();
+
+	//容器集
+	Vector<Bullet*> _bullets;
+	Vector<Entity*> _currentUnit;
+
+
+
+	//初始化摇杆
 	void initHRocker();
-	void TestinitWeapon();
+
+	//测试组件:
+
+	void test_InitGun();
+	
+	CC_SYNTHESIZE(Gun*, _testGun, TestGun);//初始化一个近战武器类
+
+
+	void test_InitMelee();
+
+	CC_SYNTHESIZE(Melee*, _testMelee, TestMelee);//初始化一个近战武器类
+
+private:
+	
+	
+	
+
+
+
+
+	//监听装置
+	EventListenerTouchOneByOne* listenerTouch;
+	EventListenerKeyboard* listenerKeyBoard;
+	//键盘输入
+	
 };
 
 #endif // __HELLOWORLD_SCENE_H__

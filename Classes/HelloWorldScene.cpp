@@ -25,6 +25,8 @@
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
 
+#include "Const/ConstInfo.h"
+
 USING_NS_CC;
 
 Scene* HelloWorld::createScene()
@@ -52,10 +54,24 @@ bool HelloWorld::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-
+	//test Entity can delete
+	
 	initHRocker();
-	TestinitWeapon();
 
+	//此处修改
+	/*test_InitGun();*/
+	test_InitMelee();
+
+	//测试自动瞄准时加上，不需要测试时去掉
+	/*Entity* testEnermy=new Entity();
+	Sprite* enermyImage = Sprite::create("HelloWorld.png");
+	testEnermy->setPosition(visibleSize.width / 2 - 300, visibleSize.height / 2 - 300);
+	testEnermy->bindSprite(enermyImage);
+	this->addChild(testEnermy);
+	_currentUnit.pushBack(testEnermy);*/
+
+
+	this->scheduleUpdate();
     return true;
 }
 
@@ -76,15 +92,79 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
 void HelloWorld::initHRocker()
 {
-	/*_rocker = HRocker::createHRocker("Resources/rockerBG.png", "Resources/rocker.png", Vec2(200, 100));*/
 	_rocker = HRocker::createHRocker("rocker.png", "rockerBG.png", Vec2(200, 100));
 	this->addChild(_rocker);
 	_rocker->startRocker(true);
 
 }
 
-void HelloWorld::TestinitWeapon() {
-	_testweapon = Weapon::create("initWeapon.png", "initWeaponReverse.png", sideHero, true);
-	this->addChild(_testweapon);
-	_testweapon->startWeapon(true);
+
+
+
+
+void HelloWorld::test_InitGun() {
+	_testGun = Gun::create("initWeapon.png", "initWeaponReverse.png", this,sideHero, true);
+	this->addChild(_testGun);
+	_testGun->startWeapon(true);	
+}
+
+void HelloWorld::test_InitMelee() {
+	_testMelee = Melee::create("fish.png", "fishReverse.png", this, sideHero, true);
+	this->addChild(_testMelee);
+	_testMelee->startWeapon(true);
+}
+
+
+
+
+void HelloWorld::update(float delta) {
+	
+	//注意：启用后要修改HelloWorld：：Init，添加相应的test——Init类
+	/////////////////////////////////update函数中测试Gun类，不需要可注释掉//////////////////////////
+	//_testGun->updateTarget();//Gun实例 更新场内怪物坐标，标记离自己最近的怪物
+	//_testGun->updateImageRotation(_rocker);//Gun实例 更新武器指向（自动瞄准）或没有目标时手柄瞄准
+	//if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
+	//	_testGun->attack();//攻击，发射子弹
+	//}
+	//updateBullet();//更新飞行物
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	/////////////////////////////////update函数中测试Melee类，不需要可注释掉//////////////////////////
+	_testMelee->updateTarget();//Melee实例 更新场内怪物坐标，将范围内的怪物存入Melee成员Vector中
+	_testMelee->updateImageRotation(_rocker); //Melee实例，更新武器指向（自动瞄准）
+	if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
+		_testMelee->attack();//攻击，目前只有旋转360度的攻击动画
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	////////////////////////update函数中测试Gun类的自动瞄准，不需要可注释掉//////////////////////////
+	//auto i = _currentUnit.begin();
+	//(*i)->setPosition((*i)->getPositionX()+1, (*i)->getPositionY());
+	//_testGun->updateTarget();//Gun实例 更新场内怪物坐标，标记离自己最近的怪物
+	//_testGun->updateImageRotation(_rocker);//Gun实例 更新武器指向（自动瞄准）
+	//if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
+	//	_testGun->attack();//攻击，发射子弹
+	//}
+	//updateBullet();//更新飞行物
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	////////////////////////update函数中测试Melee类的自动瞄准，不需要可注释掉//////////////////////////
+	//auto i = _currentUnit.begin();
+	//(*i)->setPosition((*i)->getPositionX(), (*i)->getPositionY() + 1);
+	//_testMelee->updateTarget();//Gun实例 更新场内怪物坐标，标记离自己最近的怪物
+	//_testMelee->updateImageRotation(_rocker);//Gun实例 更新武器指向（自动瞄准）
+	//if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
+	//	_testMelee->attack();//攻击，发射子弹
+	//}
+	//updateBullet();//更新飞行物
+	/////////////////////////////////////////////////////////////////////////////////////////////
+}
+
+void HelloWorld::updateBullet() {
+	//TODO:只添加了射击现象
+	for (auto i = _bullets.begin(); i != _bullets.end();i++) {
+		(*i)->setVisible(true);
+		(*i)->calPosition();
+	}
 }

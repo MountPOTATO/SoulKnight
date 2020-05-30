@@ -3,6 +3,8 @@
 
 #include "cocos2d.h"
 #include <functional>
+#include <Const/ConstInfo.h>
+
 
 USING_NS_CC;
 
@@ -11,17 +13,6 @@ USING_NS_CC;
 #define TAG_ROCKER 0
 #define TAG_ROCKER_BG 1
 
-enum ERocker8Direction {
-	rockerUp,
-	rockerDown,
-	rockerLeft,
-	rockerRight,
-	rockerUpLeft,
-	rockerUpRight,
-	rockerDownLeft,
-	rockerDownRight,
-	rockerStop
-};
 
 //¿ØÖÆÆ÷Àà
 class HRocker :public Layer {
@@ -36,7 +27,8 @@ public:
 	void startRocker(bool _isStopOther);
 	//Í£Ö¹Ò¡¸Ë£¬Òþ²Ø£¬È¡Ïû¼àÌý
 	void stopRocker();
-
+	ERocker8Direction getRockerDirection()const { return m_direction; }
+	ERockerButtonPress getRockerPressButton()const { return m_pressButton; }
 private:
 	EventListenerTouchOneByOne* listener;
 	EventListenerKeyboard* listenerKeyboard;
@@ -68,7 +60,11 @@ private:
 	//×´Ì¬À¸
 	bool m_upState, m_downState, m_leftState, m_rightState;
 	ERocker8Direction m_direction;
+	
 
+	bool m_pressAttack, m_pressLimitBreak, m_pressSwitch;
+	ERockerButtonPress m_pressButton;//°´¼üÊäÈë
+	
 	
 };
 

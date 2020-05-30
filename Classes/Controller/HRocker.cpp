@@ -32,6 +32,8 @@ void HRocker::rockerInit(const char* rockerImageName,
 	spRockerBG->setPosition(position);
 	spRockerBG->setVisible(false);
 
+	m_pressAttack=m_upState = m_downState = m_leftState = m_rightState = false;
+	m_pressAttack = m_pressLimitBreak = m_pressSwitch = false;
 	this->addChild(spRocker, 0, TAG_ROCKER);
 	this->addChild(spRockerBG, 1, TAG_ROCKER_BG);
 
@@ -41,6 +43,10 @@ void HRocker::rockerInit(const char* rockerImageName,
 	//摇杆背景图坐标设置，半径设置
 	rockerBGPosition = position;
 	rockerBGRadius = spRockerBG->getContentSize().width * 0.4;
+
+	//枚举初始状态(不加，一开始便进入攻击状态
+	m_direction = ERocker8Direction::rockerStop;
+	m_pressButton = ERockerButtonPress::buttonNone;
 
 	//创建监听器
 	listener = EventListenerTouchOneByOne::create();
@@ -266,7 +272,7 @@ bool HRocker::onReleaseKey(EventKeyboard::KeyCode keyCode, Event* event) {
 
 	//按下相应指令后向球所在位置
 	Point pressPoint;
-
+	
 	switch (m_direction) {
 		//按上键
 	case(ERocker8Direction::rockerUp): {
@@ -329,6 +335,22 @@ bool HRocker::updateState(EventKeyboard::KeyCode keyCode, int type) {
 	//TODO:若要开发修改键位系统的话注意修改此处KEY_W,KEY_S,KEY_A,KEY_D
 	//相对的键位状态不能同时相同
 	switch (keyCode) {
+		//未知：检测不到J??
+	case(EventKeyboard::KeyCode::KEY_Y): {
+		if (type == PRESS) { m_pressAttack = true; }
+		else if (type == RELEASE) { m_pressAttack = false; }
+		break;
+	}
+	case(EventKeyboard::KeyCode::KEY_U): {
+		if (type == PRESS) { m_pressLimitBreak = true; }
+		else if (type == RELEASE) { m_pressLimitBreak = false; }
+		break;
+	}
+	case(EventKeyboard::KeyCode::KEY_I): {
+		if (type == PRESS) { m_pressSwitch = true; }
+		else if (type == RELEASE) { m_pressSwitch = false; }
+		break;
+	}
 	case(EventKeyboard::KeyCode::KEY_W): {
 		if (type == PRESS) { m_upState = true; m_downState = false; }
 		else if (type == RELEASE) { m_upState = false; }
@@ -348,7 +370,7 @@ bool HRocker::updateState(EventKeyboard::KeyCode keyCode, int type) {
 		if (type == PRESS) { m_leftState = false; m_rightState = true; }
 		else if (type == RELEASE) { m_rightState = false; }
 		break;
-	}
+	}	
 	default:break;
 	}
 
@@ -360,6 +382,10 @@ bool HRocker::updateState(EventKeyboard::KeyCode keyCode, int type) {
 //更新m_direction函数
 bool HRocker::updateDirection() {
 	//九个输入枚举的对号入座
+	if (m_pressAttack) m_pressButton = ERockerButtonPress::buttonAttack;
+	else if (m_pressLimitBreak) m_pressButton = ERockerButtonPress::buttonLimitBreak;
+	else if (m_pressSwitch) m_pressButton = ERockerButtonPress::buttonSwitch;
+	else m_pressButton = ERockerButtonPress::buttonNone;
 	if (m_upState) {
 		if (m_leftState) {
 			m_direction = ERocker8Direction::rockerUpLeft;
@@ -393,5 +419,7 @@ bool HRocker::updateDirection() {
 			m_direction = ERocker8Direction::rockerStop;
 		}
 	}
+	
+
 	return true;
 }

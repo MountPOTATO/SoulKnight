@@ -1,16 +1,15 @@
 #include "Weapon.h"
+#include "LongRangeAttack/Bullet.h"
+#include "Entity/Entity.h"
+#include "HelloWorldScene.h"
 
-#define PRESS 1
-#define RELEASE 2
-
-#define TAG_WEAPON1 1
-#define TAG_WEAPON2 2
-
-Weapon * Weapon::create
-(const char* weaponImageName1, const char* weaponImageName2, ESide side, bool heroOwned)
+Weapon* Weapon::create
+(const char* weaponImageName1, const char* weaponImageName2,
+	HelloWorld* currentScene, ESide side, bool heroOwned)
 {
 	Weapon* weaponSprite = new Weapon;
-	if (weaponSprite && weaponSprite->init(weaponImageName1, weaponImageName2, side, heroOwned)) {
+	if (weaponSprite && weaponSprite->init(weaponImageName1, weaponImageName2,
+		currentScene, side, heroOwned)) {
 		weaponSprite->autorelease();
 		return weaponSprite;
 	}
@@ -19,8 +18,10 @@ Weapon * Weapon::create
 }
 
 bool Weapon::init
-(const char* weaponImageName1, const char* weaponImageName2, ESide side, bool heroOwned)
+(const char* weaponImageName1, const char* weaponImageName2,
+	HelloWorld* currentScene, ESide side, bool heroOwned)
 {
+
 	if (!Sprite::initWithFile(weaponImageName1)) return false;
 
 	//创建武器图标，设置在屏幕中间，设为可见
@@ -29,30 +30,30 @@ bool Weapon::init
 	Sprite* spWeaponReverse = Sprite::create(weaponImageName2);
 
 	Size visibleSize = Director::getInstance()->getVisibleSize();
+	_side = side;
+	_heroOwned = heroOwned;
+	_target = nullptr;
 
 
 	if (heroOwned) {
+
 		spWeapon->setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));//TODO:仅仅是主角情况
 		spWeapon->setVisible(false);
 		spWeaponReverse->setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));//TODO:仅仅是主角情况
 		spWeaponReverse->setVisible(false);
 	}
 	else {
-		//TODO:怪物与主角位置的绑定
+		//TODO:怪物与武器位置的绑定
 	}
 
 	_isAttacking = false;
-
-	//TODO:添加
-	/*initBasicInfo(side);*/
+	_currentScene = currentScene;
+	_isCanMove = false;
+	_hasAnimation = false;
 
 	this->addChild(spWeapon, 0, TAG_WEAPON1);
 	this->addChild(spWeaponReverse, 1, TAG_WEAPON2);
 
-	//创建设置键盘监听器
-	listenerKeyboard = EventListenerKeyboard::create();
-	listenerKeyboard->onKeyPressed = CC_CALLBACK_2(Weapon::onPressKey, this);
-	listenerKeyboard->onKeyReleased = CC_CALLBACK_2(Weapon::onReleaseKey, this);
 
 	return true;
 }
@@ -64,8 +65,6 @@ void Weapon::startWeapon(bool _isStopOther) {
 	spWeapon->setVisible(true);
 	spWeaponReverse->setVisible(false);
 
-	Director::getInstance()->getEventDispatcher()->
-		addEventListenerWithFixedPriority(listenerKeyboard, 2);
 }
 
 
@@ -145,11 +144,33 @@ void Weapon::clearBuff() {
 		i = _vecWeaponBuff.erase(i);
 }
 
+void Weapon::updateTarget() {
 
-bool Weapon::onPressKey(EventKeyboard::KeyCode keyCode, Event* event) {
-	if (!_heroOwned) return false;
+}
 
-	updateState(keyCode, PRESS);
+
+
+float Weapon::getRad(Point point1, Point point2)const {
+	//获得两点x,y距离
+	float xd = point2.x - point1.x;
+	float yd = point1.y - point2.y;
+	//斜边长度计算
+	float hypo = sqrt(pow(xd, 2) + pow(yd, 2));
+	//获得余弦值
+	float cos = xd / hypo;
+	//获得rad
+	float rad = acos(cos);
+	//取反ss
+	if (yd > 0) {
+		rad = -rad;
+	}
+	return rad;
+}
+
+
+
+void Weapon::updateImageRotation(HRocker* rocker) {
+
 	//武器精灵获取
 	Sprite* spWeapon = (Sprite*)getChildByTag(TAG_WEAPON1);
 	Sprite* spWeaponReverse = (Sprite*)getChildByTag(TAG_WEAPON2);
@@ -158,258 +179,145 @@ bool Weapon::onPressKey(EventKeyboard::KeyCode keyCode, Event* event) {
 	//修改可移动状态
 	_isCanMove = true;
 
-	if (_ewDirection == EWeaponDirection::weaponStop) {
-		_isCanMove = false;
-		return false;
-	}
-	if (_ewDirection == EWeaponDirection::weaponAttackingEnermy) {
-		//TODO待补充,需要增加敌人判定机制,位置转换角度装置
 
-		return true;
-	}
-	spWeapon->stopAllActions();
-	spWeaponReverse->stopAllActions();
-	switch (_ewDirection) {
+	if (_target != nullptr) {//有目标且没有动画时，自动转到角度
+		_targetMathRad = getRad(spWeapon->getPosition(), _target->getPosition());
 
-	case(EWeaponDirection::weaponRight): {
-		showWeaponPicture(1);
-		RotateTo* rotateTo = RotateTo::create(0, 0);
-		spWeapon->runAction(rotateTo);
-		break;
-	}
-	case(EWeaponDirection::weaponUpRight): {
-		showWeaponPicture(1);
-		RotateTo* rotateTo = RotateTo::create(0, 315);
-		spWeapon->runAction(rotateTo);
-		break;
-	}
-	case(EWeaponDirection::weaponUp): {
-		if (getVisiblePictureSide() == "left") {
-
-			RotateTo* rotateTo = RotateTo::create(0, 90);
-			spWeaponReverse->runAction(rotateTo);
+		_mathAngle = _targetMathRad * 180.f / PI;
+		if (_targetMathRad >= -PI && _targetMathRad <= -PI / 2) {
+			showWeaponPicture(2);
+			getVisiblePicture()->setRotation(540.f - _mathAngle);
 		}
-		else if (getVisiblePictureSide() == "right") {
-
-			RotateTo* rotateTo = RotateTo::create(0, 270);
-			spWeapon->runAction(rotateTo);
+		else if (_targetMathRad > -PI / 2 && _targetMathRad <= 0) {
+			showWeaponPicture(1);
+			getVisiblePicture()->setRotation(360.f - _mathAngle);
 		}
-		break;
-	}
-	case(EWeaponDirection::weaponUpLeft): {
-		showWeaponPicture(2);
-		RotateTo* rotateTo = RotateTo::create(0, 45);
-		spWeaponReverse->runAction(rotateTo);
-		break;
-	}
-	case(EWeaponDirection::weaponLeft): {
-		showWeaponPicture(2);
-		RotateTo* rotateTo = RotateTo::create(0, 0);
-		spWeaponReverse->runAction(rotateTo);
-		break;
-	}
-	case(EWeaponDirection::weaponDownLeft): {
-		showWeaponPicture(2);
-		RotateTo* rotateTo = RotateTo::create(0, 315);
-		spWeaponReverse->runAction(rotateTo);
-		break;
-	}
-	case(EWeaponDirection::weaponDown): {
-		if (getVisiblePictureSide() == "left") {
-			RotateTo* rotateTo = RotateTo::create(0, 270);
-			spWeaponReverse->runAction(rotateTo);
+		else if (_targetMathRad > 0 && _targetMathRad <= PI / 2) {
+			showWeaponPicture(1);
+			getVisiblePicture()->setRotation(360.f - _mathAngle);
 		}
-		else if (getVisiblePictureSide() == "right") {
-			RotateTo* rotateTo = RotateTo::create(0, 90);
-			spWeapon->runAction(rotateTo);
+		else if (_targetMathRad > PI / 2 && _targetMathRad <= PI) {
+			showWeaponPicture(2);
+			getVisiblePicture()->setRotation(180.f - _mathAngle);
 		}
-		break;
-	}
-	case(EWeaponDirection::weaponDownRight): {
-		showWeaponPicture(1);
-		RotateTo* rotateTo = RotateTo::create(0, 45);
-		spWeapon->runAction(rotateTo);
-		break;
-	}
-	default:break;
-	};
-
-	return true;
-}
-
-
-bool Weapon::onReleaseKey(EventKeyboard::KeyCode keyCode, Event* event) {
-	if (!_heroOwned) return false;
-
-	updateState(keyCode, RELEASE);//RELEASE
-	Sprite* spWeapon = (Sprite*)getChildByTag(TAG_WEAPON1);
-	Sprite* spWeaponReverse = (Sprite*)getChildByTag(TAG_WEAPON2);
-
-	spWeapon->stopAllActions();
-	spWeaponReverse->stopAllActions();
-
-	switch (_ewDirection) {
-	case(EWeaponDirection::weaponRight): {
-		showWeaponPicture(1);
-		RotateTo* rotateTo = RotateTo::create(0, 0);
-		spWeapon->runAction(rotateTo);
-		break;
-	}
-	case(EWeaponDirection::weaponUpRight): {
-		showWeaponPicture(1);
-		RotateTo* rotateTo = RotateTo::create(0, 315);
-		spWeapon->runAction(rotateTo);
-		break;
-	}
-	case(EWeaponDirection::weaponUp): {
-		if (getVisiblePictureSide() == "left") {
-
-			RotateTo* rotateTo = RotateTo::create(0, 90);
-			spWeaponReverse->runAction(rotateTo);
+		else if (_targetMathRad > PI && _targetMathRad <= 3 * PI / 2) {
+			showWeaponPicture(2);
+			getVisiblePicture()->setRotation(540.f - _mathAngle);
 		}
-		else if (getVisiblePictureSide() == "right") {
-
-			RotateTo* rotateTo = RotateTo::create(0, 270);
-			spWeapon->runAction(rotateTo);
+		else if (_targetMathRad > 3 * PI / 2 && _targetMathRad <= 2 * PI) {
+			showWeaponPicture(1);
+			getVisiblePicture()->setRotation(360.f - _mathAngle);
 		}
-		break;
-	}
-	case(EWeaponDirection::weaponUpLeft): {
-		showWeaponPicture(2);
-		RotateTo* rotateTo = RotateTo::create(0, 45);
-		spWeaponReverse->runAction(rotateTo);
-		break;
-	}
-	case(EWeaponDirection::weaponLeft): {
-		showWeaponPicture(2);
-		RotateTo* rotateTo = RotateTo::create(0, 0);
-		spWeaponReverse->runAction(rotateTo);
-		break;
-	}
-	case(EWeaponDirection::weaponDownLeft): {
-		showWeaponPicture(2);
-		RotateTo* rotateTo = RotateTo::create(0, 315);
-		spWeaponReverse->runAction(rotateTo);
-		break;
-	}
-	case(EWeaponDirection::weaponDown): {
-		if (getVisiblePictureSide() == "left") {
-			RotateTo* rotateTo = RotateTo::create(0, 270);
-			spWeaponReverse->runAction(rotateTo);
+		spWeapon->stopAllActions();
+		spWeaponReverse->stopAllActions();
+		_isAttacking = false;
+		if (rocker->getRockerDirection() == ERocker8Direction::rockerStop){
+			if (rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {
+				_isCanMove = false;
+				_isAttacking = true;
+				return;
+			}
 		}
-		else if (getVisiblePictureSide() == "right") {
-			RotateTo* rotateTo = RotateTo::create(0, 90);
-			spWeapon->runAction(rotateTo);
-		}
-		break;
-	}
-	case(EWeaponDirection::weaponDownRight): {
-		showWeaponPicture(1);
-		RotateTo* rotateTo = RotateTo::create(0, 45);
-		spWeapon->runAction(rotateTo);
-		break;
-	}
-	default:break;
-	};
-
-
-	_isCanMove = false;
-	return true;
-}
-
-
-bool Weapon::updateState(EventKeyboard::KeyCode keyCode, int type) {
-	if (!_heroOwned) return false;
-
-	//按键指定：
-	//TODO:若要开发修改键位系统的话注意修改此处KEY_W,KEY_S,KEY_A,KEY_D
-	//相对的键位状态不能同时相同
-	//这里设攻击键为J
-	switch (keyCode) {
-	case(EventKeyboard::KeyCode::KEY_J): {
-		//按下J，进入攻击状态，此时不用考虑动作属性
-		if (type == PRESS) _ewDirection = EWeaponDirection::weaponAttackingEnermy;
-		break;
-	}
-	case(EventKeyboard::KeyCode::KEY_W): {
-		if (type == PRESS) { m_upState = true; m_downState = false; }
-		else if (type == RELEASE) { m_upState = false; }
-		break;
-	}
-	case(EventKeyboard::KeyCode::KEY_S): {
-		if (type == PRESS) { m_upState = false; m_downState = true; }
-		else if (type == RELEASE) { m_downState = false; }
-		break;
-	}
-	case(EventKeyboard::KeyCode::KEY_A): {
-		if (type == PRESS) { m_leftState = true; m_rightState = false; }
-		else if (type == RELEASE) { m_leftState = false; }
-		break;
-	}
-	case(EventKeyboard::KeyCode::KEY_D): {
-		if (type == PRESS) { m_leftState = false; m_rightState = true; }
-		else if (type == RELEASE) { m_rightState = false; }
-		break;
-	}
-	default:break;
-	};
-
-	updateDirection();
-
-
-
-	return true;
-}
-
-bool Weapon::updateDirection() {
-	if (!_heroOwned) return false;
-
-	if (m_upState) {
-
-		if (m_leftState) {
-			_ewDirection = EWeaponDirection::weaponUpLeft;
-		}
-		else if (m_rightState) {
-			_ewDirection = EWeaponDirection::weaponUpRight;
-		}
-		else {
-			_ewDirection = EWeaponDirection::weaponUp;
-		}
-	}
-	else if (m_downState) {
-		if (m_leftState) {
-			_ewDirection = EWeaponDirection::weaponDownLeft;
-		}
-		else if (m_rightState) {
-			_ewDirection = EWeaponDirection::weaponDownRight;
-		}
-		else {
-			_ewDirection = EWeaponDirection::weaponDown;
-		}
+		_target = nullptr;
+		return;
 	}
 	else {
-		if (m_leftState) {
-			_ewDirection = EWeaponDirection::weaponLeft;
+		log("%d", _hasAnimation);
+		if (rocker->getRockerDirection() == ERocker8Direction::rockerStop
+			&& rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {
+			_isCanMove = false;
+			_isAttacking = true;
+			_hasAnimation = true;
+			return;
 		}
-		else if (m_rightState) {
-			_ewDirection = EWeaponDirection::weaponRight;
+		spWeapon->stopAllActions();
+		spWeaponReverse->stopAllActions();
+		_isAttacking = false;
+
+		switch (rocker->getRockerDirection()) {
+		case(ERocker8Direction::rockerRight): {
+			showWeaponPicture(1);
+			RotateTo* rotateTo = RotateTo::create(0, 0);
+			spWeapon->runAction(rotateTo);
+			break;
 		}
-		else {
-			_ewDirection = EWeaponDirection::weaponStop;
+		case(ERocker8Direction::rockerUpRight): {
+			showWeaponPicture(1);
+			RotateTo* rotateTo = RotateTo::create(0, 315);
+			spWeapon->runAction(rotateTo);
+			break;
 		}
+		case(ERocker8Direction::rockerUp): {
+			if (getVisiblePictureSide() == "left") {
+
+				RotateTo* rotateTo = RotateTo::create(0, 90);
+				spWeaponReverse->runAction(rotateTo);
+				/*log(" left Angle: %f", spWeaponReverse->getRotation());*/
+			}
+			else if (getVisiblePictureSide() == "right") {
+
+				RotateTo* rotateTo = RotateTo::create(0, 270);
+				spWeapon->runAction(rotateTo);
+				/*log(" right Angle: %f", spWeapon->getRotation());*/
+			}
+			break;
+		}
+		case(ERocker8Direction::rockerUpLeft): {
+			showWeaponPicture(2);
+			RotateTo* rotateTo = RotateTo::create(0, 45);
+			spWeaponReverse->runAction(rotateTo);
+			/*log(" left Angle: %f", spWeaponReverse->getRotation());*/
+			break;
+		}
+		case(ERocker8Direction::rockerLeft): {
+			showWeaponPicture(2);
+			RotateTo* rotateTo = RotateTo::create(0, 0);
+			spWeaponReverse->runAction(rotateTo);
+			/*log(" left Angle: %f", spWeaponReverse->getRotation());*/
+			break;
+		}
+		case(ERocker8Direction::rockerDownLeft): {
+			showWeaponPicture(2);
+			RotateTo* rotateTo = RotateTo::create(0, 315);
+			spWeaponReverse->runAction(rotateTo);
+			/*log(" left Angle: %f", spWeaponReverse->getRotation());*/
+			break;
+		}
+		case(ERocker8Direction::rockerDown): {
+			if (getVisiblePictureSide() == "left") {
+				RotateTo* rotateTo = RotateTo::create(0, 270);
+				spWeaponReverse->runAction(rotateTo);
+				/*log(" left Angle: %f", spWeaponReverse->getRotation());*/
+			}
+			else if (getVisiblePictureSide() == "right") {
+				RotateTo* rotateTo = RotateTo::create(0, 90);
+				spWeapon->runAction(rotateTo);
+				/*log(" right Angle: %f", spWeapon->getRotation());*/
+			}
+			break;
+		}
+		case(ERocker8Direction::rockerDownRight): {
+			showWeaponPicture(1);
+			RotateTo* rotateTo = RotateTo::create(0, 45);
+			spWeapon->runAction(rotateTo);
+			/*log(" right Angle: %f", spWeapon->getRotation());*/
+			break;
+		}
+		default:break;
+		};
+
+	}
+	//最后判定一次
+	if (rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {
+
+		_isCanMove = false;
+		_isAttacking = true;
+		_hasAnimation = true;
+
+		return;
 	}
 }
 
-
 bool Weapon::attack() {
-	auto currentTime = GetCurrentTime() / 1000.f;
-
-	if (currentTime - _lastAttackTime < _attackSpeed) {
-		return false;
-	}
-	//TODO:当引入了Entity后的攻击逻辑的补充
-	/*
-		if(
-	
-	*/
+	return false;
 }
