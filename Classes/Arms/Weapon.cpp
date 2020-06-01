@@ -22,7 +22,7 @@ bool Weapon::init
 	HelloWorld* currentScene, ESide side, bool heroOwned)
 {
 
-	if (!Sprite::initWithFile(weaponImageName1)) return false;
+	if (!Node::init()) return false;
 
 	//创建武器图标，设置在屏幕中间，设为可见
 	//TODO:对怪物的坐标绑定，需要怪物类的实现
@@ -67,6 +67,14 @@ void Weapon::startWeapon(bool _isStopOther) {
 
 }
 
+void Weapon::stopWeapon(bool _isStopOther) {
+	Sprite* spWeapon = (Sprite*)getChildByTag(TAG_WEAPON1);
+	Sprite* spWeaponReverse = (Sprite*)getChildByTag(TAG_WEAPON2);
+
+	spWeapon->setVisible(false);
+	spWeaponReverse->setVisible(false);
+
+}
 
 void Weapon::showWeaponPicture(int type) {
 	Sprite* spWeapon = (Sprite*)getChildByTag(TAG_WEAPON1);
@@ -145,7 +153,7 @@ void Weapon::clearBuff() {
 }
 
 void Weapon::updateTarget() {
-
+	return;
 }
 
 
@@ -166,6 +174,26 @@ float Weapon::getRad(Point point1, Point point2)const {
 	}
 	return rad;
 }
+
+
+//武器坐标更新相关
+//设置武器坐标
+void Weapon::setWeaponTagPosition(int x, int y) {
+	setPosition(x, y);
+	setViewPointByWeapon();
+}
+//以武器为中心设置视角
+void Weapon::setViewPointByWeapon() {
+	if (!this->getVisiblePicture()) return;
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	Layer* parent = (Layer*)getParent();
+
+	Point weaponPos = this->getPosition();//当前武器坐标
+	Point centrePos = Point(visibleSize.width / 2, visibleSize.height / 2);//视图中心坐标
+	Point viewPos = centrePos - weaponPos;//视点
+	parent->setPosition(viewPos);
+}
+
 
 
 

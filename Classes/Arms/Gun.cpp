@@ -19,16 +19,17 @@ Gun* Gun::create
 bool Gun::init
 (const char* weaponImageName1, const char* weaponImageName2,
 	HelloWorld* currentScene, ESide side, bool heroOwned) {
-	if (!Sprite::init()) return false;
+	if (!Node::init()) return false;
 
 	Sprite* spWeapon = Sprite::create(weaponImageName1);
 	Sprite* spWeaponReverse = Sprite::create(weaponImageName2);
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
 	if (heroOwned) {
-		spWeapon->setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));//TODO:仅仅是主角情况
+		setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));
+		spWeapon->setPosition(Point(0,0));//TODO:仅仅是主角情况
 		spWeapon->setVisible(false);
-		spWeaponReverse->setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));//TODO:仅仅是主角情况
+		spWeaponReverse->setPosition(Point(0,0));//TODO:仅仅是主角情况
 		spWeaponReverse->setVisible(false);
 	}
 	else {
@@ -45,8 +46,8 @@ bool Gun::init
 	_isAttacking = false;
 	_currentScene = currentScene;
 	_isCanMove = false;
-	_attackSpeed = 0.3;//测试数据,
-	_attackRange = 999;//测试数据,
+	//_attackSpeed = 0.35f;//测试数据,
+	//_attackRange = 10000;//测试数据,
 	return true;
 }
 
@@ -99,7 +100,8 @@ bool Gun::attack() {
 
 	//TODO:叠加Weapon的buff容器里所有weaponBuff
 	//子弹生成方式因枪支不同而异
-	Bullet* bullet = Bullet::create("bulletImage/initBullet.png", 200.f, this, /*NULL,*/ bulletBuff);
+	
+	Bullet* bullet = Bullet::create(_bulletImageName, _bulletFlyingSpeed, this, /*NULL,*/ bulletBuff);
 	bullet->setScale(1);
 
 	_currentScene->_bullets.pushBack(bullet);
@@ -124,14 +126,14 @@ bool Gun::runShootingAction() {
 	Sprite* spWeaponReverse = (Sprite*)getChildByTag(TAG_WEAPON1);
 	_hasAnimation = true;
 	if (getVisiblePictureSide() == "right") {
-		RotateBy* rotateby1 = RotateBy::create(0.03f, -2);
+		RotateBy* rotateby1 = RotateBy::create(0.03f, -15);
 		ActionInterval* action = Sequence::create(rotateby1, rotateby1->reverse(), NULL);
 
 		runAction(action);
 
 	}
 	else if (getVisiblePictureSide() == "left") {
-		RotateBy* rotateby1 = RotateBy::create(0.03f, 2);
+		RotateBy* rotateby1 = RotateBy::create(0.03f, 15);
 		ActionInterval* action = Sequence::create(rotateby1, rotateby1->reverse(), NULL);
 
 		runAction(action);

@@ -30,8 +30,9 @@
 
 #include "cocos2d.h"
 #include "Controller/HRocker.h"
-
+#include "Arms/GunDerived/OldPistol.h"
 #include "Arms/Gun.h"
+#include "Arms/MeleeDerived/Fish.h"
 #include "Arms/Melee.h"
 #include "LongRangeAttack/Bullet.h"
 class Weapon;
@@ -69,14 +70,15 @@ public:
 
 	//测试组件:
 
-	void test_InitGun();
 	
-	CC_SYNTHESIZE(Gun*, _testGun, TestGun);//初始化一个近战武器类
 
 
-	void test_InitMelee();
+	CC_SYNTHESIZE(OldPistol*, _testPistol, TestPistol);//初始化一个近战武器类
 
-	CC_SYNTHESIZE(Melee*, _testMelee, TestMelee);//初始化一个近战武器类
+	CC_SYNTHESIZE(Fish*, _testFish, TestFish);//初始化一个近战武器类
+
+	void test_InitPistol();
+	void test_InitFish();
 
 private:
 	

@@ -59,8 +59,8 @@ bool HelloWorld::init()
 	initHRocker();
 
 	//此处修改
-	/*test_InitGun();*/
-	test_InitMelee();
+	/*test_InitFish();*/
+	test_InitPistol();
 
 	//测试自动瞄准时加上，不需要测试时去掉
 	/*Entity* testEnermy=new Entity();
@@ -102,17 +102,21 @@ void HelloWorld::initHRocker()
 
 
 
-void HelloWorld::test_InitGun() {
-	_testGun = Gun::create("initWeapon.png", "initWeaponReverse.png", this,sideHero, true);
-	this->addChild(_testGun);
-	_testGun->startWeapon(true);	
+void HelloWorld::test_InitPistol() {
+	_testPistol = OldPistol::create
+	("GunImage\\OldPistol.png", "GunImage\\OldPistolReverse.png", this, sideHero, true);
+	this->addChild(_testPistol);
+	_testPistol->startWeapon(true);
 }
 
-void HelloWorld::test_InitMelee() {
-	_testMelee = Melee::create("fish.png", "fishReverse.png", this, sideHero, true);
-	this->addChild(_testMelee);
-	_testMelee->startWeapon(true);
+
+void HelloWorld::test_InitFish() {
+	_testFish = Fish::create
+	("MeleeImage\\Fish.png", "MeleeImage\\FishReverse.png", this, sideHero, true);
+	this->addChild(_testFish);
+	_testFish->startWeapon(true);
 }
+
 
 
 
@@ -130,12 +134,12 @@ void HelloWorld::update(float delta) {
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
 	/////////////////////////////////update函数中测试Melee类，不需要可注释掉//////////////////////////
-	_testMelee->updateTarget();//Melee实例 更新场内怪物坐标，将范围内的怪物存入Melee成员Vector中
-	_testMelee->updateImageRotation(_rocker); //Melee实例，更新武器指向（自动瞄准）
-	if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
-		_testMelee->attack();//攻击，目前只有旋转360度的攻击动画
-	}
-	
+	//_testMelee->updateTarget();//Melee实例 更新场内怪物坐标，将范围内的怪物存入Melee成员Vector中
+	//_testMelee->updateImageRotation(_rocker); //Melee实例，更新武器指向（自动瞄准）
+	//if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
+	//	_testMelee->attack();//攻击，目前只有旋转360度的攻击动画
+	//}
+	//
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
 	////////////////////////update函数中测试Gun类的自动瞄准，不需要可注释掉//////////////////////////
@@ -159,6 +163,25 @@ void HelloWorld::update(float delta) {
 	//}
 	//updateBullet();//更新飞行物
 	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	/////////////////////////////////update函数中测试Pistol类，不需要可注释掉//////////////////////////
+	_testPistol->updateTarget();//Gun实例 更新场内怪物坐标，标记离自己最近的怪物
+	_testPistol->updateImageRotation(_rocker);//Gun实例 更新武器指向（自动瞄准）或没有目标时手柄瞄准
+	if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
+		_testPistol->attack();//攻击，发射子弹
+	}
+	updateBullet();//更新飞行物
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
+	/////////////////////////////////update函数中测试Melee类，不需要可注释掉//////////////////////////
+	//_testFish->updateTarget();//Melee实例 更新场内怪物坐标，将范围内的怪物存入Melee成员Vector中
+	//_testFish->updateImageRotation(_rocker); //Melee实例，更新武器指向（自动瞄准）
+	//if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
+	//	_testFish->attack();//攻击，目前只有旋转360度的攻击动画
+	//}
+	////
+	/////////////////////////////////////////////////////////////////////////////////////////////
+
 }
 
 void HelloWorld::updateBullet() {

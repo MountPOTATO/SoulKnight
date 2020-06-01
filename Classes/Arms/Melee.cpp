@@ -18,7 +18,7 @@ Melee* Melee::create
 bool Melee::init
 (const char* weaponImageName1, const char* weaponImageName2,
 	HelloWorld* currentScene, ESide side, bool _heroOwned) {
-	if (!Sprite::init()) return false;
+	if (!Node::init()) return false;
 
 	Sprite* spMelee = Sprite::create(weaponImageName1);
 	Sprite* spMeleeReverse = Sprite::create(weaponImageName2);
@@ -30,8 +30,6 @@ bool Melee::init
 		spMelee->setVisible(false);
 		spMeleeReverse->setPosition(Point(0, 0));//TODO:仅仅是主角情况
 		spMeleeReverse->setVisible(false);
-		
-	
 		
 	}
 	else {
@@ -48,8 +46,8 @@ bool Melee::init
 	_hasAnimation = false;
 	_target = nullptr;
 
-	_attackRange = 600.f;//攻击范围测试数据
-	_attackSpeed = 0.5f;//测试数据,
+	//_attackRange = 600.f;//攻击范围测试数据
+	//_attackSpeed = 0.5f;//测试数据,
 
 	return true;
 }

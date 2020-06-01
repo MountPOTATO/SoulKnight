@@ -32,8 +32,7 @@ public:
 private:
 	Vector<Entity*> _targetInRange;
 	
-	//CC_SYNTHESIZE(float,_validAngle, ValidAngle);
-	//CC_SYNTHESIZE(float, _validAngleRad, ValidAngleRad);
+
 
 
 };

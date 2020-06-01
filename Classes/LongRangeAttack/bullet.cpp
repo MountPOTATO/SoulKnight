@@ -18,15 +18,15 @@ Bullet* Bullet::create
 bool Bullet::init
 (const char* bulletImageName,  float flyingSpeed, Weapon* shooter, /*Entity* target,*/ WeaponBuff* buff) {
 	if (!Sprite::init()) return false;
-
+	if (!shooter) return false;
 
 	setTexture(bulletImageName);
-	setPosition(shooter->getVisiblePicture()->getPosition());
+	setPosition(shooter->getPosition());
 
 	setVisible(true);
 
 	_attack = shooter->getWeaponAttack();
-	_flyingSpeed = flyingSpeed;
+	_flyingSpeed = shooter->getWeaponBulletFlyingSpeed();
 	_shooter = shooter;
 	/*_target = target;*/
 	_buff = buff;
@@ -96,7 +96,7 @@ void Bullet::calPosition() {
 }
 
 void Bullet::calDistance() {
-	//跟踪子弹
+	//TODO:跟踪子弹引入？
 	/*if (!_target) {*/
 		//TODO:需要Entity的获取位置函数，需要等后续完成
 	/*}*/
