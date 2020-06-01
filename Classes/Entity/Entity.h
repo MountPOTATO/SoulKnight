@@ -1,8 +1,8 @@
 #pragma once
 
 #include "cocos2d.h"
-#include "ControllerListener.h"
-#include "ControllByKeyBoard.h"
+#include "ControllerByKeyBoard/ControllerListener.h"
+#include "ControllerByKeyBoard/ControllByKeyBoard.h"
 USING_NS_CC;
 class Entity :public Node,public ControllerListener {
 public:

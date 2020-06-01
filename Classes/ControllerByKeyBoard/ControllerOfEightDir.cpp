@@ -29,61 +29,48 @@ void ControllerOfEightDir::update(float delta) {
 	if (m_controllerListener == NULL) {
 		return;
 	}
+	Point pos = m_controllerListener->getTagPosition();
 	auto moveLeft = cocos2d::EventKeyboard::KeyCode::KEY_A;
-	auto moveRight = cocos2d::EventKeyboard::KeyCode::KEY_D;
+	auto moveRight= cocos2d::EventKeyboard::KeyCode::KEY_D;
 	auto moveUp = cocos2d::EventKeyboard::KeyCode::KEY_W;
 	auto moveDown = cocos2d::EventKeyboard::KeyCode::KEY_S;
 	if (keys[moveLeft]&&keys[moveUp]) {//左上
-		Point pos = m_controllerListener->getTagPosition();
-		pos.x -= m_iSpeed / 1.414; pos.y += m_iSpeed / 1.414;
+		
+		pos.x -= m_iSpeed/1.414; pos.y += m_iSpeed / 1.414;
 
 		m_controllerListener->setFaceDirByMoveDir(0);
-		m_controllerListener->setTagPosition(pos.x, pos.y);
-	}
+ 	}
 	else if (keys[moveRight]&&keys[moveUp]){//右上
-		Point pos = m_controllerListener->getTagPosition();
-		pos.x += m_iSpeed / 1.414; pos.y += m_iSpeed / 1.414;
+ 		pos.x += m_iSpeed / 1.414; pos.y += m_iSpeed / 1.414;
 
 		m_controllerListener->setFaceDirByMoveDir(1);
-		m_controllerListener->setTagPosition(pos.x, pos.y);
-	}
+ 	}
 	else if (keys[moveRight] && keys[moveDown]) {//右下
-		Point pos = m_controllerListener->getTagPosition();
-		pos.x += m_iSpeed/1.414; pos.y -= m_iSpeed / 1.414;
+ 		pos.x += m_iSpeed / 1.414; pos.y -= m_iSpeed / 1.414;
 
 		m_controllerListener->setFaceDirByMoveDir(1);
-		m_controllerListener->setTagPosition(pos.x, pos.y);
-	}
+ 	}
 	else if (keys[moveLeft] && keys[moveDown]) {//左下
-		Point pos = m_controllerListener->getTagPosition();
-		pos.x -= m_iSpeed / 1.414; pos.y -= m_iSpeed / 1.414;
+ 		pos.x -= m_iSpeed / 1.414; pos.y -= m_iSpeed / 1.414;
 
 		m_controllerListener->setFaceDirByMoveDir(0);
-		m_controllerListener->setTagPosition(pos.x, pos.y);
-	}
+ 	}
 	else if (keys[moveLeft]) {//左
-		Point pos = m_controllerListener->getTagPosition();
-		pos.x -= m_iSpeed;
+ 		pos.x -= m_iSpeed;
 
 		m_controllerListener->setFaceDirByMoveDir(0);
-		m_controllerListener->setTagPosition(pos.x, pos.y);
-	}
+ 	}
 	else if (keys[moveUp]) {//上
-		Point pos = m_controllerListener->getTagPosition();
-		pos.y += m_iSpeed;
-		m_controllerListener->setTagPosition(pos.x, pos.y);
-	}
+ 		pos.y += m_iSpeed;
+ 	}
 	else if (keys[moveRight]) {//右
-		Point pos = m_controllerListener->getTagPosition();
-		pos.x += m_iSpeed;
+ 		pos.x += m_iSpeed;
 
 		m_controllerListener->setFaceDirByMoveDir(1);
-		m_controllerListener->setTagPosition(pos.x, pos.y);
-	}
+ 	}
 	else if (keys[moveDown]) {//下
-		Point pos = m_controllerListener->getTagPosition();
-		pos.y -= m_iSpeed;
-		m_controllerListener->setTagPosition(pos.x, pos.y);
+ 		pos.y -= m_iSpeed;
+		
 	}
-	
+	m_controllerListener->setTagPosition(pos.x, pos.y);
 }
