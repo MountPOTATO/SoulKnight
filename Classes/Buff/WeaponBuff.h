@@ -3,18 +3,10 @@
 
 
 #include "cocos2d.h"
+#include "Const/ConstInfo.h"
 using namespace cocos2d;
 USING_NS_CC;
 
-//buff效果的体现
-enum EWeaponBuffEffect {
-	//几个设想的基础buff状态,可在此添加
-
-	WbuffLimitBreak, //大招（不确定，只是针对单纯武器基础性能改变的大招，对特殊功能如召唤等大招不确定）
-	WbuffStrengthen,  //武器加强buff
-	WbuffClean		//默认状态
-
-};
 
 class WeaponBuff :public Sprite {
 public:
@@ -69,6 +61,8 @@ public:
 		float lastTime
 	);
 
+	//叠加态的武器buff
+	
 };
 
 

@@ -5,16 +5,15 @@
 <array>
        <dict>
             <key>Attack</key>
-            <integer>3</integer>
+            <integer>2</integer>
             <key>Precision</key>
-            <integer>1</integer>
+            <integer>6</integer>
             <key>EnergyCost</key>
-            <integer>0</integer>
+            <integer>1</integer>
             <key>WeaponPrice</key>
-            <integer>0</integer>
+            <integer>15</integer>
             <key>BulletPerTime</key>
             <integer>1</integer>
       </dict>          
 </array>
 </plist>
-

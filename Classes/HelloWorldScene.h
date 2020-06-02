@@ -34,6 +34,8 @@
 #include "Arms/Gun.h"
 #include "Arms/MeleeDerived/Fish.h"
 #include "Arms/Melee.h"
+#include "Arms/GunDerived/SMG.h"
+#include "Arms/GunDerived/Shotgun.h"
 #include "LongRangeAttack/Bullet.h"
 class Weapon;
 
@@ -77,8 +79,14 @@ public:
 
 	CC_SYNTHESIZE(Fish*, _testFish, TestFish);//初始化一个近战武器类
 
+	CC_SYNTHESIZE(SMG*, _testSMG, TestSMG);//初始化一个近战武器类
+
+	CC_SYNTHESIZE(Shotgun*, _testShotgun, TestShotgun);//初始化一个近战武器类
+
 	void test_InitPistol();
 	void test_InitFish();
+	void test_InitSMG();
+	void test_InitShotgun();
 
 private:
 	

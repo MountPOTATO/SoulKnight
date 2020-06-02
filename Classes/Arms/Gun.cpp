@@ -1,7 +1,7 @@
 #include "Gun.h"
 #include "HelloWorldScene.h"
 #include "LongRangeAttack/Bullet.h"
-
+#include "Const/ConstInfo.h"
 
 Gun* Gun::create
 (const char* weaponImageName1, const char* weaponImageName2,
@@ -101,12 +101,14 @@ bool Gun::attack() {
 	//TODO:叠加Weapon的buff容器里所有weaponBuff
 	//子弹生成方式因枪支不同而异
 	
-	Bullet* bullet = Bullet::create(_bulletImageName, _bulletFlyingSpeed, this, /*NULL,*/ bulletBuff);
-	bullet->setScale(1);
 
-	_currentScene->_bullets.pushBack(bullet);
-	log("vector has bullet:%d", _currentScene->_bullets.size());
-	_currentScene->addChild(bullet);
+	for (int i = 0; i <=this->getBulletPerTime() - 1; i++) {
+		Bullet* bullet = Bullet::create(_bulletImageName, _bulletFlyingSpeed, this, bulletBuff, true);
+		bullet->setScale(1);
+		_currentScene->_bullets.pushBack(bullet);
+		_currentScene->addChild(bullet);
+	}
+	
 	//TODO:Scene类添加子弹容器
 
 

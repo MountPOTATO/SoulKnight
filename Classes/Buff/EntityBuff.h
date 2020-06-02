@@ -4,25 +4,8 @@
 
 
 #include "cocos2d.h"
-
+#include "Const/ConstInfo.h"
 USING_NS_CC;
-
-//buff效果的体现
-enum EEntityBuffEffect {
-	//几个设想的基础buff状态,可在此添加
-	EbuffFrozen,	//冻结	
-	EbuffPoisoned,	//中毒
-	EbuffBurning,	//火烧（爆炸？）
-	EbuffSpeedUp,	//加速
-	EbuffSlowDown,	//减速
-
-
-	EbuffLimitBreak, //大招（不确定，只是针对单纯基础性能改变的大招，对特殊功能如召唤等大招不确定）
-	EbuffInvincible,//无敌(可能有护盾状态?)
-
-	EbuffClean			//默认状态
-
-};
 
 class EntityBuff :public cocos2d::Sprite {
 public:

@@ -58,11 +58,13 @@ bool HelloWorld::init()
 	
 	initHRocker();
 
-	//此处修改
+	//此处修改,初始化一样武器实例,以SMG冲锋枪为例
 	/*test_InitFish();*/
-	test_InitPistol();
+	/*test_InitPistol();*/
+	test_InitSMG();
+	//test_InitShotgun();
 
-	//测试自动瞄准时加上，不需要测试时去掉
+	//测试自动瞄准时加上，不需要测试时去掉,同时在update函数中添加相应的模块
 	/*Entity* testEnermy=new Entity();
 	Sprite* enermyImage = Sprite::create("HelloWorld.png");
 	testEnermy->setPosition(visibleSize.width / 2 - 300, visibleSize.height / 2 - 300);
@@ -101,22 +103,31 @@ void HelloWorld::initHRocker()
 
 
 
-
+//测试函数：初始化武器实例（破旧的手枪，鱼（尚方宝剑），冲锋枪，霰弹枪）
 void HelloWorld::test_InitPistol() {
 	_testPistol = OldPistol::create
 	("GunImage\\OldPistol.png", "GunImage\\OldPistolReverse.png", this, sideHero, true);
 	this->addChild(_testPistol);
 	_testPistol->startWeapon(true);
 }
-
-
 void HelloWorld::test_InitFish() {
 	_testFish = Fish::create
 	("MeleeImage\\Fish.png", "MeleeImage\\FishReverse.png", this, sideHero, true);
 	this->addChild(_testFish);
 	_testFish->startWeapon(true);
 }
-
+void HelloWorld::test_InitSMG() {
+	_testSMG = SMG::create
+	("GunImage\\SMG.png", "GunImage\\SMGReverse.png", this, sideHero, true);
+	this->addChild(_testSMG);
+	_testSMG->startWeapon(true);
+}
+void HelloWorld::test_InitShotgun() {
+	_testShotgun = Shotgun::create
+	("GunImage\\Shotgun.png", "GunImage\\ShotgunReverse.png", this, sideHero, true);
+	this->addChild(_testShotgun);
+	_testShotgun->startWeapon(true);
+}
 
 
 
@@ -124,63 +135,28 @@ void HelloWorld::test_InitFish() {
 void HelloWorld::update(float delta) {
 	
 	//注意：启用后要修改HelloWorld：：Init，添加相应的test——Init类
-	/////////////////////////////////update函数中测试Gun类，不需要可注释掉//////////////////////////
-	//_testGun->updateTarget();//Gun实例 更新场内怪物坐标，标记离自己最近的怪物
-	//_testGun->updateImageRotation(_rocker);//Gun实例 更新武器指向（自动瞄准）或没有目标时手柄瞄准
-	//if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
-	//	_testGun->attack();//攻击，发射子弹
-	//}
-	//updateBullet();//更新飞行物
-	/////////////////////////////////////////////////////////////////////////////////////////////
-
-	/////////////////////////////////update函数中测试Melee类，不需要可注释掉//////////////////////////
-	//_testMelee->updateTarget();//Melee实例 更新场内怪物坐标，将范围内的怪物存入Melee成员Vector中
-	//_testMelee->updateImageRotation(_rocker); //Melee实例，更新武器指向（自动瞄准）
-	//if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
-	//	_testMelee->attack();//攻击，目前只有旋转360度的攻击动画
-	//}
-	//
-	/////////////////////////////////////////////////////////////////////////////////////////////
-
-	////////////////////////update函数中测试Gun类的自动瞄准，不需要可注释掉//////////////////////////
-	//auto i = _currentUnit.begin();
-	//(*i)->setPosition((*i)->getPositionX()+1, (*i)->getPositionY());
-	//_testGun->updateTarget();//Gun实例 更新场内怪物坐标，标记离自己最近的怪物
-	//_testGun->updateImageRotation(_rocker);//Gun实例 更新武器指向（自动瞄准）
-	//if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
-	//	_testGun->attack();//攻击，发射子弹
-	//}
-	//updateBullet();//更新飞行物
-	/////////////////////////////////////////////////////////////////////////////////////////////
-
-	////////////////////////update函数中测试Melee类的自动瞄准，不需要可注释掉//////////////////////////
-	//auto i = _currentUnit.begin();
-	//(*i)->setPosition((*i)->getPositionX(), (*i)->getPositionY() + 1);
-	//_testMelee->updateTarget();//Gun实例 更新场内怪物坐标，标记离自己最近的怪物
-	//_testMelee->updateImageRotation(_rocker);//Gun实例 更新武器指向（自动瞄准）
-	//if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
-	//	_testMelee->attack();//攻击，发射子弹
-	//}
-	//updateBullet();//更新飞行物
-	/////////////////////////////////////////////////////////////////////////////////////////////
-
-	/////////////////////////////////update函数中测试Pistol类，不需要可注释掉//////////////////////////
-	_testPistol->updateTarget();//Gun实例 更新场内怪物坐标，标记离自己最近的怪物
-	_testPistol->updateImageRotation(_rocker);//Gun实例 更新武器指向（自动瞄准）或没有目标时手柄瞄准
+	/////////////////以冲锋枪SMG为例，update函数中测试Gun类，不需要可注释掉/////////////////////////
+	_testSMG->updateTarget();//Gun实例 更新场内怪物坐标，标记离自己最近的怪物
+	_testSMG->updateImageRotation(_rocker);//Gun实例 更新武器指向（自动瞄准）或没有目标时手柄瞄准
 	if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
-		_testPistol->attack();//攻击，发射子弹
+		_testSMG->attack();//攻击，发射子弹
 	}
 	updateBullet();//更新飞行物
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
-	/////////////////////////////////update函数中测试Melee类，不需要可注释掉//////////////////////////
-	//_testFish->updateTarget();//Melee实例 更新场内怪物坐标，将范围内的怪物存入Melee成员Vector中
-	//_testFish->updateImageRotation(_rocker); //Melee实例，更新武器指向（自动瞄准）
+	
+	/////////////////以冲锋枪SMG为例，update函数中测试Gun类的自动瞄准，不需要可注释掉////////////////
+	//auto i = _currentUnit.begin();
+	//(*i)->setPosition((*i)->getPositionX()+1, (*i)->getPositionY());
+	//_testSMG->updateTarget();//Gun实例 更新场内怪物坐标，标记离自己最近的怪物
+	//_testSMG->updateImageRotation(_rocker);//Gun实例 更新武器指向（自动瞄准）
 	//if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
-	//	_testFish->attack();//攻击，目前只有旋转360度的攻击动画
+	//	_testSMG->attack();//攻击，发射子弹
 	//}
-	////
+	//updateBullet();//更新飞行物
 	/////////////////////////////////////////////////////////////////////////////////////////////
+
+
 
 }
 

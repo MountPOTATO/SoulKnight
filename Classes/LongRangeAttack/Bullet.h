@@ -21,13 +21,14 @@ private:
 	CC_SYNTHESIZE(WeaponBuff*,_buff, Buff);
 
 	CC_SYNTHESIZE(float, _initAngle, InitAngle);
+	CC_SYNTHESIZE(bool, _hasDeflection, HasDeflection);//ÊÇ·ñÓÐÆ«½Ç
 
 public:
 	virtual bool init
-	(const char* bulletImageName,  float flyingSpeed, Weapon* shooter, /*Entity* target,*/ WeaponBuff* buff);
+	(const char* bulletImageName,  float flyingSpeed, Weapon* shooter,  WeaponBuff* buff,bool hasDef);
 
 	static Bullet* create
-	(const char* bulletImageName, float flyingSpeed, Weapon* shooter, /*Entity* target,*/ WeaponBuff* buff);
+	(const char* bulletImageName, float flyingSpeed, Weapon* shooter,  WeaponBuff* buff, bool hasDef);
 
 	void calPosition();
 

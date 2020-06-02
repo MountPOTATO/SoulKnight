@@ -92,6 +92,7 @@ public:
 	HelloWorld* getWeaponCurrentScene() { return this->_currentScene; }
 	//void stopWeapon();TODO
 	float getWeaponBulletFlyingSpeed()const { return _bulletFlyingSpeed; }
+	INT32 getWeaponPrecision()const { return _precision; }
 
 
 

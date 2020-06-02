@@ -1,12 +1,12 @@
 #include "Bullet.h"
 #include "math.h"
-
+#include <ctime>
 #include "Arms/Weapon.h"
 #define TAG_BULLET -1
 Bullet* Bullet::create
-(const char* bulletImageName, float flyingSpeed, Weapon* shooter, /*Entity* target,*/ WeaponBuff* buff) {
+(const char* bulletImageName, float flyingSpeed, Weapon* shooter,  WeaponBuff* buff,bool hasDef) {
 	Bullet* bullet = new(std::nothrow)Bullet;
-	if (bullet && bullet->init(bulletImageName, flyingSpeed, shooter, /*target,*/ buff)) {
+	if (bullet && bullet->init(bulletImageName, flyingSpeed, shooter,  buff, hasDef)) {
 		bullet->autorelease();
 		return bullet;
 	}
@@ -16,7 +16,7 @@ Bullet* Bullet::create
 }
 
 bool Bullet::init
-(const char* bulletImageName,  float flyingSpeed, Weapon* shooter, /*Entity* target,*/ WeaponBuff* buff) {
+(const char* bulletImageName,  float flyingSpeed, Weapon* shooter,  WeaponBuff* buff, bool hasDef) {
 	if (!Sprite::init()) return false;
 	if (!shooter) return false;
 
@@ -30,55 +30,62 @@ bool Bullet::init
 	_shooter = shooter;
 	/*_target = target;*/
 	_buff = buff;
-
+	_hasDeflection = hasDef;
 	
 	//角度初始计算;
 	auto shooterAngle = _shooter->getVisiblePicture()->getRotation();
+	float bulletRotateAngle;
 	log("%f", shooterAngle);
 	if (_shooter->getVisiblePictureSide() == "left") {
 		if (shooterAngle >= -90 && shooterAngle <= 0) {
 			_initAngle = (180.f - shooterAngle);
-			setRotation(360.f - _initAngle);
+			bulletRotateAngle = 360.f - _initAngle;
 		}
 		else if (shooterAngle >= 0.f && shooterAngle <= 90.f) {
 			_initAngle = 180.f - shooterAngle;//对于常规的逆时针正向图片（分左右）的
-			setRotation( - _initAngle);			
+			bulletRotateAngle = - _initAngle;
 		}
 		else if (shooterAngle >= 270.f && shooterAngle <= 360.f) {
 			_initAngle = 540.f - shooterAngle;
-			setRotation(360.f - _initAngle);
+			bulletRotateAngle = 360.f - _initAngle;
 
 		}
 		else if (shooterAngle >= 360.f && shooterAngle <= 450.f) {
 			_initAngle = 540.f - shooterAngle;
-			setRotation(360.f - _initAngle);
+			bulletRotateAngle = 360.f - _initAngle;
 		}
 		else if (shooterAngle >= 630.f && shooterAngle <= 720.f) {
 			_initAngle = 540.f - shooterAngle;
-			setRotation(360.f - _initAngle);
+			bulletRotateAngle = 360.f - _initAngle;
 		}
-		
-		//出现720度
-		
+
 	}
 	else if (_shooter->getVisiblePictureSide() == "right") {
 		if (shooterAngle >= -90 && shooterAngle <= 0) {
 			_initAngle = -shooterAngle;
-			setRotation(shooterAngle);
+			bulletRotateAngle = 360.f - _initAngle;
 		}
 		else if ((shooterAngle >= 0 && shooterAngle <= 90)||(shooterAngle>=270&&shooterAngle<=360)) {
 			_initAngle = 360.f - shooterAngle;
-			setRotation(shooterAngle);
+			bulletRotateAngle = 360.f - _initAngle;
 		}
 		else if ((shooterAngle >= 360.f && shooterAngle <= 450.f)) {
 			_initAngle = 360.f - shooterAngle;
-			setRotation(shooterAngle);
+			bulletRotateAngle = 360.f - _initAngle;
 		}
 		 
 	}
 	//转成弧度制
-	_initAngle*=(PI/180);
-
+	if (hasDef) {
+		float deflection = rand() % (shooter->getWeaponPrecision() * 2 + 1) - (shooter->getWeaponPrecision());
+		setRotation(bulletRotateAngle + deflection);
+		_initAngle -= deflection;
+		_initAngle *= (PI / 180);
+	}
+	else {
+		_initAngle *= (PI / 180);
+		setRotation(bulletRotateAngle);
+	}
 	return true;
 }
 

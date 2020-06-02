@@ -32,7 +32,7 @@ public:
 
 	virtual bool startWeapon(bool _isStopOther);
 	
-	
+	INT32 getGunBulletPerTime()const { return _bulletPerTime; }
 };
 
 #endif
