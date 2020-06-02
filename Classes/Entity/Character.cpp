@@ -9,7 +9,7 @@ bool Character::init() {
 	m_HP = 1;
 	m_MP = 1;
 	m_Armor = 1;
-	m_Speed = 10;
+	m_Speed = 2;
 	setAnchorPoint(Point(0.5f, 0.5f));
 
 	
@@ -37,6 +37,8 @@ void Character::setSpeed(int speed) {//设置角色速度
 }
 void Character::setTiledMap(TMXTiledMap* map) {
 	m_map = map;
+	this->meta = m_map->getLayer("Meta");
+	this->meta->setVisible(false);
 }
 //
 int Character::getHP() { return m_HP; }
@@ -57,12 +59,20 @@ void Character::setViewPointByCharacter() {
 }
 
 void Character::setTagPosition(int x, int y) {
-	
+	if (isPosBlocked(Point(x, y))) { return; }
+
 	Entity::setTagPosition(x, y);
 	setViewPointByCharacter();
 }
 
-bool Character::isPosBlocked(Point dstPos, int dir) {
+bool Character::isPosBlocked(Point dstPos) {
+	int dir;
+	Point curPos=this->getPosition();
+	if ((dstPos.x - curPos.x) < 0) { dir = 1; }
+	else if ((dstPos.y - curPos.y) > 0) { dir = 2; }
+	else if ((dstPos.x - curPos.x) > 0) { dir = 3; }
+	else if ((dstPos.y - curPos.y) < 0) { dir = 4; }
+	else { dir = 0; }
 	switch (dir)
 	{
 	case 1:
@@ -79,7 +89,41 @@ bool Character::isPosBlocked(Point dstPos, int dir) {
 		break;
 	case 0:
 		break;
+	default:
+		break;
 	}
 	//暂缺
-	return true;
+	Point tiledPos = tileCoordForPosition(Point(dstPos.x, dstPos.y));
+	int tiledGid = meta->getTileGIDAt(tiledPos);//获取这个格子的唯一标识
+	
+												
+	//判断这个格子是否存在
+	if (tiledGid != 0) {
+		 
+		Value properties ( m_map->getPropertiesForGID(tiledGid));
+
+		ValueMap propMap = properties.asValueMap();//就是这一句报错
+
+		if (propMap.find("Collidable") != propMap.end()) {
+			//获取格子的Collidable属性
+			Value prop = propMap.at("Collidable");
+			if (prop.asString().compare("true") == 0) {
+				//发现这个格子属性为true，不让玩家继续移动
+				return true;
+			}
+		}
+		 
+	}
+	return false;//反之，返回false
+}
+
+Point Character::tileCoordForPosition(Point pos) {
+	Size mapTiledNum = m_map->getMapSize();
+	Size tiledSize = m_map->getTileSize();
+
+	int x = pos.x / tiledSize.width;
+	int y = (mapTiledNum.height * tiledSize.height - pos.y) / tiledSize.height;
+
+	 
+	return Point(x, y);
 }

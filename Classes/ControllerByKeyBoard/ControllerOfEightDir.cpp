@@ -36,44 +36,54 @@ void ControllerOfEightDir::update(float delta) {
 	auto moveDown = cocos2d::EventKeyboard::KeyCode::KEY_S;
 	if (keys[moveLeft]&&keys[moveUp]) {//左上
 		
-		pos.x -= m_iSpeed/1.414; pos.y += m_iSpeed / 1.414;
-
+		pos.x -= m_iSpeed/1.414; 
+		m_controllerListener->setTagPosition(pos.x, pos.y);
+		pos.y += m_iSpeed / 1.414;
+		m_controllerListener->setTagPosition(pos.x, pos.y);
 		m_controllerListener->setFaceDirByMoveDir(0);
  	}
 	else if (keys[moveRight]&&keys[moveUp]){//右上
- 		pos.x += m_iSpeed / 1.414; pos.y += m_iSpeed / 1.414;
-
+ 		pos.x += m_iSpeed / 1.414;
+		m_controllerListener->setTagPosition(pos.x, pos.y); 
+		pos.y += m_iSpeed / 1.414;
+		m_controllerListener->setTagPosition(pos.x, pos.y);
 		m_controllerListener->setFaceDirByMoveDir(1);
  	}
 	else if (keys[moveRight] && keys[moveDown]) {//右下
- 		pos.x += m_iSpeed / 1.414; pos.y -= m_iSpeed / 1.414;
-
+ 		pos.x += m_iSpeed / 1.414;
+		m_controllerListener->setTagPosition(pos.x, pos.y); 
+		pos.y -= m_iSpeed / 1.414;
+		m_controllerListener->setTagPosition(pos.x, pos.y);
 		m_controllerListener->setFaceDirByMoveDir(1);
  	}
 	else if (keys[moveLeft] && keys[moveDown]) {//左下
- 		pos.x -= m_iSpeed / 1.414; pos.y -= m_iSpeed / 1.414;
-
+ 		pos.x -= m_iSpeed / 1.414; 
+		m_controllerListener->setTagPosition(pos.x, pos.y); 
+		pos.y -= m_iSpeed / 1.414;
+		m_controllerListener->setTagPosition(pos.x, pos.y);
 		m_controllerListener->setFaceDirByMoveDir(0);
  	}
 	else if (keys[moveLeft]) {//左
  		pos.x -= m_iSpeed;
-
+		m_controllerListener->setTagPosition(pos.x, pos.y);
 		m_controllerListener->setFaceDirByMoveDir(0);
  	}
 	else if (keys[moveUp]) {//上
  		pos.y += m_iSpeed;
+		m_controllerListener->setTagPosition(pos.x, pos.y);
  	}
 	else if (keys[moveRight]) {//右
  		pos.x += m_iSpeed;
-
+		m_controllerListener->setTagPosition(pos.x, pos.y);
 		m_controllerListener->setFaceDirByMoveDir(1);
  	}
 	else if (keys[moveDown]) {//下
  		pos.y -= m_iSpeed;
-		
+		m_controllerListener->setTagPosition(pos.x, pos.y);
 	}
 
 	m_controllerListener->setTagPosition(pos.x, pos.y);
+	//m_controllerListener->setTagPosition(pos.x, pos.y+=10);//测试用的自动往上走
 }
 
  
