@@ -3,11 +3,11 @@
  <tileset firstgid="1" name="冰地板2" tilewidth="40" tileheight="40">
   <image source="冰地板2.png" width="40" height="40"/>
  </tileset>
- <tileset firstgid="2" name="墙" tilewidth="40" tileheight="60">
-  <image source="墙.png" width="40" height="60"/>
- </tileset>
- <tileset firstgid="3" name="Barrier" tilewidth="40" tileheight="60">
+ <tileset firstgid="2" name="Barrier" tilewidth="40" tileheight="60">
   <image source="Barrier.png" width="80" height="60"/>
+ </tileset>
+ <tileset firstgid="4" name="meta_tiles" tilewidth="40" tileheight="40">
+  <image source="meta_tiles.png" width="280" height="70"/>
  </tileset>
  <layer name="Base" width="30" height="30">
   <data encoding="base64" compression="zlib">
@@ -16,10 +16,15 @@
  </layer>
  <layer name="Barrier" width="30" height="30">
   <data encoding="base64" compression="zlib">
-   eJzllEkKACAMAwv6/zd7EoIgLtimkoHgSeNAaTGzQko02FshSL3M+Aaeyr0zonw9yNi7e+fmbytfL1i+Ixn21YzfffG/0b4nc/WKU18PFHpxD0f7suaK5dtR8VXqVZurTL2MNEXcAx0=
+   eJzllEkKACAMA4v+/8+ehCCIC7apZCB40jhQWsyskBIN9lYIUi8zvoGncu+MKF8PMvbu3rn528rXC5bvSIZ9NeN3X/xvtO/JXL3i1NcDhV7cw9G+rLli+XZUfJV61eYqUy8jDWu4Ajk=
   </data>
  </layer>
  <objectgroup name="Object">
   <object name="CharacterPoint" x="462" y="743"/>
  </objectgroup>
+ <layer name="Meta" width="30" height="30">
+  <data encoding="base64" compression="zlib">
+   eJxjYBiZgAUJj9o7/MBA+XUkhTEIjCS/joJRMApGwSgYBaNgFAxHAACq/gA5
+  </data>
+ </layer>
 </map>

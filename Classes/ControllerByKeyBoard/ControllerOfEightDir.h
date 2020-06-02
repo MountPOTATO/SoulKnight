@@ -11,6 +11,8 @@ public:
 
 	/*设置控制器中记录的移动速度*/
 	void setiSpeed(int iSpeed);
+
+	
 private:
 	int m_iSpeed;
 	EventListenerKeyboard* listenerKey;

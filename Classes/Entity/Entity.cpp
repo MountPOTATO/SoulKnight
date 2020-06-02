@@ -10,6 +10,9 @@ void Entity::bindSprite(Sprite* sprite) {
 	this->addChild(m_sprite);
 
 	Size sizeOfSprite = m_sprite->getContentSize();
+	//手游中图片大小是70像素，但是实际碰撞是40，这太脑瘫了
+	sizeOfSprite.width = 40;
+	sizeOfSprite.height = 40;
 	m_sprite->setPosition(Point(sizeOfSprite.width * 0.5f, sizeOfSprite.height * 0.5f));//确保精灵锚点与实体锚点一致
 	this->setContentSize(sizeOfSprite);//将该实体的大小改为与精灵大小一致
 

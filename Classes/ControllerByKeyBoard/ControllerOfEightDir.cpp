@@ -72,5 +72,8 @@ void ControllerOfEightDir::update(float delta) {
  		pos.y -= m_iSpeed;
 		
 	}
+
 	m_controllerListener->setTagPosition(pos.x, pos.y);
 }
+
+ 

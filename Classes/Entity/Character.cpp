@@ -11,6 +11,9 @@ bool Character::init() {
 	m_Armor = 1;
 	m_Speed = 10;
 	setAnchorPoint(Point(0.5f, 0.5f));
+
+	
+	
 	return true;
 }
 
@@ -32,6 +35,9 @@ void Character::setSpeed(int speed) {//设置角色速度
 	m_Speed = speed;
 	 
 }
+void Character::setTiledMap(TMXTiledMap* map) {
+	m_map = map;
+}
 //
 int Character::getHP() { return m_HP; }
 int Character::getMP() { return m_MP; }
@@ -51,6 +57,29 @@ void Character::setViewPointByCharacter() {
 }
 
 void Character::setTagPosition(int x, int y) {
+	
 	Entity::setTagPosition(x, y);
 	setViewPointByCharacter();
+}
+
+bool Character::isPosBlocked(Point dstPos, int dir) {
+	switch (dir)
+	{
+	case 1:
+		dstPos.x -= 20;
+		break;
+	case 2:
+		dstPos.y += 20;
+		break;
+	case 3:
+		dstPos.x += 20;
+		break;
+	case 4:
+		dstPos.y -= 20;
+		break;
+	case 0:
+		break;
+	}
+	//暂缺
+	return true;
 }

@@ -73,6 +73,11 @@ bool HelloWorld::init()
 	_currentUnit.pushBack(testEnermy);*/
 
 
+	//测试地图和角色
+	TMXTiledMap* map = TMXTiledMap::create("Maps/test.tmx");
+	this->addChild(map);
+	addCharacter(map);
+
 	this->scheduleUpdate();
     return true;
 }
@@ -166,4 +171,28 @@ void HelloWorld::updateBullet() {
 		(*i)->setVisible(true);
 		(*i)->calPosition();
 	}
+}
+
+void HelloWorld::addCharacter(TMXTiledMap* map) {
+	Character* m_Character = Character::create();
+	Sprite* sprite = Sprite::create("Characters/Knight.png");
+	m_Character->bindSprite(sprite);
+	this->addChild(m_Character);
+
+	ControllerOfEightDir* m_controller = ControllerOfEightDir::create();
+	m_Character->setController(m_controller);
+	m_controller->setiSpeed(m_Character->getSpeed());
+	this->addChild(m_controller);
+
+	m_Character->setTiledMap(map);
+
+	TMXObjectGroup* objGroup = map->getObjectGroup("Object");
+
+	ValueMap characterPointMap = objGroup->getObject("CharacterPoint");
+	float characterPointX = characterPointMap.at("x").asFloat();
+	float characterPointY = characterPointMap.at("y").asFloat();
+
+	m_Character->setPosition(Point(characterPointX, characterPointY));//根据tmx对象确定出生点
+	m_Character->setViewPointByCharacter();
+
 }

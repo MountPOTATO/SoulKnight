@@ -37,6 +37,8 @@
 #include "Arms/GunDerived/SMG.h"
 #include "Arms/GunDerived/Shotgun.h"
 #include "LongRangeAttack/Bullet.h"
+#include "ControllerByKeyBoard/ControllerOfEightDir.h"
+#include "Entity/Character.h"
 class Weapon;
 
 class HelloWorld : public cocos2d::Scene
@@ -87,6 +89,10 @@ public:
 	void test_InitFish();
 	void test_InitSMG();
 	void test_InitShotgun();
+
+public:
+	void addCharacter(TMXTiledMap* map);
+	 
 
 private:
 	
