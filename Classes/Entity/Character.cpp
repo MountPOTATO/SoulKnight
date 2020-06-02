@@ -100,9 +100,10 @@ bool Character::isPosBlocked(Point dstPos) {
 	//判断这个格子是否存在
 	if (tiledGid != 0) {
 		 
-		Value properties ( m_map->getPropertiesForGID(tiledGid));
+	auto propMap = m_map->getPropertiesForGID(tiledGid).asValueMap();
 
-		ValueMap propMap = properties.asValueMap();//就是这一句报错
+
+		
 
 		if (propMap.find("Collidable") != propMap.end()) {
 			//获取格子的Collidable属性
