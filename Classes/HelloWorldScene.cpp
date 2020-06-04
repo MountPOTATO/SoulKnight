@@ -75,7 +75,7 @@ bool HelloWorld::init()
 
 	//²âÊÔµØÍ¼ºÍ½ÇÉ«
 	TMXTiledMap* map = TMXTiledMap::create("Maps/test.tmx");
-	this->addChild(map,0);
+	this->addChild(map);
 	addCharacter(map);
 
 	this->scheduleUpdate();

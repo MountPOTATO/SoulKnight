@@ -9,7 +9,7 @@ bool Character::init() {
 	m_HP = 1;
 	m_MP = 1;
 	m_Armor = 1;
-	m_Speed = 5;
+	m_Speed = 8;
 	m_Weapon1 = NULL;
 	m_Weapon2 = NULL;
 	setAnchorPoint(Point(0.5f, 0.5f));
@@ -61,15 +61,22 @@ void Character::setViewPointByCharacter() {
 }
 
 void Character::setTagPosition(int x, int y) {
-	if (isPosBlocked(Point(x, y))) { return; }
 	
-	
+	if (isPosBlocked(Point(x+halfOfHitBox, y+ halfOfHitBox))) { return; }
+	if (isPosBlocked(Point(x+ halfOfHitBox, y- halfOfHitBox))) { return; }
+	if (isPosBlocked(Point(x- halfOfHitBox, y+ halfOfHitBox))) { return; }
+	if (isPosBlocked(Point(x- halfOfHitBox, y- halfOfHitBox))) { return; }
+	auto pos = tileCoordForPosition(this->getPosition());
+	auto mapSize = m_map->getMapSize();
+	 
+	this->setPositionZ(pos.y - mapSize.height);
+
 	Entity::setTagPosition(x, y);
 	setViewPointByCharacter();
 }
 
 bool Character::isPosBlocked(Point dstPos) {
-	int dir;
+	/*int dir;
 	Point curPos=this->getPosition();
 	if ((dstPos.x - curPos.x) < 0) { dir = 1; }
 	else if ((dstPos.y - curPos.y) > 0) { dir = 2; }
@@ -95,11 +102,13 @@ bool Character::isPosBlocked(Point dstPos) {
 	default:
 		break;
 	}
-	//暂缺
+	//暂缺*/
 	Point tiledPos = tileCoordForPosition(Point(dstPos.x, dstPos.y));
+	
 	int tiledGid = meta->getTileGIDAt(tiledPos);//获取这个格子的唯一标识
+	
 	 
-												
+									
 	//判断这个格子是否存在
 	if (tiledGid != 0) {
 		 

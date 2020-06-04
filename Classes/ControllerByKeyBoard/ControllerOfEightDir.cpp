@@ -85,7 +85,7 @@ void ControllerOfEightDir::update(float delta) {
 
 	m_controllerListener->setTagPosition(pos.x, pos.y);
 	
-	//m_controllerListener->setTagPosition(pos.x, pos.y+=10);//测试用的自动往上走
+	//m_controllerListener->setTagPosition(pos.x, pos.y+=2);//测试用的自动往上走
 }
 
  

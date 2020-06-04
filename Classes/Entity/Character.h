@@ -2,6 +2,7 @@
 #include "Entity.h"
 #include "cocos2d.h"
 #include "Arms/Weapon.h"
+#define  halfOfHitBox 18//顾名思义是人物碰撞体积的一半 严格来说是20像素，为了能流畅通过20像素的缝隙做了些牺牲
 class Character :public Entity {
 public:
 	CREATE_FUNC(Character);
