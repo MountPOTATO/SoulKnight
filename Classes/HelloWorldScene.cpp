@@ -75,7 +75,7 @@ bool HelloWorld::init()
 
 	//测试地图和角色
 	TMXTiledMap* map = TMXTiledMap::create("Maps/test.tmx");
-	this->addChild(map);
+	this->addChild(map,0);
 	addCharacter(map);
 
 	this->scheduleUpdate();
@@ -177,7 +177,7 @@ void HelloWorld::addCharacter(TMXTiledMap* map) {
 	Character* m_Character = Character::create();
 	Sprite* sprite = Sprite::create("Characters/Knight.png");
 	m_Character->bindSprite(sprite);
-	this->addChild(m_Character);
+	this->addChild(m_Character,0);
 
 	ControllerOfEightDir* m_controller = ControllerOfEightDir::create();
 	m_Character->setController(m_controller);
@@ -195,4 +195,5 @@ void HelloWorld::addCharacter(TMXTiledMap* map) {
 	m_Character->setPosition(Point(characterPointX, characterPointY));//根据tmx对象确定出生点
 	m_Character->setViewPointByCharacter();
 
+	
 }

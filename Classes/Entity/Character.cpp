@@ -9,7 +9,9 @@ bool Character::init() {
 	m_HP = 1;
 	m_MP = 1;
 	m_Armor = 1;
-	m_Speed = 2;
+	m_Speed = 5;
+	m_Weapon1 = NULL;
+	m_Weapon2 = NULL;
 	setAnchorPoint(Point(0.5f, 0.5f));
 
 	
@@ -60,7 +62,8 @@ void Character::setViewPointByCharacter() {
 
 void Character::setTagPosition(int x, int y) {
 	if (isPosBlocked(Point(x, y))) { return; }
-
+	
+	
 	Entity::setTagPosition(x, y);
 	setViewPointByCharacter();
 }
@@ -95,7 +98,7 @@ bool Character::isPosBlocked(Point dstPos) {
 	//暂缺
 	Point tiledPos = tileCoordForPosition(Point(dstPos.x, dstPos.y));
 	int tiledGid = meta->getTileGIDAt(tiledPos);//获取这个格子的唯一标识
-	
+	 
 												
 	//判断这个格子是否存在
 	if (tiledGid != 0) {
