@@ -76,7 +76,7 @@ bool HelloWorld::init()
 	//²âÊÔµØÍ¼ºÍ½ÇÉ«
 	TMXTiledMap* map = TMXTiledMap::create("Maps/test.tmx");
 	this->addChild(map);
-	addCharacter(map);
+	addCharacter(map,1);
 
 	this->scheduleUpdate();
     return true;
@@ -173,12 +173,18 @@ void HelloWorld::updateBullet() {
 	}
 }
 
-void HelloWorld::addCharacter(TMXTiledMap* map) {
+void HelloWorld::addCharacter(TMXTiledMap* map,int HeroID) {
 	Character* m_Character = Character::create();
-	Sprite* sprite = Sprite::create("Characters/Knight.png");
-	m_Character->bindSprite(sprite);
-	this->addChild(m_Character,0);
-
+	switch (HeroID)
+	{
+	case 1:
+		m_Character = Knight::create();
+		break;
+	default:
+		
+		break;
+	}
+	this->addChild(m_Character);
 	ControllerOfEightDir* m_controller = ControllerOfEightDir::create();
 	m_Character->setController(m_controller);
 	m_controller->setiSpeed(m_Character->getSpeed());

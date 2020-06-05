@@ -9,7 +9,7 @@ bool Character::init() {
 	m_HP = 1;
 	m_MP = 1;
 	m_Armor = 1;
-	m_Speed = 8;
+	m_Speed = 1;
 	m_Weapon1 = NULL;
 	m_Weapon2 = NULL;
 	setAnchorPoint(Point(0.5f, 0.5f));

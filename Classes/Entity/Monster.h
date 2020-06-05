@@ -9,7 +9,7 @@ public:
 	Monster();
 	~Monster();
 	virtual bool init();
-	int monsterType;//¹ÖÎïÖÖÀà
+	
 public:
 
 private:

@@ -39,6 +39,7 @@
 #include "LongRangeAttack/Bullet.h"
 #include "ControllerByKeyBoard/ControllerOfEightDir.h"
 #include "Entity/Character.h"
+#include "Entity/Heros/Knight.h"
 class Weapon;
 
 class HelloWorld : public cocos2d::Scene
@@ -91,7 +92,7 @@ public:
 	void test_InitShotgun();
 
 public:
-	void addCharacter(TMXTiledMap* map);
+	void addCharacter(TMXTiledMap* map,int HeroID);
 	 
 
 private:

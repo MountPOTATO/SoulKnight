@@ -8,21 +8,35 @@
  </tileset>
  <tileset firstgid="4" name="meta_tiles" tilewidth="40" tileheight="40">
   <image source="meta_tiles.png" width="280" height="70"/>
+  <tile id="0">
+   <properties>
+    <property name="Collidable" value="true"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="Base" width="30" height="30">
+  <properties>
+   <property name="cc_vertexz" value="-500"/>
+  </properties>
   <data encoding="base64" compression="zlib">
    eJztwwENAAAMw6DOv+kLOSSsmqqqqu8ezqADhQ==
   </data>
  </layer>
  <layer name="Barrier" width="30" height="30">
+  <properties>
+   <property name="cc_vertexz" value="automatic"/>
+  </properties>
   <data encoding="base64" compression="zlib">
    eJzllEkKACAMA4v+/8+ehCCIC7apZCB40jhQWsyskBIN9lYIUi8zvoGncu+MKF8PMvbu3rn528rXC5bvSIZ9NeN3X/xvtO/JXL3i1NcDhV7cw9G+rLli+XZUfJV61eYqUy8jDWu4Ajk=
   </data>
  </layer>
  <objectgroup name="Object">
-  <object name="CharacterPoint" x="462" y="743"/>
+  <object name="CharacterPoint" x="100" y="458"/>
  </objectgroup>
  <layer name="Meta" width="30" height="30">
+  <properties>
+   <property name="Collidable" value="true"/>
+  </properties>
   <data encoding="base64" compression="zlib">
    eJxjYBiZgAUJj9o7/MBA+XUkhTEIjCS/joJRMApGwSgYBaNgFAxHAACq/gA5
   </data>

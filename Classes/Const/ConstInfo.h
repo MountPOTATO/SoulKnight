@@ -60,5 +60,41 @@ enum EEntityBuffEffect {
 	EbuffClean			//Ä¬ÈÏ×´Ì¬
 
 };
+//GlobalConst
+#define HIT_WHEN_COLLIDE_WITH_ENEMY 2
+
+
+
+//Knight
+#define KNIGHT_HP 10
+#define KNIGHT_MP 10
+#define KNIGHT_SPEED 5
+#define KNIGHT_ARMOR 5
+
+
+
+
+
+//Ranger
+#define RANGER_HP 10
+#define RANGER_SPEED 5
+#define RANGER_ATK 5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #endif
