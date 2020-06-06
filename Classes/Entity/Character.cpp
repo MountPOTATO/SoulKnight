@@ -12,6 +12,8 @@ bool Character::init() {
 	m_Speed = 1;
 	m_Weapon1 = NULL;
 	m_Weapon2 = NULL;
+	isInvincible = false;
+	isKnockBack = false;
 	setAnchorPoint(Point(0.5f, 0.5f));
 
 	
@@ -42,6 +44,9 @@ void Character::setTiledMap(TMXTiledMap* map) {
 	this->meta = m_map->getLayer("Meta");
 	this->meta->setVisible(false);
 }
+void Character::setIsKnockBack(bool status) {
+	isKnockBack = status;
+}
 //
 int Character::getHP() { return m_HP; }
 int Character::getMP() { return m_MP; }
@@ -56,19 +61,20 @@ void Character::setViewPointByCharacter() {
 	Point characterPos = getPosition();//获取主角坐标
 	Point centerPos = Point(visibleSize.width / 2, visibleSize.height / 2);
 	Point viewPos = centerPos - characterPos;
+	 
 	parent->setPosition(viewPos);
 
 }
 
 void Character::setTagPosition(int x, int y) {
-	
+	if (isKnockBack) { return; }//正在被击退时不能行动
 	if (isPosBlocked(Point(x+halfOfHitBox, y+ halfOfHitBox))) { return; }
 	if (isPosBlocked(Point(x+ halfOfHitBox, y- halfOfHitBox))) { return; }
 	if (isPosBlocked(Point(x- halfOfHitBox, y+ halfOfHitBox))) { return; }
-	if (isPosBlocked(Point(x- halfOfHitBox, y- halfOfHitBox))) { return; }
+	if (isPosBlocked(Point(x- halfOfHitBox, y- halfOfHitBox))) { return; }//移动路径被阻挡了 不能行动
 	auto pos = tileCoordForPosition(this->getPosition());
 	auto mapSize = m_map->getMapSize();
-	 
+	
 	this->setPositionZ(pos.y - mapSize.height);
 
 	Entity::setTagPosition(x, y);
@@ -137,6 +143,58 @@ Point Character::tileCoordForPosition(Point pos) {
 	int x = pos.x / tiledSize.width;
 	int y = (mapTiledNum.height * tiledSize.height - pos.y) / tiledSize.height;
 
-	 
+
 	return Point(x, y);
+}
+
+
+
+
+void Character::hit(int damage,Point enemyPos) {
+	if (getSprite() == NULL) { return; }
+	if (this->isInvincible) { return; }//还处于无敌状态，不造成伤害
+	setIsKnockBack(true);
+	m_HP -= damage;
+	if (m_HP <= 0) { m_HP = 0; }
+
+	int knockBackDir;//1234分别代表左上右下
+	Point characterPos = this->getPosition();
+	Point dstPos = enemyPos - characterPos;
+	if (dstPos.x <= 0 && abs(dstPos.y) <= abs(dstPos.x)) { knockBackDir = 3; }
+	else if (dstPos.y >= 0 && abs(dstPos.x) <= dstPos.y) { knockBackDir = 4; }
+	else if (dstPos.x >= 0 && abs(dstPos.y) <= dstPos.x) { knockBackDir = 1; }
+	else if (dstPos.y <= 0 && abs(dstPos.x) <= abs(dstPos.y)) { knockBackDir = 2; }
+
+	auto knockBackMove = MoveBy::create(KNOCKBACK_TIME, Point(0, 0));
+	auto smoothViewMove = MoveBy::create(KNOCKBACK_TIME, Point(0, 0));
+	switch (knockBackDir)
+	{
+	case 1:
+		knockBackMove = MoveBy::create(KNOCKBACK_TIME, Point(-KNOCKBACK_DISTANCE, 0));
+		smoothViewMove = MoveBy::create(KNOCKBACK_TIME, Point(KNOCKBACK_DISTANCE, 0));
+		break;
+	case 2:
+		knockBackMove = MoveBy::create(KNOCKBACK_TIME, Point(0, KNOCKBACK_DISTANCE));
+		smoothViewMove = MoveBy::create(KNOCKBACK_TIME, Point(0,-KNOCKBACK_DISTANCE));
+		break;
+	case 3:
+		knockBackMove = MoveBy::create(KNOCKBACK_TIME, Point(KNOCKBACK_DISTANCE, 0));
+		smoothViewMove = MoveBy::create(KNOCKBACK_TIME, Point(-KNOCKBACK_DISTANCE, 0));
+		break;
+	case 4:
+		knockBackMove = MoveBy::create(KNOCKBACK_TIME, Point(0, -KNOCKBACK_DISTANCE));
+		smoothViewMove = MoveBy::create(KNOCKBACK_TIME, Point(0, KNOCKBACK_DISTANCE));
+		break;
+	default:
+		break;
+	}
+	auto resetKnockBackStatus = [&]() {
+		setIsKnockBack(false);
+	};
+	CallFunc* callFunc = CallFunc::create(resetKnockBackStatus);//动画结束后将击退状态设为f
+	Layer* parent = (Layer*)getParent();
+	
+	auto moveAction = Sequence::create(knockBackMove,callFunc,NULL);//暂时没做出加速度效果
+	parent->runAction(smoothViewMove);
+	runAction(moveAction);
 }

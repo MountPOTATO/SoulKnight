@@ -78,6 +78,8 @@ bool HelloWorld::init()
 	this->addChild(map);
 	addCharacter(map,1);
 
+	//测试怪物
+	
 	this->scheduleUpdate();
     return true;
 }
@@ -200,6 +202,9 @@ void HelloWorld::addCharacter(TMXTiledMap* map,int HeroID) {
 
 	m_Character->setPosition(Point(characterPointX, characterPointY));//根据tmx对象确定出生点
 	m_Character->setViewPointByCharacter();
-
 	
+	//测试怪物
+	MonsterManager* testMonsterManager = MonsterManager::create();
+	testMonsterManager->bindCharacter(m_Character);
+	this->addChild(testMonsterManager);
 }

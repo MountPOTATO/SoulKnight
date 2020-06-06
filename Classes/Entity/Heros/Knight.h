@@ -4,7 +4,7 @@
 class Knight :public Character {
 public:
 	CREATE_FUNC(Knight);
-	bool init();
+	virtual bool init();
 
 public:
 	bool UseSkill();

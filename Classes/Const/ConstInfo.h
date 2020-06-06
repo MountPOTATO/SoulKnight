@@ -61,9 +61,9 @@ enum EEntityBuffEffect {
 
 };
 //GlobalConst
-#define HIT_WHEN_COLLIDE_WITH_ENEMY 2
-
-
+#define HIT_WHEN_COLLIDE_WITH_ENEMY 1 //与普通敌人相撞扣血量
+#define KNOCKBACK_DISTANCE 20//被击退后退的距离
+#define KNOCKBACK_TIME 0.2f//被击退持续的时间
 
 //Knight
 #define KNIGHT_HP 10

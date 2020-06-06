@@ -26,6 +26,7 @@ void ControllerOfEightDir::setiSpeed(int iSpeed) {
 
 void ControllerOfEightDir::update(float delta) {
 	/*确定已经设置了监听对象*/
+	
 	if (m_controllerListener == NULL) {
 		return;
 	}

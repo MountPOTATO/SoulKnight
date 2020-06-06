@@ -5,14 +5,13 @@
 class Ranger :public Monster {
 public:
 	CREATE_FUNC(Ranger);
-	bool init();
+	virtual bool init();
 
 public:
-	//获取设置
-	int getHP();
-	void setHP(int hp);
-
+	
+	
 private:
+	int monsterID = 1;//仅作为标识
 	int _HP;
 	int _Speed;
 };

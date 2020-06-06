@@ -40,6 +40,7 @@
 #include "ControllerByKeyBoard/ControllerOfEightDir.h"
 #include "Entity/Character.h"
 #include "Entity/Heros/Knight.h"
+#include "MonsterManager/MonsterManager.h"
 class Weapon;
 
 class HelloWorld : public cocos2d::Scene
