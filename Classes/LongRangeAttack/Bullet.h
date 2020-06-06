@@ -33,6 +33,7 @@ public:
 	void calPosition();
 
 	void calDistance();
+	INT32 getBulletAttack()const { return _attack; }
 
 };
 
