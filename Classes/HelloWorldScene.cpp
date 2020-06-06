@@ -61,7 +61,7 @@ bool HelloWorld::init()
 	//此处修改,初始化一样武器实例,以SMG冲锋枪为例
 	/*test_InitFish();*/
 	/*test_InitPistol();*/
-	test_InitSMG();
+
 	//test_InitShotgun();
 
 	//测试自动瞄准时加上，不需要测试时去掉,同时在update函数中添加相应的模块
@@ -76,10 +76,13 @@ bool HelloWorld::init()
 	//测试地图和角色
 	TMXTiledMap* map = TMXTiledMap::create("Maps/test.tmx");
 	this->addChild(map);
-	addCharacter(map,1);
+	auto knight=addCharacter(map,1);
 
-	//测试怪物
-	
+	test_InitSMG();
+	_testSMG->setTiledMap(map);
+	_testSMG->setOwner(knight);
+
+
 	this->scheduleUpdate();
     return true;
 }
@@ -143,6 +146,7 @@ void HelloWorld::update(float delta) {
 	
 	//注意：启用后要修改HelloWorld：：Init，添加相应的test——Init类
 	/////////////////以冲锋枪SMG为例，update函数中测试Gun类，不需要可注释掉/////////////////////////
+	_testSMG->updateCurrentLocation();
 	_testSMG->updateTarget();//Gun实例 更新场内怪物坐标，标记离自己最近的怪物
 	_testSMG->updateImageRotation(_rocker);//Gun实例 更新武器指向（自动瞄准）或没有目标时手柄瞄准
 	if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
@@ -175,7 +179,7 @@ void HelloWorld::updateBullet() {
 	}
 }
 
-void HelloWorld::addCharacter(TMXTiledMap* map,int HeroID) {
+Character* HelloWorld::addCharacter(TMXTiledMap* map,int HeroID) {
 	Character* m_Character = Character::create();
 	switch (HeroID)
 	{
@@ -186,11 +190,17 @@ void HelloWorld::addCharacter(TMXTiledMap* map,int HeroID) {
 		
 		break;
 	}
+
+
+
 	this->addChild(m_Character);
 	ControllerOfEightDir* m_controller = ControllerOfEightDir::create();
 	m_Character->setController(m_controller);
 	m_controller->setiSpeed(m_Character->getSpeed());
 	this->addChild(m_controller);
+
+	
+
 
 	m_Character->setTiledMap(map);
 
@@ -202,9 +212,6 @@ void HelloWorld::addCharacter(TMXTiledMap* map,int HeroID) {
 
 	m_Character->setPosition(Point(characterPointX, characterPointY));//根据tmx对象确定出生点
 	m_Character->setViewPointByCharacter();
-	
-	//测试怪物
-	MonsterManager* testMonsterManager = MonsterManager::create();
-	testMonsterManager->bindCharacter(m_Character);
-	this->addChild(testMonsterManager);
+
+	return m_Character;
 }

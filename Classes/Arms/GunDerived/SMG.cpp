@@ -67,3 +67,32 @@ bool SMG::init(const char* weaponImageName1, const char* weaponImageName2,
 
 	return true;
 }
+
+void SMG::updateCurrentLocation() {
+
+	/*if (!_owner) return;
+	Point weaponXYPos = Point(_owner->getPositionX(), _owner->getPositionY() - 10);
+	setPosition(_owner->getPositionX(), _owner->getPositionY() - 10);
+	Sprite* spSMG = (Sprite*)getChildByTag(TAG_WEAPON1);
+	Sprite* spSMGReverse = (Sprite*)getChildByTag(TAG_WEAPON2);
+	spSMG->setPosition(Point(0, 0));
+	spSMGReverse->setPosition(Point(0, 0));*/
+
+	if (!_owner) return;
+	setPosition(Point(_owner->getPositionX(), _owner->getPositionY() - 10));
+	Point weaponXYPos = this->getPosition();
+
+
+	auto pos = tileCoordForPosition(weaponXYPos);
+	auto mapSize = m_map->getMapSize();
+	this->setPositionZ(pos.y - mapSize.height);
+
+
+	
+	Sprite* spSMG = (Sprite*)getChildByTag(TAG_WEAPON1);
+	Sprite* spSMGReverse = (Sprite*)getChildByTag(TAG_WEAPON2);
+	spSMG->setPosition(Point(0, 0));
+	spSMGReverse->setPosition(Point(0, 0));
+
+
+}
