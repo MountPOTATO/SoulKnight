@@ -6,9 +6,10 @@ Character::~Character() {}
 
 
 bool Character::init() {
-	m_HP = 1;
-	m_MP = 1;
-	m_Armor = 1;
+	max_HP = 1; max_MP = 1; max_Armor = 1;
+	m_HP = max_HP;
+	m_MP = max_MP;
+	m_Armor = max_Armor;
 	m_Speed = 1;
 	m_Weapon1 = NULL;
 	m_Weapon2 = NULL;
@@ -39,6 +40,15 @@ void Character::setSpeed(int speed) {//设置角色速度
 	m_Speed = speed;
 	 
 }
+void Character::setMaxHP(int hp) {
+	max_HP = hp;
+}
+void Character::setMaxMP(int mp) {
+	max_MP = mp;
+}
+void Character::setMaxArmor(int armor) {
+	max_Armor = armor;
+}
 void Character::setTiledMap(TMXTiledMap* map) {
 	m_map = map;
 	this->meta = m_map->getLayer("Meta");
@@ -46,6 +56,9 @@ void Character::setTiledMap(TMXTiledMap* map) {
 }
 void Character::setIsKnockBack(bool status) {
 	isKnockBack = status;
+}
+void Character::setIsInvincible(bool status) {
+	isInvincible = status;
 }
 //
 int Character::getHP() { return m_HP; }
@@ -153,10 +166,24 @@ Point Character::tileCoordForPosition(Point pos) {
 void Character::hit(int damage,Point enemyPos) {
 	if (getSprite() == NULL) { return; }
 	if (this->isInvincible) { return; }//还处于无敌状态，不造成伤害
-	setIsKnockBack(true);
+
+	//未处于无敌状态，扣血，进入无敌状态，击退
+	this->setIsInvincible(true);
+	Blink* invincibleBlink = Blink::create(INVINCIBLE_TIME, INVINCIBLE_TIME*6);
+	this->runAction(invincibleBlink);//无敌闪烁动画
+
+	CallBackTimeCounter* invincibleTimer = CallBackTimeCounter::create();
+	this->addChild(invincibleTimer);
+	invincibleTimer->start(INVINCIBLE_TIME, [&]() {
+		setIsInvincible(false); });//定时结束后将无敌状态取消
+
+	
+	//扣血
 	m_HP -= damage;
 	if (m_HP <= 0) { m_HP = 0; }
 
+	//击退效果
+	setIsKnockBack(true);
 	int knockBackDir;//1234分别代表左上右下
 	Point characterPos = this->getPosition();
 	Point dstPos = enemyPos - characterPos;

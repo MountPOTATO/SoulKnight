@@ -82,7 +82,7 @@ void Melee::updateTarget() {
 			_target = (*i);
 			_targetInRange.pushBack(*i);
 			float d = (*i)->getPosition().distance(getPosition());
-			log("%f", d);
+			//log("%f", d);
 
 			for (i++; i != currentEnermies.end(); i++) {
 				if((*i)->getPosition().distance(getPosition()) <= _attackRange)

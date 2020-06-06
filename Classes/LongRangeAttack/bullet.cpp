@@ -35,7 +35,7 @@ bool Bullet::init
 	//½Ç¶È³õÊ¼¼ÆËã;
 	auto shooterAngle = _shooter->getVisiblePicture()->getRotation();
 	float bulletRotateAngle;
-	log("%f", shooterAngle);
+	//log("%f", shooterAngle);
 	if (_shooter->getVisiblePictureSide() == "left") {
 		if (shooterAngle >= -90 && shooterAngle <= 0) {
 			_initAngle = (180.f - shooterAngle);

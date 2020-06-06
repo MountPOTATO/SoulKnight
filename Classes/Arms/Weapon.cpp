@@ -250,7 +250,7 @@ void Weapon::updateImageRotation(HRocker* rocker) {
 		return;
 	}
 	else {
-		log("%d", _hasAnimation);
+		//log("%d", _hasAnimation);
 		if (rocker->getRockerDirection() == ERocker8Direction::rockerStop
 			&& rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {
 			_isCanMove = false;

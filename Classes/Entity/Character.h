@@ -3,6 +3,7 @@
 #include "cocos2d.h"
 #include "Arms/Weapon.h"
 #include "Const/ConstInfo.h"
+#include "Tools/CallBackTimeCounter.h"
 #define  halfOfHitBox 18//顾名思义是人物碰撞体积的一半 严格来说是20像素，为了能流畅通过20像素的缝隙做了些牺牲
 
 enum EnumState{
@@ -27,11 +28,15 @@ public:
 	void setMP(int mp);
 	void setArmor(int armor);
 	void setSpeed(int speed);
+	void setMaxHP(int hp);
+	void setMaxMP(int mp);
+	void setMaxArmor(int armor);
 	int getHP();
 	int getMP();
 	int getArmor();
 	int getSpeed();
-	void setIsKnockBack(bool status);
+	void setIsKnockBack(bool status);//设置是否正在被击退
+	void setIsInvincible(bool status);//设置是否处于无敌状态
 
 public:
 	void setViewPointByCharacter();
@@ -41,6 +46,9 @@ public:
 	void hit(int damage,Point enemyPos);//收到伤害 进入短暂无敌模式 传递伤害方向
 	bool isInvincible;//是否处于无敌状态
 	bool isKnockBack;//是否处于被击退状态
+	int max_HP;//生命上限
+	int max_MP;//蓝量上限
+	int max_Armor;//护甲上限
 private:
 	Weapon* m_Weapon1;
 	Weapon* m_Weapon2;
@@ -48,10 +56,12 @@ private:
 	int m_MP;
 	int m_Armor;
 	int m_Speed;
+	
 	TMXLayer* meta;
 	Point tileCoordForPosition(Point pos);
 
 private:
 	TMXTiledMap* m_map;
+
 
 };
