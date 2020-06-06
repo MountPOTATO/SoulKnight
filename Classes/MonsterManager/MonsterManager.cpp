@@ -4,7 +4,7 @@
 bool MonsterManager::init() {
 	this->scheduleUpdate();
 
-	this->createMonster(1, Point(100, 400));//一个测试用的怪物
+	this->createMonster(1, Point(100, 600));//一个测试用的怪物
 	
 
 

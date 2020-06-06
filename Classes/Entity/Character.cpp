@@ -16,7 +16,7 @@ bool Character::init() {
 	isInvincible = false;
 	isKnockBack = false;
 	setAnchorPoint(Point(0.5f, 0.5f));
-
+	this->scheduleUpdate();
 	
 	
 	return true;
@@ -178,8 +178,14 @@ void Character::hit(int damage,Point enemyPos) {
 		setIsInvincible(false); });//定时结束后将无敌状态取消
 
 	
-	//扣血
-	m_HP -= damage;
+	//造成伤害 有护甲先扣护甲，没护甲再扣血
+	if (m_Armor >= damage) { m_Armor-=damage; }
+	else {
+		int overKill = damage - m_Armor;
+		m_Armor=0;
+		m_HP-=overKill;
+	}//护甲值先消耗殆尽，多余伤害由红条承受
+	
 	if (m_HP <= 0) { m_HP = 0; }
 
 	//击退效果
@@ -192,36 +198,71 @@ void Character::hit(int damage,Point enemyPos) {
 	else if (dstPos.x >= 0 && abs(dstPos.y) <= dstPos.x) { knockBackDir = 1; }
 	else if (dstPos.y <= 0 && abs(dstPos.x) <= abs(dstPos.y)) { knockBackDir = 2; }
 
-	auto knockBackMove = MoveBy::create(KNOCKBACK_TIME, Point(0, 0));
-	auto smoothViewMove = MoveBy::create(KNOCKBACK_TIME, Point(0, 0));
+	Point knockPos;
 	switch (knockBackDir)
 	{
 	case 1:
-		knockBackMove = MoveBy::create(KNOCKBACK_TIME, Point(-KNOCKBACK_DISTANCE, 0));
-		smoothViewMove = MoveBy::create(KNOCKBACK_TIME, Point(KNOCKBACK_DISTANCE, 0));
+		knockPos =Point(-KNOCKBACK_DISTANCE, 0);
 		break;
 	case 2:
-		knockBackMove = MoveBy::create(KNOCKBACK_TIME, Point(0, KNOCKBACK_DISTANCE));
-		smoothViewMove = MoveBy::create(KNOCKBACK_TIME, Point(0,-KNOCKBACK_DISTANCE));
+		knockPos =Point(0, KNOCKBACK_DISTANCE);
 		break;
 	case 3:
-		knockBackMove = MoveBy::create(KNOCKBACK_TIME, Point(KNOCKBACK_DISTANCE, 0));
-		smoothViewMove = MoveBy::create(KNOCKBACK_TIME, Point(-KNOCKBACK_DISTANCE, 0));
+		knockPos =Point(KNOCKBACK_DISTANCE, 0);
 		break;
 	case 4:
-		knockBackMove = MoveBy::create(KNOCKBACK_TIME, Point(0, -KNOCKBACK_DISTANCE));
-		smoothViewMove = MoveBy::create(KNOCKBACK_TIME, Point(0, KNOCKBACK_DISTANCE));
+		knockPos = Point(0, -KNOCKBACK_DISTANCE);
 		break;
 	default:
 		break;
 	}
+	
 	auto resetKnockBackStatus = [&]() {
 		setIsKnockBack(false);
 	};
+	//确定被击退路径上没障碍物
+	int tempDistance = KNOCKBACK_DISTANCE;
+	Point curPos = this->getPosition();
+	int x = curPos.x + knockPos.x;
+	int y = curPos.y + knockPos.y;
+
+	while (isPosBlocked(Point(x + halfOfHitBox, y + halfOfHitBox))||
+		isPosBlocked(Point(x + halfOfHitBox, y - halfOfHitBox))||
+		isPosBlocked(Point(x - halfOfHitBox, y + halfOfHitBox))||
+		isPosBlocked(Point(x - halfOfHitBox, y - halfOfHitBox)))//矩形四角均没障碍物
+	{
+		tempDistance -= 1;
+		switch (knockBackDir)
+		{
+		case 1:
+			knockPos = Point(-tempDistance, 0);
+			break;
+		case 2:
+			knockPos = Point(0, tempDistance);
+			break;
+		case 3:
+			knockPos = Point(tempDistance, 0);
+			break;
+		case 4:
+			knockPos = Point(0, -tempDistance);
+			break;
+		default:
+			break;
+		}
+		x = curPos.x + knockPos.x;
+		y = curPos.y + knockPos.y;
+	}
+	//生成击退动作
+	auto knockBackMove = MoveBy::create(KNOCKBACK_TIME, knockPos);
+	auto smoothViewMove = MoveBy::create(KNOCKBACK_TIME, -knockPos);
 	CallFunc* callFunc = CallFunc::create(resetKnockBackStatus);//动画结束后将击退状态设为f
 	Layer* parent = (Layer*)getParent();
 	
 	auto moveAction = Sequence::create(knockBackMove,callFunc,NULL);//暂时没做出加速度效果
 	parent->runAction(smoothViewMove);
 	runAction(moveAction);
+}
+
+void Character::update(float delta) {
+	
 }

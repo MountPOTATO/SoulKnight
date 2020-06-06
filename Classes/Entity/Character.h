@@ -22,7 +22,7 @@ public:
 	Character();
 	~Character();
 	virtual bool init();
-
+	virtual void update(float delta);
 public:
 	void setHP(int hp);
 	void setMP(int mp);
