@@ -74,13 +74,14 @@ bool HelloWorld::init()
 
 
 	//测试地图和角色
+	//先放人物再放武器
 	TMXTiledMap* map = TMXTiledMap::create("Maps/test.tmx");
 	this->addChild(map);
 	auto knight=addCharacter(map,1);
 
-	test_InitSMG();
-	_testSMG->setTiledMap(map);
-	_testSMG->setOwner(knight);
+	test_InitShotgun();
+	_testShotgun->setTiledMap(map);
+	_testShotgun->setOwner(knight);
 
 
 	this->scheduleUpdate();
@@ -146,11 +147,11 @@ void HelloWorld::update(float delta) {
 	
 	//注意：启用后要修改HelloWorld：：Init，添加相应的test——Init类
 	/////////////////以冲锋枪SMG为例，update函数中测试Gun类，不需要可注释掉/////////////////////////
-	_testSMG->updateCurrentLocation();
-	_testSMG->updateTarget();//Gun实例 更新场内怪物坐标，标记离自己最近的怪物
-	_testSMG->updateImageRotation(_rocker);//Gun实例 更新武器指向（自动瞄准）或没有目标时手柄瞄准
+	_testShotgun->updateCurrentLocation();
+	_testShotgun->updateTarget();//Gun实例 更新场内怪物坐标，标记离自己最近的怪物
+	_testShotgun->updateImageRotation(_rocker);//Gun实例 更新武器指向（自动瞄准）或没有目标时手柄瞄准
 	if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
-		_testSMG->attack();//攻击，发射子弹
+		_testShotgun->attack();//攻击，发射子弹
 	}
 	updateBullet();//更新飞行物
 	/////////////////////////////////////////////////////////////////////////////////////////////
