@@ -127,10 +127,24 @@ public:
 	virtual Point getWeaponTagPosition()const { return getPosition(); }
 	virtual void setViewPointByWeapon();//以武器为中心设计视角
 
-protected:
 
-	//TODO:编辑InitBasicInfo
-	/*virtual void initBasicInfo(ESide side);*/
+
+public:
+
+	void setWeaponOwner(Entity* owner) { if(owner)_owner = owner; }
+
+	void updateCurrentLocation();
+
+	void setTiledMap(TMXTiledMap* map);
+
+	Point tileCoordForPosition(Point pos);
+
+
+
+
+private:
+	TMXTiledMap* m_map;
+	TMXLayer* meta;
 
 };
 
