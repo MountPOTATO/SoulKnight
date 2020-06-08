@@ -23,7 +23,7 @@
  ****************************************************************************/
 
 #include "AppDelegate.h"
-#include "HelloWorldScene.h"
+#include "StartExplore.h"
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -78,14 +78,17 @@ static int register_all_packages()
 }
 
 bool AppDelegate::applicationDidFinishLaunching() {
+
+    Director::getInstance()->setProjection(cocos2d::Director::Projection::_2D);
+    Director::getInstance()->setDepthTest(true);
     // initialize director
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        glview = GLViewImpl::createWithRect("SoulKnight2020", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
+        glview = GLViewImpl::createWithRect("Test", cocos2d::Rect(0, 0, designResolutionSize.width*2, designResolutionSize.height*2));
 #else
-        glview = GLViewImpl::create("SoulKnight2020");
+        glview = GLViewImpl::create("Test");
 #endif
         director->setOpenGLView(glview);
     }
@@ -116,9 +119,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
 
     register_all_packages();
-
     // create a scene. it's an autorelease object
-    auto scene = HelloWorld::createScene();
+    //auto scene = HelloWorld::createScene();
+    auto scene = ExploreScene::createScene();
 
     // run
     director->runWithScene(scene);
