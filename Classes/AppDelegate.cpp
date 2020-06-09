@@ -120,8 +120,13 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     register_all_packages();
     // create a scene. it's an autorelease object
+
+    Director::getInstance()->setProjection(cocos2d::Director::Projection::_2D);
+    Director::getInstance()->setDepthTest(true);//开启openGl的深度渲染
+
     //auto scene = HelloWorld::createScene();
-    auto scene = ExploreScene::createScene();
+	auto scene = ExploreScene::createScene();
+
 
     // run
     director->runWithScene(scene);

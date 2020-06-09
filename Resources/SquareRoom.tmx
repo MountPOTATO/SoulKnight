@@ -28,11 +28,17 @@
   </data>
  </layer>
  <layer name="floor" width="20" height="20">
+  <properties>
+   <property name="cc_vertexz" value="-500"/>
+  </properties>
   <data encoding="base64" compression="zlib">
    eJy1k1sOwzAIBI3h/mdOKxlpMqL5apAsvxcWlrX+b/EZ+4zS/rtOrRNvek7g1dmXMBNz4d4jzp3jS2DHgM+zxFnjEo9c+k+sO3/zYAwhvpNP+onBR8lPG/O99YZx9Mx8EpPxkS9j83qvO19iEq8GrNAf7x2j+ZJf6a816Pgmvvbn+hHXuSEedUduHK6ltU6+rqfX5Gn9MB9t093Ub9Y19foLj7rINeuNOWEvtNkf6+F+YB2e6kFO5OB/1Kdz0+bcWXOurTlM/bH1duox68rxvmEX+zcDPQ==
   </data>
  </layer>
  <layer name="barrier" width="20" height="20">
+  <properties>
+   <property name="cc_vertexz" value="automatic"/>
+  </properties>
   <data encoding="base64" compression="zlib">
    eJxjY2BgYINiVhxsXPLoamB8agGYudQCMDdT0zxqu4/a4UdN/1LbPJiZg9k8avt3sIffYM4fgz09U7t8oYX78JXz+PQhl/fINADX6AFk
   </data>

@@ -26,41 +26,43 @@ void ControllerOfEightDir::setiSpeed(int iSpeed) {
 
 void ControllerOfEightDir::update(float delta) {
 	/*确定已经设置了监听对象*/
+	
 	if (m_controllerListener == NULL) {
 		return;
 	}
 	Point pos = m_controllerListener->getTagPosition();
+	Point orgPos = pos;
 	auto moveLeft = cocos2d::EventKeyboard::KeyCode::KEY_A;
 	auto moveRight= cocos2d::EventKeyboard::KeyCode::KEY_D;
 	auto moveUp = cocos2d::EventKeyboard::KeyCode::KEY_W;
 	auto moveDown = cocos2d::EventKeyboard::KeyCode::KEY_S;
 	if (keys[moveLeft]&&keys[moveUp]) {//左上
 		
-		pos.x -= m_iSpeed/1.414; 
-		m_controllerListener->setTagPosition(pos.x, pos.y);
-		pos.y += m_iSpeed / 1.414;
-		m_controllerListener->setTagPosition(pos.x, pos.y);
+		pos.x -= m_iSpeed / 1.414; m_controllerListener->setTagPosition(pos.x, pos.y);
+		pos = m_controllerListener->getTagPosition();//更新位置
+		pos.y += m_iSpeed / 1.414; m_controllerListener->setTagPosition(pos.x, pos.y);
+		
 		m_controllerListener->setFaceDirByMoveDir(0);
  	}
 	else if (keys[moveRight]&&keys[moveUp]){//右上
- 		pos.x += m_iSpeed / 1.414;
-		m_controllerListener->setTagPosition(pos.x, pos.y); 
-		pos.y += m_iSpeed / 1.414;
-		m_controllerListener->setTagPosition(pos.x, pos.y);
+ 		pos.x += m_iSpeed / 1.414;m_controllerListener->setTagPosition(pos.x, pos.y);
+		pos = m_controllerListener->getTagPosition();//更新位置
+		pos.y += m_iSpeed / 1.414;m_controllerListener->setTagPosition(pos.x, pos.y);
+		
 		m_controllerListener->setFaceDirByMoveDir(1);
  	}
 	else if (keys[moveRight] && keys[moveDown]) {//右下
- 		pos.x += m_iSpeed / 1.414;
-		m_controllerListener->setTagPosition(pos.x, pos.y); 
-		pos.y -= m_iSpeed / 1.414;
-		m_controllerListener->setTagPosition(pos.x, pos.y);
+ 		pos.x += m_iSpeed / 1.414;m_controllerListener->setTagPosition(pos.x, pos.y);
+		pos = m_controllerListener->getTagPosition();//更新位置
+		pos.y -= m_iSpeed / 1.414;m_controllerListener->setTagPosition(pos.x, pos.y);
+		
 		m_controllerListener->setFaceDirByMoveDir(1);
  	}
 	else if (keys[moveLeft] && keys[moveDown]) {//左下
- 		pos.x -= m_iSpeed / 1.414; 
-		m_controllerListener->setTagPosition(pos.x, pos.y); 
-		pos.y -= m_iSpeed / 1.414;
-		m_controllerListener->setTagPosition(pos.x, pos.y);
+ 		pos.x -= m_iSpeed / 1.414; m_controllerListener->setTagPosition(pos.x, pos.y);
+		pos = m_controllerListener->getTagPosition();//更新位置
+		pos.y -= m_iSpeed / 1.414;m_controllerListener->setTagPosition(pos.x, pos.y);
+		
 		m_controllerListener->setFaceDirByMoveDir(0);
  	}
 	else if (keys[moveLeft]) {//左
@@ -83,7 +85,8 @@ void ControllerOfEightDir::update(float delta) {
 	}
 
 	m_controllerListener->setTagPosition(pos.x, pos.y);
-	//m_controllerListener->setTagPosition(pos.x, pos.y+=10);//测试用的自动往上走
+	
+	//m_controllerListener->setTagPosition(pos.x, pos.y+=2);//测试用的自动往上走
 }
 
  

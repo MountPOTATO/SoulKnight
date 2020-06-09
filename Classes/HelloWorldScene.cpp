@@ -61,7 +61,7 @@ bool HelloWorld::init()
 	//此处修改,初始化一样武器实例,以SMG冲锋枪为例
 	/*test_InitFish();*/
 	/*test_InitPistol();*/
-	test_InitSMG();
+
 	//test_InitShotgun();
 
 	//测试自动瞄准时加上，不需要测试时去掉,同时在update函数中添加相应的模块
@@ -74,9 +74,15 @@ bool HelloWorld::init()
 
 
 	//测试地图和角色
+	//先放人物再放武器
 	TMXTiledMap* map = TMXTiledMap::create("Maps/test.tmx");
 	this->addChild(map);
-	addCharacter(map);
+	auto knight=addCharacter(map,1);
+
+	test_InitShotgun();
+	_testShotgun->setTiledMap(map);
+	_testShotgun->setOwner(knight);
+
 
 	this->scheduleUpdate();
     return true;
@@ -141,10 +147,11 @@ void HelloWorld::update(float delta) {
 	
 	//注意：启用后要修改HelloWorld：：Init，添加相应的test——Init类
 	/////////////////以冲锋枪SMG为例，update函数中测试Gun类，不需要可注释掉/////////////////////////
-	_testSMG->updateTarget();//Gun实例 更新场内怪物坐标，标记离自己最近的怪物
-	_testSMG->updateImageRotation(_rocker);//Gun实例 更新武器指向（自动瞄准）或没有目标时手柄瞄准
+	_testShotgun->updateCurrentLocation();
+	_testShotgun->updateTarget();//Gun实例 更新场内怪物坐标，标记离自己最近的怪物
+	_testShotgun->updateImageRotation(_rocker);//Gun实例 更新武器指向（自动瞄准）或没有目标时手柄瞄准
 	if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
-		_testSMG->attack();//攻击，发射子弹
+		_testShotgun->attack();//攻击，发射子弹
 	}
 	updateBullet();//更新飞行物
 	/////////////////////////////////////////////////////////////////////////////////////////////
@@ -173,16 +180,28 @@ void HelloWorld::updateBullet() {
 	}
 }
 
-void HelloWorld::addCharacter(TMXTiledMap* map) {
+Character* HelloWorld::addCharacter(TMXTiledMap* map,int HeroID) {
 	Character* m_Character = Character::create();
-	Sprite* sprite = Sprite::create("Characters/Knight.png");
-	m_Character->bindSprite(sprite);
-	this->addChild(m_Character);
+	switch (HeroID)
+	{
+	case 1:
+		m_Character = Knight::create();
+		break;
+	default:
+		
+		break;
+	}
 
+
+
+	this->addChild(m_Character);
 	ControllerOfEightDir* m_controller = ControllerOfEightDir::create();
 	m_Character->setController(m_controller);
 	m_controller->setiSpeed(m_Character->getSpeed());
 	this->addChild(m_controller);
+
+	
+
 
 	m_Character->setTiledMap(map);
 
@@ -195,4 +214,5 @@ void HelloWorld::addCharacter(TMXTiledMap* map) {
 	m_Character->setPosition(Point(characterPointX, characterPointY));//根据tmx对象确定出生点
 	m_Character->setViewPointByCharacter();
 
+	return m_Character;
 }
