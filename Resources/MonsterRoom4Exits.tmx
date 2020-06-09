@@ -1,40 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="40" tileheight="40">
- <tileset firstgid="1" source="metaTiles.tsx"/>
- <tileset firstgid="8" name="floor" tilewidth="40" tileheight="40">
+ <tileset firstgid="1" name="floor" tilewidth="40" tileheight="40">
   <image source="floors.png" width="160" height="40"/>
  </tileset>
- <tileset firstgid="12" source="roomVerge.tsx"/>
- <tileset firstgid="14" name="exit" tilewidth="40" tileheight="40">
-  <image source="ourgame/maps/上下门（关）.png" width="40" height="80"/>
+ <tileset firstgid="5" name="roomVerge" tilewidth="40" tileheight="60">
+  <image source="1.png" width="80" height="60"/>
  </tileset>
- <tileset firstgid="16" source="boxBarrier.tsx"/>
+ <tileset firstgid="7" name="boxBarrier" tilewidth="40" tileheight="60">
+  <image source="木箱.png" width="40" height="60"/>
+ </tileset>
+ <tileset firstgid="8" name="meta" tilewidth="40" tileheight="40">
+  <image source="meta_tiles.png" width="280" height="70"/>
+  <tile id="0">
+   <properties>
+    <property name="Collidable" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="15" name="exit" tilewidth="40" tileheight="40">
+  <image source="上下门（关）.png" width="40" height="80"/>
+ </tileset>
  <layer name="Meta" width="20" height="20" visible="0">
   <data encoding="base64" compression="zlib">
-   eJxjZGBgYMSBcQFc6gnpIxXQwzxS3c6Ixqa1eZQAWpg3HAG10y4t8gK9ADY3k5vPcamjtnnkgsFoHrIZtHIfNct7AAZLAFM=
+   eJzjYGBg4MCBcQFc6gnpIxXQwzxS3c6Bxqa1eZQAWpg3HAG10y4t8gK9ADY3k5vPcamjtnnkgsFoHrIZtHIfNct7AAaYApE=
   </data>
  </layer>
  <layer name="exit" width="20" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjYMAN+HHgUTByATXjn9rpadQ8ys0bBSMXkFPeAwBuTAFp
+   eJxjYMANBHDgUTByATXjn9rpadQ8ys0bBSMXkFPeAwC5fAGB
   </data>
  </layer>
- <layer name="floorLayer" width="20" height="20">
+ <layer name="floor" width="20" height="20">
   <data encoding="base64" compression="zlib">
-   eJytk8sOxSAIRF0C/v//3i4kOT2ld1USotXO8BrX+t7i8rx8X15nH+e71zxe+rdw15Zw4puPHPTEGsqvFLPWPb/pPIVrY52NaZ4t3Mae+aX43MNQ7TXw+pz9az7H5FwScbpHjN3G/P/Nj33eQxzyBVbzEsu8ShjXu3VPrUwzdx3ky/WcB3OyBlj7pGf3qxTjzamLNmuk9B91x95YB+SLNcd37n7Lb/PIAc9c93rW7zm3+S1NmBzw7gfrZR+4t4781jhn1mutTfPgtzVEPtcb657nm/b4VjiPL+0HSc4MPw==
+   eJytk8sOxSAIRAX8/2++XUhyekrvqiREq53hNa71vcXlefm+vM4+znevebz0b+GuLeHENx856Ik1lF8pZq17ftN5CtfGOhvTPFu4jT3zS/G5h6Haa+D1OfvXfI7JuSTidI8Yu435/5sf+7yHOOQLrOYllnmVMK53655amWbuOsiX6zkP5mQNsPZJz+5XKcabUxdt1kjpP+qOvbEOyBdrju/c/Zbf5pEDnrnu9azfc27zW5owOeDdD9bLPnBvHfmtcc6s11qb5sFva4h8rjfWPc837fGtcB5f2g+G8gNj
   </data>
  </layer>
  <layer name="roomVerge" width="20" height="20">
   <data encoding="base64" compression="zlib">
-   eJzjZWBg4MWBcQGQHA8U82LhUwvAzKQWgLlzsJo32P1LTbNGweAEgz09U7N8GQrlAS3KU2xlNjHlPTZ9AAMAAow=
+   eJxjY2BgYMOBcQGQHCsUs2HhUwvAzKQWgLlzsJo32P1LTbNGweAEgz09U7N8GQrlAS3KU2xlNjHlPTZ9AI5dASA=
   </data>
  </layer>
  <layer name="barrier" width="20" height="20">
-  <properties>
-   <property name="cc_vertexz" value="automatic"/>
-  </properties>
   <data encoding="base64" compression="zlib">
-   eJxjYBjZQAANE6OenuaNAtoDUuJrIMwbaICepin1G7XNG05gqIUFANfLAeE=
+   eJxjYBjZgB0NE6OenuaNAtoDUuJrIMwbaICepin1G7XNG05gqIUFAJHqANM=
   </data>
  </layer>
 </map>
