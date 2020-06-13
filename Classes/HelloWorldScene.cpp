@@ -56,7 +56,6 @@ bool HelloWorld::init()
 
 	//test Entity can delete
 	
-	initHRocker();
 
 	//此处修改,初始化一样武器实例,以SMG冲锋枪为例
 	/*test_InitFish();*/
@@ -79,10 +78,13 @@ bool HelloWorld::init()
 	this->addChild(map);
 	auto knight=addCharacter(map,1);
 
+	initHRocker();
 	test_InitShotgun();
 	_testShotgun->setTiledMap(map);
 	_testShotgun->setOwner(knight);
 
+	_direct=DirectPickThing::create(Vec2(knight->getPositionX(), knight->getPositionY()-250), knight, 20.f, 3, 3, 5, this);
+	this->addChild(_direct);
 
 	this->scheduleUpdate();
     return true;
@@ -145,6 +147,8 @@ void HelloWorld::test_InitShotgun() {
 
 void HelloWorld::update(float delta) {
 	
+	//更新掉落物
+	_direct->updatePickThingSprite();
 	//注意：启用后要修改HelloWorld：：Init，添加相应的test——Init类
 	/////////////////以冲锋枪SMG为例，update函数中测试Gun类，不需要可注释掉/////////////////////////
 	_testShotgun->updateCurrentLocation();
@@ -216,3 +220,4 @@ Character* HelloWorld::addCharacter(TMXTiledMap* map,int HeroID) {
 
 	return m_Character;
 }
+

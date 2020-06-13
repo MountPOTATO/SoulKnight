@@ -30,9 +30,15 @@ public:
 	static Bullet* create
 	(const char* bulletImageName, float flyingSpeed, Weapon* shooter,  WeaponBuff* buff, bool hasDef);
 
+
 	void calPosition();
 
 	void calDistance();
+
+	//获取子弹的攻击力，造成伤害
+	INT32 getBulletAttack()const { return _attack; }
+
+	
 
 };
 

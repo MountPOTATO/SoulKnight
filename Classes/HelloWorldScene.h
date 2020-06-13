@@ -40,6 +40,7 @@
 #include "ControllerByKeyBoard/ControllerOfEightDir.h"
 #include "Entity/Character.h"
 #include "Entity/Heros/Knight.h"
+#include "Interaction/DirectPickThing.h"
 class Weapon;
 
 class HelloWorld : public cocos2d::Scene
@@ -63,11 +64,13 @@ public:
 
 	virtual void update(float delta);//更新状态
 	void updateBullet();
+	void updateDirectPickThingSprite();
 
 	//容器集
 	Vector<Bullet*> _bullets;
 	Vector<Entity*> _currentUnit;
-
+	cocos2d::Vector<Sprite*> _energyVec;//能量掉落物Vector
+	cocos2d::Vector<Sprite*> _coinVec;//金币掉落物Vector
 
 
 	//初始化摇杆
@@ -90,6 +93,8 @@ public:
 	void test_InitFish();
 	void test_InitSMG();
 	void test_InitShotgun();
+
+	CC_SYNTHESIZE(DirectPickThing*, _direct, Direct);//单个DirectPickThing类，后期应加入Vector
 
 public:
 	Character* addCharacter(TMXTiledMap* map,int HeroID);
