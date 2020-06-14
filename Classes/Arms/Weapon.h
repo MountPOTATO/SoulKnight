@@ -49,7 +49,7 @@ private:
 	CC_SYNTHESIZE(HelloWorld*, _currentScene, CurrentScene);	
 	CC_SYNTHESIZE(ESide, _side, Side);//武器持有者阵营
 	CC_SYNTHESIZE(Entity*, _target, Target);//武器攻击者
-
+	
 	CC_SYNTHESIZE(Entity*, _owner, Owner);//武器持有者阵营
 
 	//时间信息
@@ -73,8 +73,11 @@ private:
 
 
 
-	
+	bool _isCanceled = false;//是否被停用，初始化为false
 
+
+	CC_SYNTHESIZE(const char*, _imageName, ImageName);
+	CC_SYNTHESIZE(const char*, _typeName, TypeName);
 
 public:
 
@@ -109,7 +112,7 @@ public:
 	  HelloWorld* currentScene, ESide side, bool heroOwned);
 	void startWeapon(bool _isStopOther);
 	void stopWeapon(bool _isStopOther);
-
+	
 
 	void showWeaponPicture(int type);//1代表指向右边的图片，2代表指向左边（反向）的图片
 	
@@ -121,6 +124,9 @@ public:
 
 	virtual void updateTarget();
 
+
+	const char* getImageName() { return _imageName; }
+	const char* getTypeName() { return _typeName; }
 
 	//位置更新相关
 	virtual void setWeaponTagPosition(int x, int y);
@@ -138,7 +144,6 @@ public:
 	void setTiledMap(TMXTiledMap* map);
 
 	Point tileCoordForPosition(Point pos);
-
 
 
 

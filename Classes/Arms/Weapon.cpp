@@ -65,6 +65,8 @@ void Weapon::startWeapon(bool _isStopOther) {
 	spWeapon->setVisible(true);
 	spWeaponReverse->setVisible(false);
 
+	_isCanceled = false;
+
 }
 
 void Weapon::stopWeapon(bool _isStopOther) {
@@ -73,6 +75,8 @@ void Weapon::stopWeapon(bool _isStopOther) {
 
 	spWeapon->setVisible(false);
 	spWeaponReverse->setVisible(false);
+
+	_isCanceled = true;
 
 }
 
@@ -198,7 +202,8 @@ void Weapon::setViewPointByWeapon() {
 
 
 void Weapon::updateImageRotation(HRocker* rocker) {
-
+	
+	if (_isCanceled) return;
 	//ÎäÆ÷¾«Áé»ñÈ¡
 	Sprite* spWeapon = (Sprite*)getChildByTag(TAG_WEAPON1);
 	Sprite* spWeaponReverse = (Sprite*)getChildByTag(TAG_WEAPON2);
@@ -370,7 +375,7 @@ Point Weapon::tileCoordForPosition(Point pos) {
 void Weapon::updateCurrentLocation() {
 
 	if (!_owner) return;
-	setPosition(Point(_owner->getPositionX(), _owner->getPositionY() - 10));
+	setPosition(Point(_owner->getPositionX(), _owner->getPositionY() - 7));
 	Point weaponXYPos = this->getPosition();
 
 

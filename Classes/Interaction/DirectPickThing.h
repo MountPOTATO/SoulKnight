@@ -1,11 +1,12 @@
-#pragma once
+#ifndef _DIRECTPICKTHING_H_
+#define _DIRECTPICKTHING_H_
 #include "cocos2d.h"
 
 USING_NS_CC;
 
 class Entity;
 class HelloWorld;
-//PickThing为拾取道具，拾取道具包括武器，红瓶，蓝瓶
+//自动拾取物体，包括金币，能量
 
 class DirectPickThing :public Node
 {
@@ -31,8 +32,9 @@ public:
 
 	void updatePickThingSprite();
 
-	//键盘事件监听 未实现
-	//主角拾取道具后状态的改变，需要charater类的功能
+
 
 	
 };
+
+#endif

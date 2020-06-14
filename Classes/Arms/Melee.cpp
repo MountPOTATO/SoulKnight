@@ -1,6 +1,7 @@
 #include "Arms/Melee.h"
 #include "HelloWorldScene.h"
 #include "Entity/Entity.h"
+#include "LongRangeAttack/Bullet.h"
 
 Melee* Melee::create
 (const char* weaponImageName1, const char* weaponImageName2,
@@ -59,10 +60,13 @@ bool Melee::startWeapon(bool _isStopOther) {
 	//TODO:捡起武器时
 	spMelee->setVisible(true);
 	spMeleeReverse->setVisible(false);
+
+	_isCanceled = false;
 	return true;
 }
 
 void Melee::updateTarget() {
+	if (_isCanceled) return;
 
 	Vector<Entity*>& currentEnermies = _currentScene->_currentUnit;
 	Sprite* spMelee = (Sprite*)getChildByTag(TAG_WEAPON1);
@@ -99,6 +103,7 @@ void Melee::updateTarget() {
 
 bool Melee::attack() {
 	if (!_isAttacking) return false;
+	if (_isCanceled) return false;
 
 	auto currentTime = GetCurrentTime() / 1000.f;
 
@@ -109,6 +114,11 @@ bool Melee::attack() {
 	if (!_targetInRange.size()) {//存在目标
 		for (auto& i : _targetInRange) {
 			//TODO：执行伤害判定，给出伤害,需要后期Entity类承受伤害的功能实现
+			Bullet* bullet = Bullet::create("bulletImage/EmptyBullet.png", _bulletFlyingSpeed, this, NULL, true);
+			bullet->setScale(1);
+			_currentScene->_bullets.pushBack(bullet);
+			_currentScene->addChild(bullet);
+			bullet->setVisible(false);
 		}
 	}
 	else {//不存在目标

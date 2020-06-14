@@ -76,6 +76,7 @@ void DirectPickThing::updatePickThingSprite() {
 
 	for (auto i = _pickThingScene->_energyVec.begin(); i != _pickThingScene->_energyVec.end();) {
 		//TODO:位置更新
+		
 		if ((*i)->getPosition().distance(_hero->getPosition()) <= _stickRange) {
 			//TODO:主角加能量
 			(*i)->setVisible(false);

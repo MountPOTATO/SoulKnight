@@ -57,10 +57,15 @@ bool Gun::startWeapon(bool _isStopOther) {
 
 	spWeapon->setVisible(true);
 	spWeaponReverse->setVisible(false);
+
+	_isCanceled = false;
 	return true;
 }
 
 void Gun::updateTarget() {
+
+	if (_isCanceled) return;
+
 	Vector<Entity*>& currentEnermies = _currentScene->_currentUnit;
 
 	//TODO:涉及中间有障碍物时的重新指认，待场景元素加入后决定
@@ -86,6 +91,7 @@ void Gun::updateTarget() {
 
 bool Gun::attack() {
 	if (!_isAttacking) return false;
+	if (_isCanceled) return false;
 
 	auto currentTime = GetCurrentTime() / 1000.f;
 

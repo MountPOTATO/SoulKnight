@@ -62,7 +62,8 @@ bool Fish::init(const char* weaponImageName1, const char* weaponImageName2,
 	_isCanMove = false;
 	_hasAnimation = false;
 
-
+	_imageName = MELEE_FISH;
+	_typeName = MELEE;
 
 	return true;
 }

@@ -36,11 +36,13 @@
 #include "Arms/Melee.h"
 #include "Arms/GunDerived/SMG.h"
 #include "Arms/GunDerived/Shotgun.h"
+#include "Arms/GunDerived/Sniper.h"
 #include "LongRangeAttack/Bullet.h"
 #include "ControllerByKeyBoard/ControllerOfEightDir.h"
 #include "Entity/Character.h"
 #include "Entity/Heros/Knight.h"
 #include "Interaction/DirectPickThing.h"
+#include "Interaction/InterContent/PickWeapon.h"
 class Weapon;
 
 class HelloWorld : public cocos2d::Scene
@@ -48,6 +50,7 @@ class HelloWorld : public cocos2d::Scene
 	//5.18加入CCSYNTHESIZE 控制器类
 	CC_SYNTHESIZE(HRocker*, _rocker, Rocker);
 
+	CC_SYNTHESIZE(Entity*, _hero, Hero);
 
 	
 
@@ -65,6 +68,7 @@ public:
 	virtual void update(float delta);//更新状态
 	void updateBullet();
 	void updateDirectPickThingSprite();
+	void updatePickWeaponAndWeapon();
 
 	//容器集
 	Vector<Bullet*> _bullets;
@@ -78,16 +82,25 @@ public:
 
 	//测试组件:
 
+	Weapon* _weapon1;
+	Weapon* _weapon2;
+	Weapon* _emptyHandWeapon;
+
+	Vector<Weapon*> _weaponVec;//武器Vector(定)
+	Weapon* _currentUsedWeapon;//当下武器
+	Vector<PickWeapon*> _pickableWeaponVec;
+
+	CC_SYNTHESIZE(TMXTiledMap*, _map, Map);
+	CC_SYNTHESIZE(float, _lastPickTime, LastPickTime);
+
 	
+	void transferPickWeaponToWeapon(PickWeapon*,Entity*);
+	void transferWeaponToPickWeapon(Weapon*,Entity*);
 
 
-	CC_SYNTHESIZE(OldPistol*, _testPistol, TestPistol);//初始化一个近战武器类
 
-	CC_SYNTHESIZE(Fish*, _testFish, TestFish);//初始化一个近战武器类
 
-	CC_SYNTHESIZE(SMG*, _testSMG, TestSMG);//初始化一个近战武器类
 
-	CC_SYNTHESIZE(Shotgun*, _testShotgun, TestShotgun);//初始化一个近战武器类
 
 	void test_InitPistol();
 	void test_InitFish();
@@ -95,6 +108,9 @@ public:
 	void test_InitShotgun();
 
 	CC_SYNTHESIZE(DirectPickThing*, _direct, Direct);//单个DirectPickThing类，后期应加入Vector
+
+
+	CC_SYNTHESIZE(PickWeapon*, _pickWeapon, PickWeapon);//单个PickWeapon类
 
 public:
 	Character* addCharacter(TMXTiledMap* map,int HeroID);
