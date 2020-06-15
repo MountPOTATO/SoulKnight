@@ -1,24 +1,45 @@
 #include "TreasureBox.h"
+#include "Entity/Entity.h"
+#include "Controller/HRocker.h"
+#include "HelloWorldScene.h"
 
-Scene* TreasureBox::createScene()
+#include "Interaction/InterContent/PickWeapon.h"
+
+TreasureBox* TreasureBox::create(Point position, Entity* hero, HelloWorld* scene, HRocker* rocker)
 {
-	auto scene = Scene::create();
-
-	auto layer = TreasureBox::create();
-	scene->addChild(layer);
-	return scene;
+	TreasureBox* treasurebox = new(std::nothrow)TreasureBox;
+	if (treasurebox && treasurebox->init(position, hero, scene, rocker)) {
+		treasurebox->autorelease();
+		return treasurebox;
+	}
+	CC_SAFE_DELETE(treasurebox);
+	return NULL;
 }
 
-bool TreasureBox::init()
+bool TreasureBox::init(Point position, Entity* hero, HelloWorld* scene, HRocker* rocker)
 {
+	setPosition(position);
+
 	Sprite* treaBox = Sprite::create("treasureBox.png");
 	Size size = Director::getInstance()->getVisibleSize();
 	treaBox->setTag(1);
-	treaBox->setPosition(size.width / 2, size.height / 2);
+	treaBox->setPosition(0,0);
+	treaBox->setVisible(true);
+
 	this->addChild(treaBox);
 	/*treaBox->setScale(5.0);*/
+	_hero = hero;
+	_rocker = rocker;
 
-	log("is run?");
+	_isPressed = false;
+	_isNearHero = false;
+	_isunUsed = true;
+	_pickThingScene = scene;
+
+
+	srand((unsigned)time(NULL));
+	_randID = rand() % 4 + 1;
+
 
 	auto listener = EventListenerKeyboard::create();
 	listener->onKeyPressed = [&](EventKeyboard::KeyCode code, Event* e)
@@ -34,8 +55,9 @@ bool TreasureBox::init()
 				/*isToOpen();*/
 				Sprite* treaBoxOpen = Sprite::create("treasureBoxOpen.png");
 				Size size = Director::getInstance()->getVisibleSize();
-				treaBoxOpen->setPosition(Vec2(size.width / 2, size.height / 2));
+				treaBoxOpen->setPosition(position);
 				this->addChild(treaBoxOpen);
+				treaBoxOpen->setVisible(true);
 				//接下来在宝箱中应该出现一些奖励 如红蓝瓶 武器 金币等
 			}
 			break;
@@ -43,13 +65,80 @@ bool TreasureBox::init()
 			break;
 		}
 	};
-	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener,treaBox);
+
+
 	return true;
 }
 
-bool TreasureBox::isToOpen()
+
+
+void TreasureBox::updateTreasureBoxState()
 {
-	//判断主角是否在宝箱旁边，即是否达到交互距离
-	//达到为true，否则为false
-	return true;
+	if (!_isNearHero) {
+		if (this->getPosition().distance(_hero->getPosition()) <= 17.0f
+			&& _rocker->getRockerPressButton() != ERockerButtonPress::buttonAttack) {
+			_isNearHero = true;
+			//飘字特效加入，进入飘字状态
+
+		}
+		return;
+	}
+	else {
+		if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {
+			_isPressed = true;
+			
+
+			//停止飘字
+		}
+		return;
+	}
+}
+
+
+void TreasureBox::generateRandomObject() {
+
+	Sprite* spTre = (Sprite*)getChildByTag(1);
+	spTre->setVisible(false);
+
+
+	Sprite* treaBoxOpen = Sprite::create("treasureBoxOpen.png");
+	Size size = Director::getInstance()->getVisibleSize();
+	treaBoxOpen->setPosition(0,0);
+	this->addChild(treaBoxOpen);
+	treaBoxOpen->setVisible(true);
+
+
+
+
+
+	if (_randID == 1) {
+
+		auto pickWeapon = PickWeapon::create
+		(this->getPosition(), _hero, _pickThingScene, GUN, GUN_SNIPER, _rocker);
+		_pickThingScene->addChild(pickWeapon);
+		_pickThingScene->_pickableWeaponVec.pushBack(pickWeapon);
+	}
+	if (_randID == 2) {
+
+		auto pickWeapon = PickWeapon::create
+		(this->getPosition(), _hero, _pickThingScene, GUN, GUN_SMG, _rocker);
+		_pickThingScene->addChild(pickWeapon);
+		_pickThingScene->_pickableWeaponVec.pushBack(pickWeapon);
+	}
+	if (_randID == 3) {
+
+		auto pickWeapon = PickWeapon::create
+		(this->getPosition(), _hero, _pickThingScene, GUN, GUN_SHOTGUN, _rocker);
+		_pickThingScene->addChild(pickWeapon);
+		_pickThingScene->_pickableWeaponVec.pushBack(pickWeapon);
+	}
+	if (_randID == 4) {
+
+		auto pickWeapon = PickWeapon::create
+		(this->getPosition(), _hero, _pickThingScene,MELEE,MELEE_FISH, _rocker);
+		_pickThingScene->addChild(pickWeapon);
+		_pickThingScene->_pickableWeaponVec.pushBack(pickWeapon);
+	}
+
+	_isunUsed = false;
 }

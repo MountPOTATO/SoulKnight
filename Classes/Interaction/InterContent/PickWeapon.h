@@ -26,7 +26,7 @@ public:
 
 	void stopPickWeapon(bool _isStopOther);
 
-	void initPickWepaonState() { _isNearHero = false; _isPressed = false; }
+	void initPickWeaponState() { _isNearHero = false; _isPressed = false; }
 };
 
 

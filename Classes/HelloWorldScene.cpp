@@ -105,15 +105,21 @@ bool HelloWorld::init()
 	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 250), _hero, 20.f, 3, 3, 5, this);
 	this->addChild(_direct);
 
-	auto pickWeapon1 = PickWeapon::create
-	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 100), _hero, this, MELEE, MELEE_FISH, _rocker);
-	this->addChild(pickWeapon1);
-	_pickableWeaponVec.pushBack(pickWeapon1);
+	auto treasureBox=TreasureBox::create
+	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 100), _hero, this, _rocker);
+	this->addChild(treasureBox);
+	_treasureBoxVec.pushBack(treasureBox);
+	
+
 
 	auto pickWeapon2 = PickWeapon::create
 	(Vec2(_hero->getPositionX()+100, _hero->getPositionY() - 100), _hero, this, GUN, GUN_SNIPER, _rocker);
 	this->addChild(pickWeapon2);
 	_pickableWeaponVec.pushBack(pickWeapon2);
+
+
+
+
 
 	this->scheduleUpdate();
 	return true;
@@ -160,6 +166,7 @@ void HelloWorld::update(float delta) {
 	//更新掉落物
 	_direct->updatePickThingSprite();
 
+	updateTreasureBoxVec();
 	updateWeaponHolding();
 	updatePickWeaponAndWeapon();
 
@@ -177,18 +184,7 @@ void HelloWorld::update(float delta) {
 
 	/*}*/
 	updateBullet();//更新飞行物
-	/////////////////////////////////////////////////////////////////////////////////////////////
 
-
-	/////////////////以冲锋枪SMG为例，update函数中测试Gun类的自动瞄准，不需要可注释掉////////////////
-	
-	//_testSMG->updateTarget();//Gun实例 更新场内怪物坐标，标记离自己最近的怪物
-	//_testSMG->updateImageRotation(_rocker);//Gun实例 更新武器指向（自动瞄准）
-	//if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
-	//	_testSMG->attack();//攻击，发射子弹
-	//}
-	//updateBullet();//更新飞行物
-	/////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
@@ -243,7 +239,7 @@ void HelloWorld::updatePickWeaponAndWeapon() {
 			}
 			transferPickWeaponToWeapon(temp, _hero);//根据i的种类添加武器,并添加入武器库
 			
-			temp->initPickWepaonState();
+			temp->initPickWeaponState();
 
 			auto oldpick = _pickableWeaponVec.find(temp);
 			(*oldpick)->stopPickWeapon(true);
@@ -383,7 +379,7 @@ void HelloWorld::transferPickWeaponToWeapon(PickWeapon* pickWeapon,Entity* hero)
 			_currentUsedWeapon = tempWeapon;
 		}
 	}
-	//TODO:内存池优化&&同类武器解决？
+	//TODO:内存池优化
 	if (currentWeaponID == 2) {
 		if (!_weapon1) {
 			_weapon1 = tempWeapon;
@@ -410,9 +406,25 @@ void HelloWorld::transferWeaponToPickWeapon(Weapon* weapon, Entity* hero) {
 		(Vec2(hero->getPositionX() + 50, hero->getPositionY()), hero, this, typeName,name, _rocker);
 
 	this->addChild(pickWeapon);
-	pickWeapon->initPickWepaonState();
+	pickWeapon->initPickWeaponState();
 	_pickableWeaponVec.pushBack(pickWeapon);
 
 
-
 }
+
+void HelloWorld::updateTreasureBoxVec() {
+	
+
+	//更新场景中可捡起物体
+	for (auto i = _treasureBoxVec.begin(); i != _treasureBoxVec.end();) {
+
+		(*i)->updateTreasureBoxState();
+
+		if ((*i)->isUnUsed()&&(*i)->objectIsPressed()) {		
+			(*i)->generateRandomObject();
+			
+		}
+		i++;
+	}
+}
+

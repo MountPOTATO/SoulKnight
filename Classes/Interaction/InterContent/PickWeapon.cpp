@@ -47,11 +47,10 @@ bool PickWeapon::init
 
 void PickWeapon::updatePickWeaponState() {
 	if (!_isNearHero) {
-		if (this->getPosition().distance(_hero->getPosition()) <= 10.0f
+		if (this->getPosition().distance(_hero->getPosition()) <= 17.0f
 			&& _rocker->getRockerPressButton() != ERockerButtonPress::buttonAttack) {
 			_isNearHero = true;
 			//飘字特效加入，进入飘字状态
-
 
 		}
 		return;

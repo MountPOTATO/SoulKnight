@@ -44,6 +44,8 @@
 #include "Entity/Enemy/Ranger.h"
 #include "Interaction/DirectPickThing.h"
 #include "Interaction/InterContent/PickWeapon.h"
+#include "Interaction/InterContent/TreasureBox.h"
+
 class Weapon;
 
 class HelloWorld : public cocos2d::Scene
@@ -77,6 +79,9 @@ public:
 	cocos2d::Vector<Sprite*> _energyVec;//能量掉落物Vector
 	cocos2d::Vector<Sprite*> _coinVec;//金币掉落物Vector
 
+	Vector<TreasureBox*> _treasureBoxVec;
+	void updateTreasureBoxVec();
+
 
 	//初始化摇杆
 	void initHRocker();
@@ -91,6 +96,8 @@ public:
 	Vector<Weapon*> _weaponVec;//武器Vector(定)
 	Weapon* _currentUsedWeapon;//当下武器
 	Vector<PickWeapon*> _pickableWeaponVec;
+
+
 
 	CC_SYNTHESIZE(TMXTiledMap*, _map, Map);
 	CC_SYNTHESIZE(float, _lastPickTime, LastPicTime);
@@ -117,10 +124,6 @@ public:
 private:
 	
 	
-	
-
-
-
 
 	//监听装置
 	EventListenerTouchOneByOne* listenerTouch;
