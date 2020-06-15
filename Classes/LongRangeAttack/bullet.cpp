@@ -108,3 +108,7 @@ void Bullet::calDistance() {
 		//TODO:需要Entity的获取位置函数，需要等后续完成
 	/*}*/
 }
+
+void Bullet::stopBullet() {
+	setVisible(false);
+}

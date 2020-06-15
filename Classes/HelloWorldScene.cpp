@@ -57,11 +57,7 @@ bool HelloWorld::init()
 	//test Entity can delete
 
 
-	//此处修改,初始化一样武器实例,以SMG冲锋枪为例
-	/*test_InitFish();*/
-	/*test_InitPistol();*/
-
-	//test_InitShotgun();
+	
 
 	//测试自动瞄准时加上，不需要测试时去掉,同时在update函数中添加相应的模块
 	
@@ -74,7 +70,14 @@ bool HelloWorld::init()
 	//初始化英雄
 	_hero = addCharacter(_map, 1);
 
+
 	
+	auto monster = Ranger::create();
+	monster->setPosition(Vec2(_hero->getPositionX() +100, _hero->getPositionY() - 200));
+	this->addChild(monster);
+
+	_currentUnit.pushBack(monster);
+
 
 	initHRocker();
 
@@ -92,8 +95,6 @@ bool HelloWorld::init()
 	_weapon1 = _currentUsedWeapon;
 	_weapon2 = nullptr;
 
-
-	
 
 
 	//测试掉落物直接减起,后期加入Vector
@@ -150,8 +151,10 @@ void HelloWorld::initHRocker()
 
 
 void HelloWorld::update(float delta) {
-
-
+	for (auto j : _currentUnit) {
+		if (_hero->getBoundingBox().intersectsRect(j->getBoundingBox()))
+			_hero->hit(1, j->getPosition());
+	}
 	
 
 	//更新掉落物
@@ -185,9 +188,19 @@ void HelloWorld::update(float delta) {
 
 void HelloWorld::updateBullet() {
 	//TODO:只添加了射击现象
-	for (auto i = _bullets.begin(); i != _bullets.end(); i++) {
+	for (auto i = _bullets.begin(); i != _bullets.end(); ) {
+		bool temp = true;
 		(*i)->setVisible(true);
 		(*i)->calPosition();
+		for (auto& j : _test) {
+			if (j->getBoundingBox().intersectsRect((*i)->getBoundingBox())) {
+				//TODO:怪物受伤判定
+				(*i)->stopBullet();
+				i = _bullets.erase(i);
+				temp = false;
+			}
+		}
+		if (temp) i++;
 	}
 }
 

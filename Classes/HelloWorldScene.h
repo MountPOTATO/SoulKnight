@@ -76,6 +76,10 @@ public:
 	//容器集
 	Vector<Bullet*> _bullets;
 	Vector<Entity*> _currentUnit;
+
+	//test
+	Vector<Character*>_test;
+
 	cocos2d::Vector<Sprite*> _energyVec;//能量掉落物Vector
 	cocos2d::Vector<Sprite*> _coinVec;//金币掉落物Vector
 
@@ -116,7 +120,6 @@ public:
 	CC_SYNTHESIZE(DirectPickThing*, _direct, Direct);//单个DirectPickThing类，后期应加入Vector
 
 
-	CC_SYNTHESIZE(PickWeapon*, _pickWeapon, PickWeapon);//单个PickWeapon类
 
 public:
 	Character* addCharacter(TMXTiledMap* map,int HeroID);

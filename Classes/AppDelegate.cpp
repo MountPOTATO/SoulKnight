@@ -23,6 +23,7 @@
  ****************************************************************************/
 
 #include "AppDelegate.h"
+#include "StartExplore.h"
 #include "HelloWorldScene.h"
 
 // #define USE_AUDIO_ENGINE 1
@@ -78,14 +79,17 @@ static int register_all_packages()
 }
 
 bool AppDelegate::applicationDidFinishLaunching() {
+
+    Director::getInstance()->setProjection(cocos2d::Director::Projection::_2D);
+    Director::getInstance()->setDepthTest(true);
     // initialize director
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        glview = GLViewImpl::createWithRect("SoulKnight2020", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
+        glview = GLViewImpl::createWithRect("Test", cocos2d::Rect(0, 0, designResolutionSize.width*2, designResolutionSize.height*2));
 #else
-        glview = GLViewImpl::create("SoulKnight2020");
+        glview = GLViewImpl::create("Test");
 #endif
         director->setOpenGLView(glview);
     }
@@ -97,30 +101,33 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0f / 60);
 
     // Set the design resolution
-    glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
+    glview->setDesignResolutionSize(designResolutionSize.width*2, designResolutionSize.height*2, ResolutionPolicy::NO_BORDER);
     auto frameSize = glview->getFrameSize();
     // if the frame's height is larger than the height of medium size.
     if (frameSize.height > mediumResolutionSize.height)
     {        
-        director->setContentScaleFactor(MIN(largeResolutionSize.height/designResolutionSize.height, largeResolutionSize.width/designResolutionSize.width));
+        director->setContentScaleFactor(MIN(largeResolutionSize.height/designResolutionSize.height/2.0915, largeResolutionSize.width/designResolutionSize.width/ 2.0915));
     }
     // if the frame's height is larger than the height of small size.
     else if (frameSize.height > smallResolutionSize.height)
     {        
-        director->setContentScaleFactor(MIN(mediumResolutionSize.height/designResolutionSize.height, mediumResolutionSize.width/designResolutionSize.width));
+        director->setContentScaleFactor(MIN(mediumResolutionSize.height/designResolutionSize.height/ 2.0915, mediumResolutionSize.width/designResolutionSize.width/ 2.0915));
     }
     // if the frame's height is smaller than the height of medium size.
     else
     {        
-        director->setContentScaleFactor(MIN(smallResolutionSize.height/designResolutionSize.height, smallResolutionSize.width/designResolutionSize.width));
+        director->setContentScaleFactor(MIN(smallResolutionSize.height/designResolutionSize.height/ 2.0915, smallResolutionSize.width/designResolutionSize.width/ 2.0915));
     }
 
     register_all_packages();
-
     // create a scene. it's an autorelease object
+
     Director::getInstance()->setProjection(cocos2d::Director::Projection::_2D);
     Director::getInstance()->setDepthTest(true);//开启openGl的深度渲染
+
     auto scene = HelloWorld::createScene();
+	//auto scene = ExploreScene::createScene();
+
 
     // run
     director->runWithScene(scene);
