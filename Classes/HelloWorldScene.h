@@ -41,6 +41,7 @@
 #include "ControllerByKeyBoard/ControllerOfEightDir.h"
 #include "Entity/Character.h"
 #include "Entity/Heros/Knight.h"
+#include "Entity/Enemy/Ranger.h"
 #include "Interaction/DirectPickThing.h"
 #include "Interaction/InterContent/PickWeapon.h"
 class Weapon;
@@ -52,7 +53,7 @@ class HelloWorld : public cocos2d::Scene
 
 	CC_SYNTHESIZE(Entity*, _hero, Hero);
 
-	
+	CC_SYNTHESIZE(Ranger*, _testMonster, TestMonster);
 
 public:
 	static cocos2d::Scene* createScene();
@@ -85,13 +86,17 @@ public:
 	Weapon* _weapon1;
 	Weapon* _weapon2;
 	Weapon* _emptyHandWeapon;
+	void updateWeaponHolding();//更新持有的武器（切换武器）
 
 	Vector<Weapon*> _weaponVec;//武器Vector(定)
 	Weapon* _currentUsedWeapon;//当下武器
 	Vector<PickWeapon*> _pickableWeaponVec;
 
 	CC_SYNTHESIZE(TMXTiledMap*, _map, Map);
-	CC_SYNTHESIZE(float, _lastPickTime, LastPickTime);
+	CC_SYNTHESIZE(float, _lastPickTime, LastPicTime);
+	CC_SYNTHESIZE(float, _lastSwitchTime, LastPickTime);
+
+
 
 	
 	void transferPickWeaponToWeapon(PickWeapon*,Entity*);
@@ -99,14 +104,7 @@ public:
 
 
 
-
-
-
-	void test_InitPistol();
-	void test_InitFish();
-	void test_InitSMG();
-	void test_InitShotgun();
-
+	//TODO:加入Vector
 	CC_SYNTHESIZE(DirectPickThing*, _direct, Direct);//单个DirectPickThing类，后期应加入Vector
 
 

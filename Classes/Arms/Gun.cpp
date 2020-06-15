@@ -90,11 +90,13 @@ void Gun::updateTarget() {
 }
 
 bool Gun::attack() {
+
 	if (!_isAttacking) return false;
+
 	if (_isCanceled) return false;
 
 	auto currentTime = GetCurrentTime() / 1000.f;
-
+	
 	if (currentTime - _lastAttackTime < _attackSpeed) { return false; }
 
 	//TODO:在增加对敌人的搜索后增加功能
@@ -107,10 +109,9 @@ bool Gun::attack() {
 	//TODO:叠加Weapon的buff容器里所有weaponBuff
 	//子弹生成方式因枪支不同而异
 	
-
 	for (int i = 0; i <=this->getBulletPerTime() - 1; i++) {
 		Bullet* bullet = Bullet::create(_bulletImageName, _bulletFlyingSpeed, this, bulletBuff, true);
-		bullet->setScale(1);
+		bullet->setScale(1.8f);
 		_currentScene->_bullets.pushBack(bullet);
 		_currentScene->addChild(bullet);
 	}

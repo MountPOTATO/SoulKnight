@@ -202,7 +202,7 @@ void Weapon::setViewPointByWeapon() {
 
 
 void Weapon::updateImageRotation(HRocker* rocker) {
-	
+
 	if (_isCanceled) return;
 	//武器精灵获取
 	Sprite* spWeapon = (Sprite*)getChildByTag(TAG_WEAPON1);
@@ -214,8 +214,7 @@ void Weapon::updateImageRotation(HRocker* rocker) {
 
 
 	if (_target != nullptr) {//有目标且没有动画时，自动转到角度
-		_targetMathRad = getRad(spWeapon->getPosition(), _target->getPosition());
-
+		_targetMathRad = getRad(this->getPosition(), _target->getPosition());
 		_mathAngle = _targetMathRad * 180.f / PI;
 		if (_targetMathRad >= -PI && _targetMathRad <= -PI / 2) {
 			showWeaponPicture(2);
@@ -244,18 +243,18 @@ void Weapon::updateImageRotation(HRocker* rocker) {
 		spWeapon->stopAllActions();
 		spWeaponReverse->stopAllActions();
 		_isAttacking = false;
-		if (rocker->getRockerDirection() == ERocker8Direction::rockerStop){
-			if (rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {
-				_isCanMove = false;
-				_isAttacking = true;
-				return;
-			}
+		//TODOTODO:行走移动且有目标时无法自动瞄准if (rocker->getRockerDirection() == ERocker8Direction::rockerStop){
+		if (rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {
+			_isCanMove = false;
+			_isAttacking = true;
+			return;
 		}
+
 		_target = nullptr;
 		return;
 	}
 	else {
-		//log("%d", _hasAnimation);
+
 		if (rocker->getRockerDirection() == ERocker8Direction::rockerStop
 			&& rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {
 			_isCanMove = false;
@@ -265,8 +264,8 @@ void Weapon::updateImageRotation(HRocker* rocker) {
 		}
 		spWeapon->stopAllActions();
 		spWeaponReverse->stopAllActions();
-		_isAttacking = false;
-
+		/*_isAttacking = false;
+*/
 		switch (rocker->getRockerDirection()) {
 		case(ERocker8Direction::rockerRight): {
 			showWeaponPicture(1);
@@ -340,7 +339,7 @@ void Weapon::updateImageRotation(HRocker* rocker) {
 		};
 
 	}
-	//最后判定一次
+
 	if (rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {
 
 		_isCanMove = false;

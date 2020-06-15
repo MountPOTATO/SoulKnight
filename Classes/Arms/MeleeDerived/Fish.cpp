@@ -26,9 +26,12 @@ bool Fish::init(const char* weaponImageName1, const char* weaponImageName2,
 	if (_heroOwned) {
 		setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));
 		spFish->setPosition(Point(0, 0));//TODO:仅仅是主角情况
+		spFish->setScale(2);
 		spFish->setVisible(false);
+		
 		spFishReverse->setPosition(Point(0, 0));//TODO:仅仅是主角情况
 		spFishReverse->setVisible(false);
+		spFishReverse->setScale(2);
 	}
 	else {
 		//TODO:怪物与主角位置的绑定

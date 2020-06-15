@@ -64,12 +64,7 @@ bool HelloWorld::init()
 	//test_InitShotgun();
 
 	//测试自动瞄准时加上，不需要测试时去掉,同时在update函数中添加相应的模块
-	/*Entity* testEnermy=new Entity();
-	Sprite* enermyImage = Sprite::create("HelloWorld.png");
-	testEnermy->setPosition(visibleSize.width / 2 - 300, visibleSize.height / 2 - 300);
-	testEnermy->bindSprite(enermyImage);
-	this->addChild(testEnermy);
-	_currentUnit.pushBack(testEnermy);*/
+	
 
 
 	//测试地图和角色
@@ -78,6 +73,12 @@ bool HelloWorld::init()
 	this->addChild(_map);
 	//初始化英雄
 	_hero = addCharacter(_map, 1);
+
+	_testMonster = Ranger::create();
+	_testMonster->setPosition(_hero->getPositionX() + 100, _hero->getPositionY() + 50);
+	this->addChild(_testMonster);
+	_currentUnit.pushBack(_testMonster);
+
 
 	initHRocker();
 
@@ -96,7 +97,7 @@ bool HelloWorld::init()
 	_weapon2 = nullptr;
 
 
-
+	
 
 
 	//测试掉落物直接减起,后期加入Vector
@@ -105,7 +106,7 @@ bool HelloWorld::init()
 	this->addChild(_direct);
 
 	auto pickWeapon1 = PickWeapon::create
-	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 100), _hero, this, GUN, GUN_SMG, _rocker);
+	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 100), _hero, this, MELEE, MELEE_FISH, _rocker);
 	this->addChild(pickWeapon1);
 	_pickableWeaponVec.pushBack(pickWeapon1);
 
@@ -159,25 +160,28 @@ void HelloWorld::update(float delta) {
 	//更新掉落物
 	_direct->updatePickThingSprite();
 
-	
-
+	updateWeaponHolding();
 	updatePickWeaponAndWeapon();
 
-	//注意：启用后要修改HelloWorld：：Init，添加相应的test——Init类
-	/////////////////以冲锋枪SMG为例，update函数中测试Gun类，不需要可注释掉/////////////////////////
-	_currentUsedWeapon->updateCurrentLocation();
+	//武器
+
+	auto i = _currentUnit.begin();
+	
+	
 	_currentUsedWeapon->updateTarget();
 	_currentUsedWeapon->updateImageRotation(_rocker);
-	if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
-		_currentUsedWeapon->attack();//攻击，发射子弹
-	}
+	_currentUsedWeapon->updateCurrentLocation();
+	//if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
+
+	_currentUsedWeapon->attack();//攻击，发射子弹
+
+	/*}*/
 	updateBullet();//更新飞行物
 	/////////////////////////////////////////////////////////////////////////////////////////////
 
 
 	/////////////////以冲锋枪SMG为例，update函数中测试Gun类的自动瞄准，不需要可注释掉////////////////
-	//auto i = _currentUnit.begin();
-	//(*i)->setPosition((*i)->getPositionX()+1, (*i)->getPositionY());
+	
 	//_testSMG->updateTarget();//Gun实例 更新场内怪物坐标，标记离自己最近的怪物
 	//_testSMG->updateImageRotation(_rocker);//Gun实例 更新武器指向（自动瞄准）
 	//if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
@@ -198,10 +202,31 @@ void HelloWorld::updateBullet() {
 	}
 }
 
+void HelloWorld::updateWeaponHolding() {
+	auto currentTime = GetCurrentTime() / 1000.f;
+
+	if (currentTime - _lastSwitchTime < SWITCH_TIMESPACE) { return; }
+
+	if (_rocker->isPressSwitch()) {
+		if (_currentUsedWeapon == _weapon1&&_weapon2) {
+			_lastSwitchTime = currentTime;
+			_weapon1->stopWeapon(true);
+			_currentUsedWeapon = _weapon2;
+			_currentUsedWeapon->startWeapon(true);
+		}
+		else if (_currentUsedWeapon == _weapon2 && _weapon1) {
+			_lastSwitchTime = currentTime;
+			_weapon2->stopWeapon(true);
+			_currentUsedWeapon = _weapon1;
+			_currentUsedWeapon->startWeapon(true);
+		}
+	}
+}
+
 void HelloWorld::updatePickWeaponAndWeapon() {
 	auto currentTime = GetCurrentTime() / 1000.f;
 
-	if (currentTime - _lastPickTime < 1.0f) { return; }
+	if (currentTime - _lastPickTime < PICK_TIMESPACE) { return; }
 
 	//更新场景中可捡起物体
 	for (auto i = _pickableWeaponVec.begin(); i != _pickableWeaponVec.end();) {
@@ -245,7 +270,6 @@ Character* HelloWorld::addCharacter(TMXTiledMap* map, int HeroID) {
 	}
 
 
-
 	this->addChild(m_Character);
 	ControllerOfEightDir* m_controller = ControllerOfEightDir::create();
 	m_Character->setController(m_controller);
@@ -268,6 +292,8 @@ Character* HelloWorld::addCharacter(TMXTiledMap* map, int HeroID) {
 
 	return m_Character;
 }
+
+
 
 
 
@@ -331,7 +357,7 @@ void HelloWorld::transferPickWeaponToWeapon(PickWeapon* pickWeapon,Entity* hero)
 	}
 	else if (name == MELEE_FISH) {
 		auto fish = Fish::create
-		("GunImage\\Fish.png", "GunImage\\Fish.png", this, sideHero, true);
+		("MeleeImage\\Fish.png", "MeleeImage\\FishReverse.png", this, sideHero, true);
 		this->addChild(fish);
 		fish->startWeapon(true);
 		fish->setPosition(hero->getPosition());
@@ -357,7 +383,7 @@ void HelloWorld::transferPickWeaponToWeapon(PickWeapon* pickWeapon,Entity* hero)
 			_currentUsedWeapon = tempWeapon;
 		}
 	}
-	//TODO:内存池优化
+	//TODO:内存池优化&&同类武器解决？
 	if (currentWeaponID == 2) {
 		if (!_weapon1) {
 			_weapon1 = tempWeapon;
@@ -368,14 +394,11 @@ void HelloWorld::transferPickWeaponToWeapon(PickWeapon* pickWeapon,Entity* hero)
 			_currentUsedWeapon = tempWeapon;
 		}
 	}
-	
-
-
-
-
-	
 
 }
+
+
+
 
 
 void HelloWorld::transferWeaponToPickWeapon(Weapon* weapon, Entity* hero) {

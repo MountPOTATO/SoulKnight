@@ -29,6 +29,9 @@ public:
 	void stopRocker();
 	ERocker8Direction getRockerDirection()const { return m_direction; }
 	ERockerButtonPress getRockerPressButton()const { return m_pressButton; }
+
+
+	bool isPressSwitch() {	return m_pressSwitch == true;	}
 private:
 	EventListenerTouchOneByOne* listener;
 	EventListenerKeyboard* listenerKeyboard;
@@ -63,6 +66,9 @@ private:
 	
 
 	bool m_pressAttack, m_pressLimitBreak, m_pressSwitch;
+
+	
+
 	ERockerButtonPress m_pressButton;//∞¥º¸ ‰»Î
 	
 	

@@ -87,7 +87,7 @@ enum EEntityBuffEffect {
 
 
 
-
+//武器类型名与所属名
 #define GUN "Gun"
 #define MELEE "Melee"
 #define GUN_OLDPISTOL "OldPistol"
@@ -95,6 +95,10 @@ enum EEntityBuffEffect {
 #define GUN_SMG "SMG"
 #define MELEE_FISH "Fish"
 #define GUN_SHOTGUN "Shotgun"
+
+//一些时间间隔
+#define SWITCH_TIMESPACE 1.0f
+#define PICK_TIMESPACE 1.0f
 
 
 
