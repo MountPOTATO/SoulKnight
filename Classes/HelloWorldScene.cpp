@@ -74,11 +74,7 @@ bool HelloWorld::init()
 	//初始化英雄
 	_hero = addCharacter(_map, 1);
 
-	_testMonster = Ranger::create();
-	_testMonster->setPosition(_hero->getPositionX() + 100, _hero->getPositionY() + 50);
-	this->addChild(_testMonster);
-	_currentUnit.pushBack(_testMonster);
-
+	
 
 	initHRocker();
 
@@ -111,11 +107,6 @@ bool HelloWorld::init()
 	_treasureBoxVec.pushBack(treasureBox);
 	
 
-
-	auto pickWeapon2 = PickWeapon::create
-	(Vec2(_hero->getPositionX()+100, _hero->getPositionY() - 100), _hero, this, GUN, GUN_SNIPER, _rocker);
-	this->addChild(pickWeapon2);
-	_pickableWeaponVec.pushBack(pickWeapon2);
 
 
 
@@ -166,7 +157,9 @@ void HelloWorld::update(float delta) {
 	//更新掉落物
 	_direct->updatePickThingSprite();
 
+
 	updateTreasureBoxVec();
+	updatePickBottleVec();
 	updateWeaponHolding();
 	updatePickWeaponAndWeapon();
 
@@ -293,7 +286,7 @@ Character* HelloWorld::addCharacter(TMXTiledMap* map, int HeroID) {
 
 
 
-void HelloWorld::transferPickWeaponToWeapon(PickWeapon* pickWeapon,Entity* hero) {
+void HelloWorld::transferPickWeaponToWeapon(PickWeapon* pickWeapon, Character* hero) {
 
 	auto name = pickWeapon->getImageName();
 
@@ -397,7 +390,7 @@ void HelloWorld::transferPickWeaponToWeapon(PickWeapon* pickWeapon,Entity* hero)
 
 
 
-void HelloWorld::transferWeaponToPickWeapon(Weapon* weapon, Entity* hero) {
+void HelloWorld::transferWeaponToPickWeapon(Weapon* weapon, Character* hero) {
 
 	auto name =weapon->getImageName();
 	auto typeName = weapon->getTypeName();
@@ -428,3 +421,17 @@ void HelloWorld::updateTreasureBoxVec() {
 	}
 }
 
+void HelloWorld::updatePickBottleVec() {
+	for (auto i = _pickableBottleVec.begin(); i != _pickableBottleVec.end();) {
+
+		(*i)->updatePickBottleState();
+
+		if ((*i)->objectIsPressed()) {
+			(*i)->addPoint();
+			(*i)->stopPickBottle();
+			i = _pickableBottleVec.erase(i);
+		}
+		else
+			i++;
+	}
+}

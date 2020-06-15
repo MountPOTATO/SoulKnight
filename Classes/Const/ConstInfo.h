@@ -96,6 +96,9 @@ enum EEntityBuffEffect {
 #define MELEE_FISH "Fish"
 #define GUN_SHOTGUN "Shotgun"
 
+#define RED "red"
+#define BLUE "blue"
+
 //一些时间间隔
 #define SWITCH_TIMESPACE 1.0f
 #define PICK_TIMESPACE 1.0f

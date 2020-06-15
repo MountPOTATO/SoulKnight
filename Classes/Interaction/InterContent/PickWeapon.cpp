@@ -6,7 +6,7 @@
 #define TAG_PICKWEAPON 1 
 
 PickWeapon* PickWeapon::create
-(Point position, Entity* hero, HelloWorld* scene, const char* typeName, const char* imageName,HRocker* rocker) {
+(Point position, Character* hero, HelloWorld* scene, const char* typeName, const char* imageName,HRocker* rocker) {
 	PickWeapon* pickWeapon = new(std::nothrow)PickWeapon;
 	if (pickWeapon && pickWeapon->init(position,hero,scene,typeName,imageName,rocker)) {
 		pickWeapon->autorelease();
@@ -17,7 +17,7 @@ PickWeapon* PickWeapon::create
 }
 
 bool PickWeapon::init
-(Point position, Entity* hero, HelloWorld* scene, const char* typeName,const char*imageName,HRocker* rocker) {
+(Point position, Character* hero, HelloWorld* scene, const char* typeName,const char*imageName,HRocker* rocker) {
 	if (!Node::init()) return false;
 
 	this->setPosition(position);

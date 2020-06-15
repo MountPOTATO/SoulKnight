@@ -13,10 +13,10 @@ class PickWeapon :public ManualPickObject {
 public:
 
 	static PickWeapon* create
-		(Point position, Entity* hero, HelloWorld* scene,const char* typeName, const char* imageName, HRocker* rocker);
+		(Point position, Character* hero, HelloWorld* scene,const char* typeName, const char* imageName, HRocker* rocker);
 
 	virtual bool init
-		(Point position, Entity* hero, HelloWorld* scene,const char* typeName, const char* imageName, HRocker* rocker);
+		(Point position, Character* hero, HelloWorld* scene,const char* typeName, const char* imageName, HRocker* rocker);
 
 	void updatePickWeaponState();
 
@@ -27,6 +27,8 @@ public:
 	void stopPickWeapon(bool _isStopOther);
 
 	void initPickWeaponState() { _isNearHero = false; _isPressed = false; }
+
+	
 };
 
 

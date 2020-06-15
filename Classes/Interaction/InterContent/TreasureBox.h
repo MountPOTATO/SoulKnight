@@ -5,6 +5,7 @@
 #include "cocos2d.h"
 #include "Interaction/InterContent/ManualPickObject.h"
 
+class Character;
 
 
 USING_NS_CC;
@@ -16,10 +17,10 @@ class TreasureBox :public ManualPickObject
 
 public:
 	static TreasureBox* create
-	(Point position, Entity* hero, HelloWorld* scene, HRocker* rocker);
+	(Point position, Character* hero, HelloWorld* scene, HRocker* rocker);
 
 	virtual bool init
-	(Point position, Entity* hero, HelloWorld* scene, HRocker* rocker);
+	(Point position, Character* hero, HelloWorld* scene, HRocker* rocker);
 
 	void updateTreasureBoxState();
 

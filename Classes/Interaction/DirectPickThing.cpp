@@ -1,9 +1,10 @@
 #include "Interaction/DirectPickThing.h"
-#include "Entity/Entity.h"
+
+#include "Entity/Character.h"
 #include <cmath>
 #include "HelloWorldScene.h"
 
-DirectPickThing* DirectPickThing::create(Point position, Entity* hero, float stickRange,
+DirectPickThing* DirectPickThing::create(Point position, Character* hero, float stickRange,
 	int blueNumber, int coinNumber, int generateRange, HelloWorld* helloWorldScene) {
 
 	DirectPickThing* dpthing = new DirectPickThing;
@@ -15,7 +16,7 @@ DirectPickThing* DirectPickThing::create(Point position, Entity* hero, float sti
 	return NULL;
 }
 
-bool DirectPickThing::init(Point position, Entity* hero, float stickRange,
+bool DirectPickThing::init(Point position, Character* hero, float stickRange,
 	int blueNumber, int coinNumber, int generateRange, HelloWorld* helloWorldScene) {
 
 	if (!Node::init()) return false;

@@ -45,7 +45,7 @@
 #include "Interaction/DirectPickThing.h"
 #include "Interaction/InterContent/PickWeapon.h"
 #include "Interaction/InterContent/TreasureBox.h"
-
+#include "Interaction/PickBottle.h"
 class Weapon;
 
 class HelloWorld : public cocos2d::Scene
@@ -53,7 +53,7 @@ class HelloWorld : public cocos2d::Scene
 	//5.18加入CCSYNTHESIZE 控制器类
 	CC_SYNTHESIZE(HRocker*, _rocker, Rocker);
 
-	CC_SYNTHESIZE(Entity*, _hero, Hero);
+	CC_SYNTHESIZE(Character*, _hero, Hero);
 
 	CC_SYNTHESIZE(Ranger*, _testMonster, TestMonster);
 
@@ -96,7 +96,8 @@ public:
 	Vector<Weapon*> _weaponVec;//武器Vector(定)
 	Weapon* _currentUsedWeapon;//当下武器
 	Vector<PickWeapon*> _pickableWeaponVec;
-
+	Vector<PickBottle*> _pickableBottleVec;
+	void updatePickBottleVec();
 
 
 	CC_SYNTHESIZE(TMXTiledMap*, _map, Map);
@@ -106,8 +107,8 @@ public:
 
 
 	
-	void transferPickWeaponToWeapon(PickWeapon*,Entity*);
-	void transferWeaponToPickWeapon(Weapon*,Entity*);
+	void transferPickWeaponToWeapon(PickWeapon*,Character*);
+	void transferWeaponToPickWeapon(Weapon*, Character*);
 
 
 

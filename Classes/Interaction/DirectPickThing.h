@@ -5,6 +5,7 @@
 USING_NS_CC;
 
 class Entity;
+class Character;
 class HelloWorld;
 //自动拾取物体，包括金币，能量
 
@@ -18,16 +19,16 @@ class DirectPickThing :public Node
 
 	CC_SYNTHESIZE(HelloWorld*, _pickThingScene, PickThingScene);//场景
 
-	CC_SYNTHESIZE(Entity*, _hero, Hero);//赋予的英雄
+	CC_SYNTHESIZE(Character*, _hero, Hero);//赋予的英雄
 
 public:
 	
 
-	static DirectPickThing* create(Point position, Entity* hero, float stickRange,
+	static DirectPickThing* create(Point position, Character* hero, float stickRange,
 		 int blueNumber,int coinNumber, int generateRange, HelloWorld* helloWorldScene);
 
 
-	virtual bool init(Point position, Entity* hero, float stickRange,
+	virtual bool init(Point position, Character* hero, float stickRange,
 		int blueNumber, int coinNumber, int generateRange, HelloWorld* helloWorldScene);
 
 	void updatePickThingSprite();

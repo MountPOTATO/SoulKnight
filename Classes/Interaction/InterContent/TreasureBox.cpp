@@ -4,8 +4,9 @@
 #include "HelloWorldScene.h"
 
 #include "Interaction/InterContent/PickWeapon.h"
+#include "Interaction/PickBottle.h"
 
-TreasureBox* TreasureBox::create(Point position, Entity* hero, HelloWorld* scene, HRocker* rocker)
+TreasureBox* TreasureBox::create(Point position, Character* hero, HelloWorld* scene, HRocker* rocker)
 {
 	TreasureBox* treasurebox = new(std::nothrow)TreasureBox;
 	if (treasurebox && treasurebox->init(position, hero, scene, rocker)) {
@@ -16,7 +17,7 @@ TreasureBox* TreasureBox::create(Point position, Entity* hero, HelloWorld* scene
 	return NULL;
 }
 
-bool TreasureBox::init(Point position, Entity* hero, HelloWorld* scene, HRocker* rocker)
+bool TreasureBox::init(Point position, Character* hero, HelloWorld* scene, HRocker* rocker)
 {
 	setPosition(position);
 
@@ -38,7 +39,7 @@ bool TreasureBox::init(Point position, Entity* hero, HelloWorld* scene, HRocker*
 
 
 	srand((unsigned)time(NULL));
-	_randID = rand() % 4 + 1;
+	_randID = rand() % 6 + 1;
 
 
 	auto listener = EventListenerKeyboard::create();
@@ -139,6 +140,19 @@ void TreasureBox::generateRandomObject() {
 		_pickThingScene->addChild(pickWeapon);
 		_pickThingScene->_pickableWeaponVec.pushBack(pickWeapon);
 	}
+	if (_randID == 5) {
 
+		auto pickbottle = PickBottle::create
+		(this->getPosition(), _hero, _pickThingScene, RED, _rocker);
+		_pickThingScene->addChild(pickbottle);
+		_pickThingScene->_pickableBottleVec.pushBack(pickbottle);
+	}
+	if (_randID == 6) {
+
+		auto pickbottle= PickBottle::create
+		(this->getPosition(), _hero, _pickThingScene, BLUE, _rocker);
+		_pickThingScene->addChild(pickbottle);
+		_pickThingScene->_pickableBottleVec.pushBack(pickbottle);
+	}
 	_isunUsed = false;
 }

@@ -9,6 +9,7 @@ class HelloWorld;
 class Entity;
 
 class HRocker;
+class Character;
 
 USING_NS_CC;
 
@@ -16,7 +17,7 @@ class ManualPickObject :public Node {
 private:
 	CC_SYNTHESIZE(HelloWorld*, _pickThingScene, PickThingScene);//³¡¾°
 
-	CC_SYNTHESIZE(Entity*, _hero, Hero);//Ó¢ÐÛ
+	CC_SYNTHESIZE(Character*, _hero, Hero);//Ó¢ÐÛ
 
 	CC_SYNTHESIZE(bool,_isNearHero, IsNearHero);
 
