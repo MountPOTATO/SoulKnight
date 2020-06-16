@@ -107,7 +107,14 @@ enum EEntityBuffEffect {
 #define SWITCH_TIMESPACE 1.0f
 #define PICK_TIMESPACE 1.0f
 
+//controller的标识
+#define CONTROLLER_TAG 150
 
+//加速区域加速后的速度
+#define ACCELERATE_KNIGHT_SPEED 12
+
+//加速时间
+#define ACCELERATE_TIME 1.2f
 
 
 

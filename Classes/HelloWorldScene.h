@@ -46,6 +46,7 @@
 #include "Interaction/InterContent/PickWeapon.h"
 #include "Interaction/InterContent/TreasureBox.h"
 #include "Interaction/PickBottle.h"
+#include "Interaction/SpecialEffectArea/AccelerateArea.h"
 class Weapon;
 
 class HelloWorld : public cocos2d::Scene
@@ -91,6 +92,11 @@ public:
 	Vector<TreasureBox*> _treasureBoxVec;
 	void updateTreasureBoxVec();
 
+	//加速区域以及时间数组
+	Vector<AccelerateArea*> _accelerateAreaVec;
+	void updateAccelerateArea();
+	clock_t startTime = 0;
+	clock_t endTime = 0;
 
 	//初始化摇杆
 	void initHRocker();

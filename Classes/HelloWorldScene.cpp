@@ -111,7 +111,15 @@ bool HelloWorld::init()
 	this->addChild(treasureBox);
 	_treasureBoxVec.pushBack(treasureBox);
 
+	auto accelerateArea1 = AccelerateArea::create
+	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 300), _hero, this);
+	this->addChild(accelerateArea1);
+	_accelerateAreaVec.pushBack(accelerateArea1);
 
+	auto accelerateArea2 = AccelerateArea::create
+	(Vec2(_hero->getPositionX() + 300, _hero->getPositionY() - 300), _hero, this);
+	this->addChild(accelerateArea2);
+	_accelerateAreaVec.pushBack(accelerateArea2);
 
 
 
@@ -187,6 +195,7 @@ void HelloWorld::update(float delta) {
 	updatePickBottleVec();
 	updateWeaponHolding();
 	updatePickWeaponAndWeapon();
+	updateAccelerateArea();
 
 	//ÎäÆ÷
 
@@ -455,6 +464,29 @@ void HelloWorld::updateTreasureBoxVec() {
 
 		}
 		i++;
+	}
+}
+
+void HelloWorld::updateAccelerateArea()
+{
+	bool doHasCollied = 0;
+	clock_t initTime = startTime;
+	endTime = clock();
+	for (auto i = _accelerateAreaVec.begin(); i != _accelerateAreaVec.end(); i++)
+	{
+		(*i)->updateAccelerateArea();
+		if ((*i)->isColliedJudge())
+		{
+			startTime = clock();
+			(*i)->accelerateHeroSpeed(this);
+			(*i)->setIsCollied(false);
+			doHasCollied = true;
+		}
+	}
+	double finalTime = (double)(endTime - initTime) / CLOCKS_PER_SEC;
+	if (finalTime >= ACCELERATE_TIME && (!doHasCollied))
+	{
+		(*(_accelerateAreaVec.begin()))->resetHeroSpeed(this);
 	}
 }
 
