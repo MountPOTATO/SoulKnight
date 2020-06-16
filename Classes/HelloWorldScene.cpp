@@ -24,15 +24,20 @@
 
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
-
+#include <cstdlib>
 #include "Const/ConstInfo.h"
 
 USING_NS_CC;
 
-Scene* HelloWorld::createScene()
+
+
+Scene* HelloWorld::createScene(int order)
 {
 
-	return HelloWorld::create();
+	auto helloWorld = HelloWorld::create();
+	helloWorld->_mapOrder = order;
+	return helloWorld;
+
 }
 
 float MyGetRad(Point point1, Point point2);
@@ -57,19 +62,9 @@ bool HelloWorld::init()
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-	//test Entity can delete
 
-
-
-
-	//测试自动瞄准时加上，不需要测试时去掉,同时在update函数中添加相应的模块
-
-
-
-	//测试地图和角色
-	//先放人物再放武器
-	//Maps/test.tmx
-	_map = TMXTiledMap::create("Maps/safeMapTest.tmx");
+	std::string levelOrder = StringUtils::format("%d", _mapOrder);
+	_map = TMXTiledMap::create(StringUtils::format("Maps/HelloWorldMap%s.tmx", levelOrder));
 	this->addChild(_map);
 	//初始化英雄
 	_hero = addCharacter(_map, 1);
@@ -77,11 +72,9 @@ bool HelloWorld::init()
 
 
 	auto monster = Ranger::create();
-	monster->setPosition(Vec2(_hero->getPositionX() , _hero->getPositionY() - 200));
+	monster->setPosition(Vec2(_hero->getPositionX(), _hero->getPositionY() - 200));
 	this->addChild(monster);
-
 	_currentEnemy.pushBack(monster);
-
 
 	initHRocker();
 
@@ -94,36 +87,23 @@ bool HelloWorld::init()
 	initWeapon->setOwner(_hero);
 	_currentUsedWeapon = initWeapon;
 
-
-
 	_weapon1 = _currentUsedWeapon;
 	_weapon2 = nullptr;
 
 
+	if (_mapOrder == 0)
+		safeHouseInit();
+
 
 	//测试掉落物直接减起,后期加入Vector
-	_direct = DirectPickThing::create
+	/*_direct = DirectPickThing::create
 	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 250), _hero, 20.f, 3, 3, 5, this);
-	this->addChild(_direct);
-
-	auto treasureBox = TreasureBox::create
-	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 150), _hero, this, _rocker);
-	this->addChild(treasureBox);
-	_treasureBoxVec.pushBack(treasureBox);
-
-	auto accelerateArea1 = AccelerateArea::create
-	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 300), _hero, this);
-	this->addChild(accelerateArea1);
-	_accelerateAreaVec.pushBack(accelerateArea1);
-
-	auto accelerateArea2 = AccelerateArea::create
-	(Vec2(_hero->getPositionX() + 300, _hero->getPositionY() - 300), _hero, this);
-	this->addChild(accelerateArea2);
-	_accelerateAreaVec.pushBack(accelerateArea2);
+	this->addChild(_direct);*/
 
 	//加载ui
 	//this->loadUI
 	//("Resources\\DemoHead_UI\\DemoHead_UI.ExportJson");
+
 
 
 	this->scheduleUpdate();
@@ -144,6 +124,29 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 
 }
 
+bool HelloWorld::safeHouseInit() {
+	//在安全房的init
+	auto treasureBox = TreasureBox::create
+	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 180), _hero, this, _rocker);
+	this->addChild(treasureBox);
+	_treasureBoxVec.pushBack(treasureBox);
+
+
+	//accelerateDemo
+	auto accelerateArea1 = AccelerateArea::create
+	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 300), _hero, this);
+	this->addChild(accelerateArea1);
+	_accelerateAreaVec.pushBack(accelerateArea1);
+
+	auto accelerateArea2 = AccelerateArea::create
+	(Vec2(_hero->getPositionX() + 300, _hero->getPositionY() - 300), _hero, this);
+	this->addChild(accelerateArea2);
+	_accelerateAreaVec.pushBack(accelerateArea2);
+
+	return true;
+}
+
+
 
 void HelloWorld::initHRocker()
 {
@@ -156,21 +159,19 @@ void HelloWorld::initHRocker()
 
 
 
-//测试函数：初始化武器实例（破旧的手枪，鱼（尚方宝剑），冲锋枪，霰弹枪）
-
-
-
-
 
 
 void HelloWorld::update(float delta) {
-	for (auto j : _currentUnit) {
+
+	_rocker->updatePosition(Vec2(_hero->getPositionX() - 550, _hero->getPositionY() - 350));
+
+	for (auto j : _currentEnemy) {
 		if (_hero->getBoundingBox().intersectsRect(j->getBoundingBox()))
 			_hero->hit(1, j->getPosition());
 	}
 
 
-	for (auto& j : _currentEnemy) {
+	/*for (auto& j : _currentEnemy) {
 		auto currentTime = GetCurrentTime() / 1000.f;
 
 		if (currentTime - _firetime < SWITCH_TIMESPACE) break;
@@ -183,14 +184,14 @@ void HelloWorld::update(float delta) {
 			_enemyBullet.pushBack(bullet);
 		}
 	}
-
 	for (auto& j : _enemyBullet) {
 		j->calPosition();
-	}
+	}*/
 
 
 	//更新掉落物
-	_direct->updatePickThingSprite();
+	//_direct->updatePickThingSprite();
+
 
 
 	updateTreasureBoxVec();
@@ -198,9 +199,6 @@ void HelloWorld::update(float delta) {
 	updateWeaponHolding();
 	updatePickWeaponAndWeapon();
 	updateAccelerateArea();
-
-	//武器
-
 
 
 
@@ -217,23 +215,42 @@ void HelloWorld::update(float delta) {
 }
 
 void HelloWorld::updateBullet() {
-	//TODO:只添加了射击现象
+	//对我方子弹进行遍历
 	for (auto i = _bullets.begin(); i != _bullets.end(); ) {
 		bool temp = true;
 		(*i)->setVisible(true);
-		(*i)->calPosition();
-		if ((*i)->isPosBlocked((*i)->getPosition())) {
+		(*i)->calPosition();//更新位置信息
+		if ((*i)->isPosBlocked((*i)->getPosition())) {//被障碍物格挡，消除
 			(*i)->stopBullet();
 			i = _bullets.erase(i);
 			temp = false;
 		}
-		else for (auto& j : _currentUnit) {
-			if (j->getBoundingBox().intersectsRect((*i)->getBoundingBox())) {
-				//TODO:怪物受伤判定
+		else for (auto& enmy : _currentEnemy) {//打中怪物 扣血消除
+			if (enmy->getBoundingBox().intersectsRect((*i)->getBoundingBox())) {
+				enmy->setHP(enmy->getHP() - (*i)->getBulletAttack());
 				(*i)->stopBullet();
 				i = _bullets.erase(i);
 				temp = false;
 			}
+		}
+		if (temp) i++;
+	}
+	//对敌方子弹遍历
+	for (auto i = _enemyBullet.begin(); i != _enemyBullet.end(); ) {
+		bool temp = true;
+		(*i)->setVisible(true);
+		(*i)->calPosition();//位置信息更新
+		if ((*i)->isPosBlocked((*i)->getPosition())) {//被障碍物格挡，消除
+			(*i)->stopBullet();
+			i = _enemyBullet.erase(i);
+			temp = false;
+		}
+		//打中主角 击退 消除
+		else if (_hero->getBoundingBox().intersectsRect((*i)->getBoundingBox())) {
+			_hero->hit((*i)->getBulletAttack(), (*i)->getPosition());
+			(*i)->stopBullet();
+			i = _bullets.erase(i);
+			temp = false;
 		}
 		if (temp) i++;
 	}
@@ -311,7 +328,7 @@ Character* HelloWorld::addCharacter(TMXTiledMap* map, int HeroID) {
 	ControllerOfEightDir* m_controller = ControllerOfEightDir::create();
 	m_Character->setController(m_controller);
 	m_controller->setiSpeed(m_Character->getSpeed());
-	this->addChild(m_controller);
+	this->addChild(m_controller, 0, CONTROLLER_TAG);
 
 
 
@@ -469,6 +486,7 @@ void HelloWorld::updateTreasureBoxVec() {
 	}
 }
 
+
 void HelloWorld::updateAccelerateArea()
 {
 	bool doHasCollied = 0;
@@ -476,7 +494,9 @@ void HelloWorld::updateAccelerateArea()
 	endTime = clock();
 	for (auto i = _accelerateAreaVec.begin(); i != _accelerateAreaVec.end(); i++)
 	{
+		(*i)->setPositionZ(_hero->getPositionZ() - 18);
 		(*i)->updateAccelerateArea();
+
 		if ((*i)->isColliedJudge())
 		{
 			startTime = clock();
@@ -526,6 +546,7 @@ float MyGetRad(Point point1, Point point2) {
 	}
 	return rad;
 }
+
 
 //加载ui
 /*

@@ -41,7 +41,7 @@ void AccelerateArea::updateAccelerateArea()    //¸üÐÂÊÇ·ñºÍÖ÷½Ç²úÉúÅö×²£¬¼´ÊÇ·ñµ
 	auto area = (Sprite*)this->getChildByTag(1);
 	/*log("is update");*/
 	/*log("%d", isCollied);*/
-	if (this->getPosition().distance(theHero->getPosition()) <= 17.0f)
+	if (this->getPosition().distance(theHero->getPosition()) <=ACCELERATE_TOUCHRANGE)
 	{
 		isCollied = true;
 		/*log("is collied");*/
@@ -49,15 +49,15 @@ void AccelerateArea::updateAccelerateArea()    //¸üÐÂÊÇ·ñºÍÖ÷½Ç²úÉúÅö×²£¬¼´ÊÇ·ñµ
 	else isCollied = false;
 }
 
-void AccelerateArea::accelerateHeroSpeed(HelloWorld* scene) //¸Ä±äÖ÷½ÇµÄËÙ¶È£¬ÈÃÖ÷½Ç¼ÓËÙ£¬¿¼ÂÇÒª²»Òª×öÒ»ÏÂ
-{                                          //¼ÓËÙµÄÌØÐ§
+void AccelerateArea::accelerateHeroSpeed(HelloWorld* scene) 
+{                                       
 	/*log("is speed");*/
 	if (isCollied)
 	{
 		theHero->setSpeed(ACCELERATE_KNIGHT_SPEED);
 		auto controller = (ControllerOfEightDir*)scene->getChildByTag(CONTROLLER_TAG);
 		controller->setiSpeed(theHero->getSpeed());
-		/*log("has speedup");*/
+		log("has speedup");
 	}
 }
 
@@ -66,6 +66,7 @@ void AccelerateArea::resetHeroSpeed(HelloWorld* scene)
 	theHero->setSpeed(KNIGHT_SPEED);
 	auto controller = (ControllerOfEightDir*)scene->getChildByTag(CONTROLLER_TAG);
 	controller->setiSpeed(theHero->getSpeed());
+
 }
 
 void AccelerateArea::vanishIt()

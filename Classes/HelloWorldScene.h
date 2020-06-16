@@ -47,17 +47,17 @@
 #include "Interaction/InterContent/TreasureBox.h"
 #include "Interaction/PickBottle.h"
 #include "Interaction/SpecialEffectArea/AccelerateArea.h"
-<<<<<<< HEAD
-=======
 
 
 
->>>>>>> fd2e215e90434deea13e29cc08059450435790b7
 class Weapon;
+
+
 
 class HelloWorld : public cocos2d::Scene
 {
-	//5.18加入CCSYNTHESIZE 控制器类
+	
+
 	CC_SYNTHESIZE(HRocker*, _rocker, Rocker);
 
 	CC_SYNTHESIZE(Character*, _hero, Hero);
@@ -65,9 +65,14 @@ class HelloWorld : public cocos2d::Scene
 	CC_SYNTHESIZE(Ranger*, _testMonster, TestMonster);
 
 public:
-	static cocos2d::Scene* createScene();
+	
+	static cocos2d::Scene* createScene(int order);
+	CC_SYNTHESIZE(INT32,_mapOrder, MapOrder);
+
 
 	virtual bool init();
+	bool safeHouseInit();
+
 
 	// a selector callback
 	void menuCloseCallback(cocos2d::Ref* pSender);
@@ -76,58 +81,58 @@ public:
 	CREATE_FUNC(HelloWorld);
 
 	virtual void update(float delta);//更新状态
+
+
+
+
+	//容器集
+	Vector<Bullet*> _bullets;
+	Vector<Monster*> _currentEnemy;
+	Vector<Bullet*> _enemyBullet;
+	float _firetime;
+	Vector<PickWeapon*> _pickableWeaponVec;
+	Vector<PickBottle*> _pickableBottleVec;
+	Vector<TreasureBox*> _treasureBoxVec;
+	cocos2d::Vector<Sprite*> _energyVec;//能量掉落物Vector
+	cocos2d::Vector<Sprite*> _coinVec;//金币掉落物Vector
+	//加速区域以及时间元素
+	Vector<AccelerateArea*> _accelerateAreaVec;
+	
+	
+
+	//容器维护更新
+	void updateTreasureBoxVec();
+	void updateAccelerateArea();
+	void updatePickBottleVec();
 	void updateBullet();
 	void updateDirectPickThingSprite();
 	void updatePickWeaponAndWeapon();
 
-	//容器集
-	Vector<Bullet*> _bullets;
 
-	Vector<Entity*> _currentUnit;
-
-	Vector<Monster*> _currentEnemy;
-	Vector<Bullet*> _enemyBullet;
-	float _firetime;
-
-	//test
-	Vector<Character*>_test;
-
-	cocos2d::Vector<Sprite*> _energyVec;//能量掉落物Vector
-	cocos2d::Vector<Sprite*> _coinVec;//金币掉落物Vector
-
-	Vector<TreasureBox*> _treasureBoxVec;
-	void updateTreasureBoxVec();
-
-	//加速区域以及时间元素
-	Vector<AccelerateArea*> _accelerateAreaVec;
-	void updateAccelerateArea();
-	clock_t startTime = 0;
-	clock_t endTime = 0;
 
 	//初始化摇杆
 	void initHRocker();
 
-	//测试组件:
-
+	
+	//人物武器
 	Weapon* _weapon1;
 	Weapon* _weapon2;
 	Weapon* _emptyHandWeapon;
 	void updateWeaponHolding();//更新持有的武器（切换武器）
-
-	Vector<Weapon*> _weaponVec;//武器Vector(定)
 	Weapon* _currentUsedWeapon;//当下武器
-	Vector<PickWeapon*> _pickableWeaponVec;
-	Vector<PickBottle*> _pickableBottleVec;
-	void updatePickBottleVec();
-
-
-	CC_SYNTHESIZE(TMXTiledMap*, _map, Map);
-	CC_SYNTHESIZE(float, _lastPickTime, LastPicTime);
-	CC_SYNTHESIZE(float, _lastSwitchTime, LastPickTime);
-
-
 
 	
+	//地图
+	CC_SYNTHESIZE(TMXTiledMap*, _map, Map);
+
+	//冷却时间记录
+	CC_SYNTHESIZE(float, _lastPickTime, LastPicTime);
+	CC_SYNTHESIZE(float, _lastSwitchTime, LastPickTime);
+	clock_t startTime = 0;//加速带时间元素
+	clock_t endTime = 0;
+
+
+	//捡拾武器所需
 	void transferPickWeaponToWeapon(PickWeapon*,Character*);
 	void transferWeaponToPickWeapon(Weapon*, Character*);
 
@@ -140,10 +145,9 @@ public:
 
 public:
 	Character* addCharacter(TMXTiledMap* map,int HeroID);
-	
+	 
 	//加载ui
 	//bool loadUI(const char* file);
-
 private:
 	
 	
@@ -154,5 +158,8 @@ private:
 	//键盘输入
 	
 };
+
+
+
 
 #endif // __HELLOWORLD_SCENE_H__

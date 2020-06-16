@@ -125,7 +125,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     Director::getInstance()->setProjection(cocos2d::Director::Projection::_2D);
     Director::getInstance()->setDepthTest(true);//开启openGl的深度渲染
 
-    auto scene = HelloWorld::createScene();
+    auto scene = HelloWorld::createScene(0);
 	//auto scene = ExploreScene::createScene();
 
 
