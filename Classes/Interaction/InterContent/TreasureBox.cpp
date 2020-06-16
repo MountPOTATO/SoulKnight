@@ -32,6 +32,7 @@ bool TreasureBox::init(Point position, Character* hero, HelloWorld* scene, HRock
 	_hero = hero;
 	_rocker = rocker;
 
+
 	_isPressed = false;
 	_isNearHero = false;
 	_isunUsed = true;
@@ -39,7 +40,8 @@ bool TreasureBox::init(Point position, Character* hero, HelloWorld* scene, HRock
 
 
 	srand((unsigned)time(NULL));
-	_randID = rand() % 6 + 1;
+	/*_randID = rand() % 7 + 1;*/
+	_randID = 5;
 
 
 	auto listener = EventListenerKeyboard::create();
@@ -108,7 +110,7 @@ void TreasureBox::generateRandomObject() {
 	this->addChild(treaBoxOpen);
 	treaBoxOpen->setVisible(true);
 
-
+	treaBoxOpen->setPositionZ(_hero->getPositionZ() - 5);
 
 
 
@@ -141,13 +143,19 @@ void TreasureBox::generateRandomObject() {
 		_pickThingScene->_pickableWeaponVec.pushBack(pickWeapon);
 	}
 	if (_randID == 5) {
+		auto pickWeapon = PickWeapon::create
+		(this->getPosition(), _hero, _pickThingScene, MELEE, MELEE_WAND, _rocker);
+		_pickThingScene->addChild(pickWeapon);
+		_pickThingScene->_pickableWeaponVec.pushBack(pickWeapon);
+	}
+	if (_randID == 6) {
 
 		auto pickbottle = PickBottle::create
 		(this->getPosition(), _hero, _pickThingScene, RED, _rocker);
 		_pickThingScene->addChild(pickbottle);
 		_pickThingScene->_pickableBottleVec.pushBack(pickbottle);
 	}
-	if (_randID == 6) {
+	if (_randID == 7) {
 
 		auto pickbottle= PickBottle::create
 		(this->getPosition(), _hero, _pickThingScene, BLUE, _rocker);

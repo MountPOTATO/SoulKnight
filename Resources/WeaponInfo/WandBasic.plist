@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"/>
+
+<plist version="1.0">
+<array>
+       <dict>
+            <key>Attack</key>
+            <integer>12</integer>
+            <key>Precision</key>
+            <integer>0</integer>
+            <key>EnergyCost</key>
+            <integer>2</integer>
+            <key>WeaponPrice</key>
+            <integer>10</integer>
+            <key>BulletPerTime</key>
+            <integer>0</integer>
+      </dict>          
+</array>
+</plist>
