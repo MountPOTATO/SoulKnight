@@ -1,7 +1,7 @@
 #include "Gun.h"
 #include "HelloWorldScene.h"
 #include "LongRangeAttack/Bullet.h"
-#include "Const/ConstInfo.h"
+
 
 Gun* Gun::create
 (const char* weaponImageName1, const char* weaponImageName2,
@@ -112,6 +112,7 @@ bool Gun::attack() {
 	for (int i = 0; i <=this->getBulletPerTime() - 1; i++) {
 		Bullet* bullet = Bullet::create(_bulletImageName, _bulletFlyingSpeed, this, bulletBuff, true);
 		bullet->setScale(1.8f);
+		bullet->setTiledMap(this->m_map);
 		_currentScene->_bullets.pushBack(bullet);
 		_currentScene->addChild(bullet);
 	}

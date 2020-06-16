@@ -75,7 +75,12 @@ public:
 
 	//ÈÝÆ÷¼¯
 	Vector<Bullet*> _bullets;
+
 	Vector<Entity*> _currentUnit;
+
+	Vector<Monster*> _currentEnemy;
+	Vector<Bullet*> _enemyBullet;
+	float _firetime;
 
 	//test
 	Vector<Character*>_test;

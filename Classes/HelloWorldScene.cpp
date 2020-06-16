@@ -31,8 +31,11 @@ USING_NS_CC;
 
 Scene* HelloWorld::createScene()
 {
+
 	return HelloWorld::create();
 }
+
+float MyGetRad(Point point1, Point point2);
 
 // Print useful error message instead of segfaulting when files are not there.
 static void problemLoading(const char* filename)
@@ -57,26 +60,27 @@ bool HelloWorld::init()
 	//test Entity can delete
 
 
-	
+
 
 	//测试自动瞄准时加上，不需要测试时去掉,同时在update函数中添加相应的模块
-	
+
 
 
 	//测试地图和角色
 	//先放人物再放武器
-	_map = TMXTiledMap::create("Maps/test.tmx");
+	//Maps/test.tmx
+	_map = TMXTiledMap::create("Maps/safeMapTest.tmx");
 	this->addChild(_map);
 	//初始化英雄
 	_hero = addCharacter(_map, 1);
 
 
-	
+
 	auto monster = Ranger::create();
-	monster->setPosition(Vec2(_hero->getPositionX() +100, _hero->getPositionY() - 200));
+	monster->setPosition(Vec2(_hero->getPositionX() , _hero->getPositionY() - 200));
 	this->addChild(monster);
 
-	_currentUnit.pushBack(monster);
+	_currentEnemy.pushBack(monster);
 
 
 	initHRocker();
@@ -102,11 +106,10 @@ bool HelloWorld::init()
 	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 250), _hero, 20.f, 3, 3, 5, this);
 	this->addChild(_direct);
 
-	auto treasureBox=TreasureBox::create
-	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 100), _hero, this, _rocker);
+	auto treasureBox = TreasureBox::create
+	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 150), _hero, this, _rocker);
 	this->addChild(treasureBox);
 	_treasureBoxVec.pushBack(treasureBox);
-	
 
 
 
@@ -155,7 +158,26 @@ void HelloWorld::update(float delta) {
 		if (_hero->getBoundingBox().intersectsRect(j->getBoundingBox()))
 			_hero->hit(1, j->getPosition());
 	}
-	
+
+
+	for (auto& j : _currentEnemy) {
+		auto currentTime = GetCurrentTime() / 1000.f;
+
+		if (currentTime - _firetime < SWITCH_TIMESPACE) break;
+		_firetime = currentTime;
+		Bullet* bullet = Bullet::create("BulletImage\\SMGBullet.png", 100, j, MyGetRad(j->getPosition(), _hero->getPosition()));
+		if (bullet) {
+			bullet->setScale(1.8);
+			bullet->setTiledMap(this->_map);
+			this->addChild(bullet);
+			_enemyBullet.pushBack(bullet);
+		}
+	}
+
+	for (auto& j : _enemyBullet) {
+		j->calPosition();
+	}
+
 
 	//更新掉落物
 	_direct->updatePickThingSprite();
@@ -168,9 +190,9 @@ void HelloWorld::update(float delta) {
 
 	//武器
 
-	auto i = _currentUnit.begin();
-	
-	
+
+
+
 	_currentUsedWeapon->updateTarget();
 	_currentUsedWeapon->updateImageRotation(_rocker);
 	_currentUsedWeapon->updateCurrentLocation();
@@ -181,9 +203,6 @@ void HelloWorld::update(float delta) {
 	/*}*/
 	updateBullet();//更新飞行物
 
-
-
-
 }
 
 void HelloWorld::updateBullet() {
@@ -192,7 +211,12 @@ void HelloWorld::updateBullet() {
 		bool temp = true;
 		(*i)->setVisible(true);
 		(*i)->calPosition();
-		for (auto& j : _test) {
+		if ((*i)->isPosBlocked((*i)->getPosition())) {
+			(*i)->stopBullet();
+			i = _bullets.erase(i);
+			temp = false;
+		}
+		else for (auto& j : _currentUnit) {
 			if (j->getBoundingBox().intersectsRect((*i)->getBoundingBox())) {
 				//TODO:怪物受伤判定
 				(*i)->stopBullet();
@@ -210,7 +234,7 @@ void HelloWorld::updateWeaponHolding() {
 	if (currentTime - _lastSwitchTime < SWITCH_TIMESPACE) { return; }
 
 	if (_rocker->isPressSwitch()) {
-		if (_currentUsedWeapon == _weapon1&&_weapon2) {
+		if (_currentUsedWeapon == _weapon1 && _weapon2) {
 			_lastSwitchTime = currentTime;
 			_weapon1->stopWeapon(true);
 			_currentUsedWeapon = _weapon2;
@@ -232,19 +256,19 @@ void HelloWorld::updatePickWeaponAndWeapon() {
 
 	//更新场景中可捡起物体
 	for (auto i = _pickableWeaponVec.begin(); i != _pickableWeaponVec.end();) {
-		
+
 		(*i)->updatePickWeaponState();
-		
+
 		if ((*i)->objectIsPressed()) {//其中一个PickWeapon类的状态是“按下捡拾键”			
 
 			_lastPickTime = currentTime;
 			auto temp = *i;
-			if ((_currentUsedWeapon == _weapon1 && _weapon2!=nullptr)||
-				(_currentUsedWeapon == _weapon2 && _weapon1!=nullptr)) {
+			if ((_currentUsedWeapon == _weapon1 && _weapon2 != nullptr) ||
+				(_currentUsedWeapon == _weapon2 && _weapon1 != nullptr)) {
 				transferWeaponToPickWeapon(_currentUsedWeapon, _hero);//根据持有武器添加PickWeapon，添加入PickWeapon库
 			}
 			transferPickWeaponToWeapon(temp, _hero);//根据i的种类添加武器,并添加入武器库
-			
+
 			temp->initPickWeaponState();
 
 			auto oldpick = _pickableWeaponVec.find(temp);
@@ -305,7 +329,7 @@ void HelloWorld::transferPickWeaponToWeapon(PickWeapon* pickWeapon, Character* h
 
 
 	_currentUsedWeapon->stopWeapon(true);
-	
+
 	int currentWeaponID = (_currentUsedWeapon == _weapon1) ? 1 : 2;
 
 	Weapon* tempWeapon;
@@ -318,7 +342,7 @@ void HelloWorld::transferPickWeaponToWeapon(PickWeapon* pickWeapon, Character* h
 		oldPistol->setPosition(hero->getPosition());
 		oldPistol->setTiledMap(_map);
 		oldPistol->setOwner(_hero);
-		
+
 		tempWeapon = oldPistol;
 	}
 	else if (name == GUN_SMG) {
@@ -329,10 +353,10 @@ void HelloWorld::transferPickWeaponToWeapon(PickWeapon* pickWeapon, Character* h
 		smg->setPosition(hero->getPosition());
 		smg->setTiledMap(_map);
 		smg->setOwner(_hero);
-		
+
 
 		tempWeapon = smg;
-		
+
 	}
 	else if (name == GUN_SHOTGUN) {
 		auto stgun = Shotgun::create
@@ -342,7 +366,7 @@ void HelloWorld::transferPickWeaponToWeapon(PickWeapon* pickWeapon, Character* h
 		stgun->setPosition(hero->getPosition());
 		stgun->setTiledMap(_map);
 		stgun->setOwner(_hero);
-		
+
 		tempWeapon = stgun;
 	}
 	else if (name == GUN_SNIPER) {
@@ -355,7 +379,7 @@ void HelloWorld::transferPickWeaponToWeapon(PickWeapon* pickWeapon, Character* h
 		hecateII->setOwner(_hero);
 
 		tempWeapon = hecateII;
-		
+
 	}
 	else if (name == MELEE_FISH) {
 		auto fish = Fish::create
@@ -365,13 +389,13 @@ void HelloWorld::transferPickWeaponToWeapon(PickWeapon* pickWeapon, Character* h
 		fish->setPosition(hero->getPosition());
 		fish->setTiledMap(_map);
 		fish->setOwner(_hero);
-		
-		
+
+
 		tempWeapon = fish;
 	}
 
 	else {
-		
+
 		return;
 	}
 
@@ -405,11 +429,11 @@ void HelloWorld::transferPickWeaponToWeapon(PickWeapon* pickWeapon, Character* h
 
 void HelloWorld::transferWeaponToPickWeapon(Weapon* weapon, Character* hero) {
 
-	auto name =weapon->getImageName();
+	auto name = weapon->getImageName();
 	auto typeName = weapon->getTypeName();
-	
+
 	auto pickWeapon = PickWeapon::create
-		(Vec2(hero->getPositionX() + 50, hero->getPositionY()), hero, this, typeName,name, _rocker);
+	(Vec2(hero->getPositionX() + 50, hero->getPositionY()), hero, this, typeName, name, _rocker);
 
 	this->addChild(pickWeapon);
 	pickWeapon->initPickWeaponState();
@@ -419,16 +443,16 @@ void HelloWorld::transferWeaponToPickWeapon(Weapon* weapon, Character* hero) {
 }
 
 void HelloWorld::updateTreasureBoxVec() {
-	
+
 
 	//更新场景中可捡起物体
 	for (auto i = _treasureBoxVec.begin(); i != _treasureBoxVec.end();) {
 
 		(*i)->updateTreasureBoxState();
 
-		if ((*i)->isUnUsed()&&(*i)->objectIsPressed()) {		
+		if ((*i)->isUnUsed() && (*i)->objectIsPressed()) {
 			(*i)->generateRandomObject();
-			
+
 		}
 		i++;
 	}
@@ -447,4 +471,22 @@ void HelloWorld::updatePickBottleVec() {
 		else
 			i++;
 	}
+}
+
+
+float MyGetRad(Point point1, Point point2) {
+	//获得两点x,y距离
+	float xd = point2.x - point1.x;
+	float yd = point1.y - point2.y;
+	//斜边长度计算
+	float hypo = sqrt(pow(xd, 2) + pow(yd, 2));
+	//获得余弦值
+	float cos = xd / hypo;
+	//获得rad
+	float rad = acos(cos);
+	//取反ss
+	if (yd > 0) {
+		rad = -rad;
+	}
+	return rad;
 }
