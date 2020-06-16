@@ -11,13 +11,14 @@ USING_NS_CC;
 //
 //class Entity;
 
+class Monster;
 
-class Bullet :public Sprite {
+class Bullet :public Node {
 private:
 	CC_SYNTHESIZE(float,_attack, Attack);
 	CC_SYNTHESIZE(float,_flyingSpeed, FlyingSpeed);
 	CC_SYNTHESIZE(Weapon*, _shooter, Shooter);
-	/*CC_SYNTHESIZE(Entity*, _target, Target);*/
+
 	CC_SYNTHESIZE(WeaponBuff*,_buff, Buff);
 
 	CC_SYNTHESIZE(float, _initAngle, InitAngle);
@@ -30,11 +31,13 @@ public:
 	static Bullet* create
 	(const char* bulletImageName, float flyingSpeed, Weapon* shooter,  WeaponBuff* buff, bool hasDef);
 
-	//virtual bool init
-	//(const char* bulletImageName, float flyingSpeed, Point position, float Angle);
 
-	/*static Bullet* create
-	(const char* bulletImageName, float flyingSpeed, Point position, float Angle);*/
+	bool init 
+	(const char* bulletImageName, float flyingSpeed, Monster* monster, float AngleRad);
+
+
+	static Bullet* create
+	(const char* bulletImageName, float flyingSpeed, Monster* monster, float AngleRad);
 
 
 
@@ -48,6 +51,25 @@ public:
 
 	void stopBullet();
 
+	bool isPosBlocked(Point dstPos);
+
+
+	void setTiledMap(TMXTiledMap* map);
+
+
+
+	TMXLayer* meta;
+
+	Point tileCoordForPosition(Point pos);
+
+
+
+	//³¡¾°
+	void safeHouseObjectInit();
+
+
+private:
+	TMXTiledMap* m_map;
 };
 
 
