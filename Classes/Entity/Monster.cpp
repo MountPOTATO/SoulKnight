@@ -19,9 +19,21 @@ int Monster::getHP() {
 int Monster::getSpeed() {
 	return m_Speed;
 }
+float Monster::getAtkSpeed() {
+	return m_AtkSpeed;
+}
+int Monster::getAtk() {
+	return m_Atk;
+}
 void Monster::setHP(int hp) {
 	m_HP = hp;
 }
 void Monster::setSpeed(int speed) {
 	m_Speed = speed;
+}
+void Monster::setAtkSpeed(float atkSpeed) {
+	m_AtkSpeed = atkSpeed;
+}
+void Monster::setAtk(int atk){
+	m_Atk = atk;
 }

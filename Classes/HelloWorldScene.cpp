@@ -113,7 +113,9 @@ bool HelloWorld::init()
 
 
 
-
+	//¼ÓÔØui
+	//this->loadUI
+	//("Resources\\DemoHead_UI\\DemoHead_UI.ExportJson");
 
 
 	this->scheduleUpdate();
@@ -490,3 +492,13 @@ float MyGetRad(Point point1, Point point2) {
 	}
 	return rad;
 }
+
+//¼ÓÔØui
+/*
+bool HelloWorld::loadUI(const char* file) {
+	auto UI = cocostudio::GUIReader::getInstance()->
+		widgetFromJsonFile(file);
+	UI->setPosition(Point(100, 100));
+	this->addChild(UI);
+	return true;
+}*/

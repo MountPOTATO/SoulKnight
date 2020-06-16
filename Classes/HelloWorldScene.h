@@ -46,6 +46,9 @@
 #include "Interaction/InterContent/PickWeapon.h"
 #include "Interaction/InterContent/TreasureBox.h"
 #include "Interaction/PickBottle.h"
+
+
+
 class Weapon;
 
 class HelloWorld : public cocos2d::Scene
@@ -128,7 +131,9 @@ public:
 
 public:
 	Character* addCharacter(TMXTiledMap* map,int HeroID);
-	 
+	
+	//º”‘ÿui
+	//bool loadUI(const char* file);
 
 private:
 	
