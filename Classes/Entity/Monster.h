@@ -22,7 +22,7 @@ public:
 	void setSpeed(int speed);
 	void setAtkSpeed(float atkSpeed);
 	void setAtk(int atk);
-	virtual int attack() = 0;
+	int attack();
 	float lastAAttackTime;
 private:
 	int m_HP;

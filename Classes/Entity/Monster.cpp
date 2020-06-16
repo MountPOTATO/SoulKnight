@@ -37,3 +37,7 @@ void Monster::setAtkSpeed(float atkSpeed) {
 void Monster::setAtk(int atk){
 	m_Atk = atk;
 }
+int Monster::attack() {
+	return 0;
+
+}
