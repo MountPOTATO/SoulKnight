@@ -6,6 +6,7 @@
 #define RIGHT true
 #define LEFT false
 
+class Monster;
 
 class Melee :public Weapon {
 public:
@@ -30,7 +31,7 @@ public:
 
 
 private:
-	Vector<Entity*> _targetInRange;
+	std::vector<Monster*> _targetInRange;
 	
 
 

@@ -21,7 +21,9 @@ bool Sniper::init(const char* weaponImageName1, const char* weaponImageName2,
 	HelloWorld* currentScene, ESide side, bool heroOwned) {
 
 	Sprite* spHecate = Sprite::create(weaponImageName1);
+	spHecate->setTexture(weaponImageName1);
 	Sprite* spHecateReverse = Sprite::create(weaponImageName2);
+	spHecateReverse->setTexture(weaponImageName2);
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
 	if (heroOwned) {

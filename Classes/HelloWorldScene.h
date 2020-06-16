@@ -33,6 +33,7 @@
 #include "Arms/GunDerived/OldPistol.h"
 #include "Arms/Gun.h"
 #include "Arms/MeleeDerived/Fish.h"
+#include "Arms/MeleeDerived/Wand.h"
 #include "Arms/Melee.h"
 #include "Arms/GunDerived/SMG.h"
 #include "Arms/GunDerived/Shotgun.h"

@@ -1,8 +1,10 @@
 #include "Arms/Melee.h"
 #include "HelloWorldScene.h"
-#include "Entity/Entity.h"
-#include "LongRangeAttack/Bullet.h"
 
+#include "LongRangeAttack/Bullet.h"
+#include "Entity/Monster.h"
+
+#include "Entity/Character.h"
 Melee* Melee::create
 (const char* weaponImageName1, const char* weaponImageName2,
 	HelloWorld* currentScene, ESide side, bool _heroOwned) {
@@ -81,16 +83,16 @@ void Melee::updateTarget() {
 		return;
 	}
 	for (auto i = currentEnermies.begin(); i != currentEnermies.end(); i++) {
-		//TODO:阵营划分，注意好人为一类坏人为一类;或不引入
-		if (/*阵营判断*/(*i)->getPosition().distance(getPosition()) <= _attackRange) {
+
+		if ((*i)->getPosition().distance(getPosition()) <= _attackRange) {
 			_target = (*i);
-			_targetInRange.pushBack(*i);
+			_targetInRange.push_back(*i);
 			float d = (*i)->getPosition().distance(getPosition());
 			//log("%f", d);
 
 			for (i++; i != currentEnermies.end(); i++) {
 				if((*i)->getPosition().distance(getPosition()) <= _attackRange)
-					_targetInRange.pushBack(*i);
+					_targetInRange.push_back(*i);
 				if ((*i)->getPosition().distance(getPosition()) <= d)
 					_target = (*i);
 			}
@@ -114,12 +116,14 @@ bool Melee::attack() {
 	if (!_targetInRange.size()) {//存在目标
 		for (auto& i : _targetInRange) {
 			//TODO：执行伤害判定，给出伤害,需要后期Entity类承受伤害的功能实现
-			Bullet* bullet = Bullet::create("bulletImage/EmptyBullet.png", _bulletFlyingSpeed, this, NULL, true);
+			/*Bullet* bullet = Bullet::create("bulletImage/EmptyBullet.png", _bulletFlyingSpeed, this, NULL, true);
 			bullet->setScale(1);
 			_currentScene->_bullets.pushBack(bullet);
 			_currentScene->addChild(bullet);
-			bullet->setVisible(false);
+			bullet->setVisible(false);*/
+
 		}
+		_targetInRange.clear();
 	}
 	else {//不存在目标
 		//TODO:执行场景破坏判定，需要后期场景要素实现

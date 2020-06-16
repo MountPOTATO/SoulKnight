@@ -1,6 +1,7 @@
 #include "Weapon.h"
 #include "LongRangeAttack/Bullet.h"
-#include "Entity/Entity.h"
+#include "Entity/Character.h"
+#include "Entity/Monster.h"
 #include "HelloWorldScene.h"
 
 Weapon* Weapon::create
@@ -39,6 +40,7 @@ bool Weapon::init
 
 		spWeapon->setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));//TODO:仅仅是主角情况
 		spWeapon->setVisible(false);
+
 		spWeaponReverse->setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));//TODO:仅仅是主角情况
 		spWeaponReverse->setVisible(false);
 	}

@@ -72,7 +72,7 @@ bool HelloWorld::init()
 
 
 	auto monster = Ranger::create();
-	monster->setPosition(Vec2(_hero->getPositionX(), _hero->getPositionY() - 200));
+	monster->setPosition(Vec2(_hero->getPositionX(), _hero->getPositionY() - 290));
 	this->addChild(monster);
 	_currentEnemy.pushBack(monster);
 
@@ -418,10 +418,21 @@ void HelloWorld::transferPickWeaponToWeapon(PickWeapon* pickWeapon, Character* h
 		fish->setTiledMap(_map);
 		fish->setOwner(_hero);
 
-
 		tempWeapon = fish;
 	}
+	else if (name == MELEE_WAND) {
+		auto wand = Wand::create
+		("MeleeImage\\Wand.png", "MeleeImage\\Wand.png", this, sideHero, true);
+		this->addChild(wand);
 
+		wand->startWeapon(true);
+		wand->setPosition(hero->getPosition());
+		wand->setTiledMap(_map);
+		wand->setOwner(_hero);
+
+
+		tempWeapon = wand;
+	}
 	else {
 
 		return;

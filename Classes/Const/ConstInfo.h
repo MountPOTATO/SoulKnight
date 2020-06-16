@@ -98,6 +98,7 @@ enum EEntityBuffEffect {
 #define GUN_SNIPER "Sniper"
 #define GUN_SMG "SMG"
 #define MELEE_FISH "Fish"
+#define MELEE_WAND "Wand"
 #define GUN_SHOTGUN "Shotgun"
 
 #define RED "red"

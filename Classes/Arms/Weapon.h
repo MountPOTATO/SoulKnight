@@ -9,8 +9,6 @@
 #include <string>
 #include <iostream>
 #include <Const/ConstInfo.h>
-#include "Entity/Entity.h"
-
 
 using namespace cocos2d;
 
@@ -22,8 +20,8 @@ using namespace cocos2d;
 
 
 class HelloWorld;
-
-
+class Character;
+class Monster;
 //TODO:常量移到专门的常量库里
 
 
@@ -48,9 +46,9 @@ private:
 	//场景，持有信息
 	CC_SYNTHESIZE(HelloWorld*, _currentScene, CurrentScene);	
 	CC_SYNTHESIZE(ESide, _side, Side);//武器持有者阵营
-	CC_SYNTHESIZE(Entity*, _target, Target);//武器攻击者
+	CC_SYNTHESIZE(Monster*, _target, Target);//武器攻击者
 	
-	CC_SYNTHESIZE(Entity*, _owner, Owner);//武器持有者阵营
+	CC_SYNTHESIZE(Character*, _owner, Owner);//武器持有者阵营
 
 	//时间信息
 	CC_SYNTHESIZE(float, _lastAttackTime, LastAttackTime);
@@ -93,7 +91,7 @@ public:
 	virtual bool attack();//TODO:待多态形式
 	INT32 getWeaponAttack()const { return _attack; }
 	HelloWorld* getWeaponCurrentScene() { return this->_currentScene; }
-	//void stopWeapon();TODO
+
 	float getWeaponBulletFlyingSpeed()const { return _bulletFlyingSpeed; }
 	INT32 getWeaponPrecision()const { return _precision; }
 
@@ -137,7 +135,7 @@ public:
 
 public:
 
-	void setWeaponOwner(Entity* owner) { if(owner)_owner = owner; }
+	void setWeaponOwner(Character* owner) { if(owner)_owner = owner; }
 
 	void updateCurrentLocation();
 
