@@ -68,7 +68,7 @@ bool Melee::startWeapon(bool _isStopOther) {
 void Melee::updateTarget() {
 	if (_isCanceled) return;
 
-	Vector<Entity*>& currentEnermies = _currentScene->_currentUnit;
+	Vector<Monster*>& currentEnermies = _currentScene->_currentEnemy;
 	Sprite* spMelee = (Sprite*)getChildByTag(TAG_WEAPON1);
 	Sprite* spMeleeReverse = (Sprite*)getChildByTag(TAG_WEAPON2);
 

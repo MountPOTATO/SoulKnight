@@ -25,7 +25,7 @@
 #include "AppDelegate.h"
 #include "StartExplore.h"
 #include "HelloWorldScene.h"
-
+#include "Scene/StartScene.h"
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
 
@@ -125,10 +125,10 @@ bool AppDelegate::applicationDidFinishLaunching() {
     Director::getInstance()->setProjection(cocos2d::Director::Projection::_2D);
     Director::getInstance()->setDepthTest(true);//开启openGl的深度渲染
 
-    auto scene = HelloWorld::createScene(0);
+   /* auto scene = HelloWorld::createScene(0);*/
 	//auto scene = ExploreScene::createScene();
 
-
+	auto scene = StartScene::create();
     // run
     director->runWithScene(scene);
 

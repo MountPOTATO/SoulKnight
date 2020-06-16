@@ -66,7 +66,7 @@ void Gun::updateTarget() {
 
 	if (_isCanceled) return;
 
-	Vector<Entity*>& currentEnermies = _currentScene->_currentUnit;
+	Vector<Monster*>& currentEnermies = _currentScene->_currentEnemy;
 
 	//TODO:涉及中间有障碍物时的重新指认，待场景元素加入后决定
 	//指认最近距离目标
@@ -99,8 +99,7 @@ bool Gun::attack() {
 	
 	if (currentTime - _lastAttackTime < _attackSpeed) { return false; }
 
-	//TODO:在增加对敌人的搜索后增加功能
-	//if (!_target) {//没有敌人的情况
+
 	_lastAttackTime = currentTime;
 
 	//默认子弹Buff
