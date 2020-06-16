@@ -1,6 +1,10 @@
 #ifndef __CONSTINFO_H__
 #define __CONSTINFO_H__
 
+#include "cocos2d.h"
+
+USING_NS_CC;
+
 //摇杆的信息输入
 enum ERocker8Direction {
 	rockerUp,
@@ -102,6 +106,7 @@ enum EEntityBuffEffect {
 //一些时间间隔
 #define SWITCH_TIMESPACE 1.0f
 #define PICK_TIMESPACE 1.0f
+
 
 
 
