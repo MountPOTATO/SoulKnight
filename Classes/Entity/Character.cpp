@@ -95,32 +95,7 @@ void Character::setTagPosition(int x, int y) {
 }
 
 bool Character::isPosBlocked(Point dstPos) {
-	/*int dir;
-	Point curPos=this->getPosition();
-	if ((dstPos.x - curPos.x) < 0) { dir = 1; }
-	else if ((dstPos.y - curPos.y) > 0) { dir = 2; }
-	else if ((dstPos.x - curPos.x) > 0) { dir = 3; }
-	else if ((dstPos.y - curPos.y) < 0) { dir = 4; }
-	else { dir = 0; }
-	switch (dir)
-	{
-	case 1:
-		dstPos.x -= 20;
-		break;
-	case 2:
-		dstPos.y += 20;
-		break;
-	case 3:
-		dstPos.x += 20;
-		break;
-	case 4:
-		dstPos.y -= 20;
-		break;
-	case 0:
-		break;
-	default:
-		break;
-	}
+	
 	//暂缺*/
 	Point tiledPos = tileCoordForPosition(Point(dstPos.x, dstPos.y));
 	
@@ -186,7 +161,7 @@ void Character::hit(int damage,Point enemyPos) {
 		m_HP-=overKill;
 	}//护甲值先消耗殆尽，多余伤害由红条承受
 	
-	if (m_HP <= 0) { m_HP = 0; }
+	if (m_HP <= 0) { m_HP = 0; this->die(); }
 
 	//击退效果
 	setIsKnockBack(true);
@@ -265,4 +240,14 @@ void Character::hit(int damage,Point enemyPos) {
 
 void Character::update(float delta) {
 	
+}
+
+void Character::die() {
+	this->setIsInvincible(true);//死了之后就保持无敌状态吧，尸体不会被撞来撞去
+
+	//播放死亡动画
+	auto bounceUp = JumpBy::create(0.5f, Point(0, 0), 40, 1);
+
+	this->setColor(Color3B(150, 150, 150));
+
 }

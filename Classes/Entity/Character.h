@@ -44,6 +44,7 @@ public:
 	void setTiledMap(TMXTiledMap* map);
 	bool isPosBlocked(Point dstPos );//判断移动终点是否有障碍物 f为无障碍 0代表无方向 1,2,3,4代表左上右下
 	void hit(int damage,Point enemyPos);//收到伤害 进入短暂无敌模式 传递伤害方向
+	void die();//顾名思义，嗝屁了
 	bool isInvincible;//是否处于无敌状态
 	bool isKnockBack;//是否处于被击退状态
 	int max_HP;//生命上限

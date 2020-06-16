@@ -33,7 +33,7 @@ bool DirectPickThing::init(Point position, Character* hero, float stickRange,
 	Vector<Sprite*>& engVec = _pickThingScene->_energyVec;
 	Vector<Sprite*>& coiVec = _pickThingScene->_coinVec;
 	for (int i = 1; i <=blueNumber; i++) {
-		Sprite* spBlue = Sprite::create("Energy.png");
+		Sprite* spBlue = Sprite::create("PickThingsImage\\Energy.png");
 
 		float deflection1 = rand() % (_generateRange * 2 + 1) - (_generateRange);
 		float deflection2 = rand() % (_generateRange * 2 + 1) - (_generateRange);
@@ -45,7 +45,7 @@ bool DirectPickThing::init(Point position, Character* hero, float stickRange,
 	}
 	
 	for (int i = -1; i >= -coinNumber; i--) {
-		Sprite* spCoin =Sprite::create("Coin.png");
+		Sprite* spCoin =Sprite::create("PickThingsImage\\Coin.png");
 
 		float deflection1 = rand() % (_generateRange * 2 + 1) - (_generateRange);
 		float deflection2 = rand() % (_generateRange * 2 + 1) - (_generateRange);
