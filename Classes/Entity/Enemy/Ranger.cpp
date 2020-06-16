@@ -6,5 +6,14 @@ bool Ranger::init() {
 	setAnchorPoint(Point(0.5f, 0.5f));
 	setSpeed(RANGER_SPEED);
 	setHP(RANGER_HP);
+
+
+
+
 	return true;
+}
+
+ int Ranger::attack() {
+	 //ÄÚÈÝ´ý¶¨
+	 return 0;
 }

@@ -111,17 +111,11 @@ bool HelloWorld::init()
 	this->addChild(treasureBox);
 	_treasureBoxVec.pushBack(treasureBox);
 
-	auto accelerateArea1 = AccelerateArea::create
-	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 300), _hero, this);
-	this->addChild(accelerateArea1);
-	_accelerateAreaVec.pushBack(accelerateArea1);
+	
 
-	auto accelerateArea2 = AccelerateArea::create
-	(Vec2(_hero->getPositionX() + 300, _hero->getPositionY() - 300), _hero, this);
-	this->addChild(accelerateArea2);
-	_accelerateAreaVec.pushBack(accelerateArea2);
-
-
+	//¼ÓÔØui
+	//this->loadUI
+	//("Resources\\DemoHead_UI\\DemoHead_UI.ExportJson");
 
 
 	this->scheduleUpdate();
@@ -467,28 +461,7 @@ void HelloWorld::updateTreasureBoxVec() {
 	}
 }
 
-void HelloWorld::updateAccelerateArea()
-{
-	bool doHasCollied = 0;
-	clock_t initTime = startTime;
-	endTime = clock();
-	for (auto i = _accelerateAreaVec.begin(); i != _accelerateAreaVec.end(); i++)
-	{
-		(*i)->updateAccelerateArea();
-		if ((*i)->isColliedJudge())
-		{
-			startTime = clock();
-			(*i)->accelerateHeroSpeed(this);
-			(*i)->setIsCollied(false);
-			doHasCollied = true;
-		}
-	}
-	double finalTime = (double)(endTime - initTime) / CLOCKS_PER_SEC;
-	if (finalTime >= ACCELERATE_TIME && (!doHasCollied))
-	{
-		(*(_accelerateAreaVec.begin()))->resetHeroSpeed(this);
-	}
-}
+
 
 void HelloWorld::updatePickBottleVec() {
 	for (auto i = _pickableBottleVec.begin(); i != _pickableBottleVec.end();) {
@@ -522,3 +495,13 @@ float MyGetRad(Point point1, Point point2) {
 	}
 	return rad;
 }
+
+//¼ÓÔØui
+/*
+bool HelloWorld::loadUI(const char* file) {
+	auto UI = cocostudio::GUIReader::getInstance()->
+		widgetFromJsonFile(file);
+	UI->setPosition(Point(100, 100));
+	this->addChild(UI);
+	return true;
+}*/

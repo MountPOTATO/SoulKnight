@@ -145,10 +145,10 @@ public:
 
 	Point tileCoordForPosition(Point pos);
 
-
-
-private:
 	TMXTiledMap* m_map;
+	
+private:
+	
 	TMXLayer* meta;
 
 };

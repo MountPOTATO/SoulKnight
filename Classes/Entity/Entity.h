@@ -4,6 +4,7 @@
 #include "ControllerByKeyBoard/ControllerListener.h"
 #include "ControllerByKeyBoard/ControllByKeyBoard.h"
 #include "Const/ConstInfo.h"
+
 USING_NS_CC;
 class Entity :public Node,public ControllerListener {
 public:

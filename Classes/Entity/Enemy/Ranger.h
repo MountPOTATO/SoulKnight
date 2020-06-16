@@ -8,7 +8,7 @@ public:
 	virtual bool init();
 
 public:
-	
+	int attack();
 	
 private:
 	int monsterID = 1;//仅作为标识

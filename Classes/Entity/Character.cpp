@@ -81,7 +81,8 @@ void Character::setViewPointByCharacter() {
 
 void Character::setTagPosition(int x, int y) {
 	if (isKnockBack) { return; }//正在被击退时不能行动
-	if (isPosBlocked(Point(x+halfOfHitBox, y+ halfOfHitBox))) { return; }
+	if (isPosBlocked(Point(x+halfOfHitBox, y+ halfOfHitBox))) { 
+		return; }
 	if (isPosBlocked(Point(x+ halfOfHitBox, y- halfOfHitBox))) { return; }
 	if (isPosBlocked(Point(x- halfOfHitBox, y+ halfOfHitBox))) { return; }
 	if (isPosBlocked(Point(x- halfOfHitBox, y- halfOfHitBox))) { return; }//移动路径被阻挡了 不能行动
