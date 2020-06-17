@@ -48,7 +48,7 @@
 #include "Interaction/InterContent/TreasureBox.h"
 #include "Interaction/PickBottle.h"
 #include "Interaction/SpecialEffectArea/AccelerateArea.h"
-
+#include "FlowWord/FlowWord.h"
 
 
 class Weapon;
