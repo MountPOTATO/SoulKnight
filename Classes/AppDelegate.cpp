@@ -23,7 +23,7 @@
  ****************************************************************************/
 
 #include "AppDelegate.h"
-#include "StartExplore.h"
+#include "HelloWorldScene.h"
 
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
@@ -80,7 +80,7 @@ static int register_all_packages()
 bool AppDelegate::applicationDidFinishLaunching() {
 
     Director::getInstance()->setProjection(cocos2d::Director::Projection::_2D);
-    Director::getInstance()->setDepthTest(true);
+   Director::getInstance()->setDepthTest(true);
     // initialize director
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
@@ -120,13 +120,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
     register_all_packages();
     // create a scene. it's an autorelease object
-
-    Director::getInstance()->setProjection(cocos2d::Director::Projection::_2D);
-    Director::getInstance()->setDepthTest(true);//开启openGl的深度渲染
-
     //auto scene = HelloWorld::createScene();
-	auto scene = ExploreScene::createScene();
-
+    auto scene = HelloWorld::createScene();
 
     // run
     director->runWithScene(scene);

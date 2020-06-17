@@ -23,6 +23,9 @@
   </data>
  </layer>
  <layer name="exit" width="20" height="20">
+  <properties>
+   <property name="cc_vertexz" value="-500"/>
+  </properties>
   <data encoding="base64" compression="zlib">
    eJxjYBgFo2BgAMeoecPavFEwtAAHDowPAACdYABh
   </data>

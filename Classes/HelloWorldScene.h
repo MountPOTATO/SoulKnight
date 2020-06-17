@@ -29,7 +29,7 @@
 
 
 #include "cocos2d.h"
-#include "Controller/HRocker.h"
+/*#include "Controller/HRocker.h"
 #include "Arms/GunDerived/OldPistol.h"
 #include "Arms/Gun.h"
 #include "Arms/MeleeDerived/Fish.h"
@@ -39,13 +39,15 @@
 #include "LongRangeAttack/Bullet.h"
 #include "ControllerByKeyBoard/ControllerOfEightDir.h"
 #include "Entity/Character.h"
-#include "Entity/Heros/Knight.h"
+#include "Entity/Heros/Knight.h"*/
+#include"Map/Space.h"
+
 class Weapon;
 
 class HelloWorld : public cocos2d::Scene
 {
 	//5.18加入CCSYNTHESIZE 控制器类
-	CC_SYNTHESIZE(HRocker*, _rocker, Rocker);
+//	CC_SYNTHESIZE(HRocker*, _rocker, Rocker);
 
 
 	
@@ -65,12 +67,15 @@ public:
 	void updateBullet();
 
 	//容器集
-	Vector<Bullet*> _bullets;
-	Vector<Entity*> _currentUnit;
+	/*cocos2d::Vector<Bullet*> _bullets;
+	cocos2d::Vector<Entity*> _currentUnit;*/
 
-
-
-	//初始化摇杆
+	std::vector<Space*>appliedSpace;
+	int roomCount;
+	std::vector<int> typeNum;
+	bool roomNotFull(int type);
+	std::vector<std::vector<int>> placement;
+	/*//初始化摇杆
 	void initHRocker();
 
 	//测试组件:
@@ -94,18 +99,20 @@ public:
 public:
 	Character* addCharacter(TMXTiledMap* map,int HeroID);
 	 
-
+	 */
 private:
+	cocos2d::CCTMXTiledMap* curMap;
+	cocos2d::Sprite* knight;//测试用的，要删掉
+	virtual bool initMaps();
+	virtual void updateMap();
+	virtual void findCurMap(cocos2d::Sprite* player);
 	
 	
 	
-
-
-
-
 	//监听装置
-	EventListenerTouchOneByOne* listenerTouch;
-	EventListenerKeyboard* listenerKeyBoard;
+	//cocos2d::EventListenerTouchOneByOne* listenerTouch;
+	cocos2d::EventListenerKeyboard* listenerKeyBoard;
+	virtual void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);//测试地图用
 	//键盘输入
 	
 };
