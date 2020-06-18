@@ -3,12 +3,12 @@
 #include "Entity/Entity.h"
 #include "Controller/HRocker.h"
 #include "Entity/Character.h"
-
+#include "FlowWord/FlowWord.h"
 
 #define TAG_PICKBOTTLE 2
 
-PickBottle* PickBottle::create
-(Point position, Character* hero, HelloWorld* scene, const char* imageName, HRocker* rocker) {
+PickBottle * PickBottle::create
+(Point position, Character * hero, HelloWorld * scene, const char* imageName, HRocker * rocker) {
 	PickBottle* pickbottle = new(std::nothrow)PickBottle;
 	if (pickbottle && pickbottle->init(position, hero, scene, imageName, rocker)) {
 		pickbottle->autorelease();
@@ -25,7 +25,7 @@ bool PickBottle::init(Point position, Character* hero, HelloWorld* scene, const 
 
 	Sprite* pickBottleImage = Sprite::create
 	(StringUtils::format("BottleImage//%sBottle.png", imageName));
-	pickBottleImage->setTexture(StringUtils::format("BottleImage//%sBottle.png",imageName));
+	pickBottleImage->setTexture(StringUtils::format("BottleImage//%sBottle.png", imageName));
 
 	pickBottleImage->setPosition(Vec2(0, 0));
 	this->addChild(pickBottleImage, 0, TAG_PICKBOTTLE);
@@ -54,6 +54,10 @@ void PickBottle::updatePickBottleState() {
 			_isNearHero = true;
 			//飘字特效加入，进入飘字状态
 
+			auto flowWord = FlowWord::create();
+			this->_pickThingScene->addChild(flowWord);
+			flowWord->showWord(_imageName, Vec2(getPositionX(), getPositionY() + 10));
+
 		}
 		return;
 	}
@@ -80,10 +84,19 @@ void PickBottle::stopPickBottle() {
 }
 
 void PickBottle::addPoint() {
-	if (_imageName = RED) {
+	if (_imageName == RED) {
 		_hero->setHP(_hero->getHP() + 2);
+		auto flowword = FlowWord::create();
+		_pickThingScene->addChild(flowword);
+
+		flowword->showWord("+2", Vec2(getPositionX(),getPositionY() + 10));
 	}
-	if (_imageName = BLUE) {
-		_hero->setMP(_hero->getMP() + 2);
+	if (_imageName == BLUE) {
+		_hero->setMP(_hero->getMP() + 80);
+
+		auto flowword = FlowWord::create();
+		_pickThingScene->addChild(flowword);
+
+		flowword->showWord("+80", Vec2(getPositionX(), getPositionY() + 10));
 	}
 }

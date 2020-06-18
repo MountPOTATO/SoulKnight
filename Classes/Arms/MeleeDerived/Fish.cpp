@@ -29,9 +29,8 @@ bool Fish::init(const char* weaponImageName1, const char* weaponImageName2,
 
 		spFish->setPosition(Point(0, 0));//TODO:仅仅是主角情况
 		
-		spFish->setVisible(true);
-		
-
+		spFish->setVisible(false);
+	
 		spFishReverse->setPosition(Point(0, 0));//TODO:仅仅是主角情况
 		spFishReverse->setVisible(false);
 		

@@ -1,5 +1,6 @@
 
 
+
 /****************************************************************************
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 
@@ -40,7 +41,7 @@
 #include "Arms/GunDerived/Sniper.h"
 #include "LongRangeAttack/Bullet.h"
 #include "ControllerByKeyBoard/ControllerOfEightDir.h"
-#include "Entity/Character.h"
+//#include "Entity/Character.h"
 #include "Entity/Heros/Knight.h"
 #include "Entity/Enemy/Ranger.h"
 #include "Interaction/DirectPickThing.h"
@@ -48,35 +49,50 @@
 #include "Interaction/InterContent/TreasureBox.h"
 #include "Interaction/PickBottle.h"
 #include "Interaction/SpecialEffectArea/AccelerateArea.h"
+#include "Interaction/InterContent/TransferPortal.h"
 #include "FlowWord/FlowWord.h"
 
-
 class Weapon;
-
+class Character;
 
 
 class HelloWorld : public cocos2d::Scene
 {
-	
 
-	CC_SYNTHESIZE(HRocker*, _rocker, Rocker);
-
-	CC_SYNTHESIZE(Character*, _hero, Hero);
-
-	CC_SYNTHESIZE(Ranger*, _testMonster, TestMonster);
+	CC_SYNTHESIZE(bool, _hasDerivedInfo, HasDerivedInfo);
 
 public:
 	
-	static cocos2d::Scene* createScene(int order);
+	static cocos2d::Scene* createScene(int order, HeroInfo heroinfo);
+	static cocos2d::Scene* createScene();
+
 	CC_SYNTHESIZE(INT32,_mapOrder, MapOrder);
+
+	CC_SYNTHESIZE(Character*, _hero, Hero);
+
+	CC_SYNTHESIZE(HRocker*, _rocker, Rocker);
+
 
 
 	virtual bool init();
+
+	bool init(int order,HeroInfo heroinfo);
+
 	bool safeHouseInit();
+
+	void resetWeapon(HeroInfo heroinfo);
 
 
 	// a selector callback
 	void menuCloseCallback(cocos2d::Ref* pSender);
+	void menuReGenerateCallBack(cocos2d::Ref* pSender);
+	void menuLoseCallBack(cocos2d::Ref* pSender);
+	void menuWinCallBack(cocos2d::Ref* pSender);
+
+	void clear();
+	
+
+
 
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
@@ -84,7 +100,8 @@ public:
 	virtual void update(float delta);//更新状态
 
 
-
+	TransferPortal* _portal;
+	void checkPortalState();
 
 	//容器集
 	Vector<Bullet*> _bullets;
@@ -147,6 +164,7 @@ public:
 public:
 	Character* addCharacter(TMXTiledMap* map,int HeroID);
 	 
+	
 	//加载ui
 	//bool loadUI(const char* file);
 private:

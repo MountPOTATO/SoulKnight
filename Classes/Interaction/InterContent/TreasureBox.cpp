@@ -40,8 +40,8 @@ bool TreasureBox::init(Point position, Character* hero, HelloWorld* scene, HRock
 
 
 	srand((unsigned)time(NULL));
-	/*_randID = rand() % 7 + 1;*/
-	_randID = 5;
+	_randID = rand() % 7 + 1;
+
 
 
 	auto listener = EventListenerKeyboard::create();
@@ -82,7 +82,10 @@ void TreasureBox::updateTreasureBoxState()
 			&& _rocker->getRockerPressButton() != ERockerButtonPress::buttonAttack) {
 			_isNearHero = true;
 			//飘字特效加入，进入飘字状态
+			auto flowWord = FlowWord::create();
+			this->_pickThingScene->addChild(flowWord);
 
+			flowWord->showWord("TreasureBox", Vec2(getPositionX(), getPositionY() + 10));
 		}
 		return;
 	}

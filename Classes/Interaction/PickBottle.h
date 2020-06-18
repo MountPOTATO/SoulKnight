@@ -4,6 +4,7 @@
 #include "Interaction/InterContent/ManualPickObject.h"
 
 class Character;
+class FlowWorld;
 
 class PickBottle :public ManualPickObject {
 

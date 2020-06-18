@@ -30,7 +30,7 @@ bool Wand::init(const char* weaponImageName1, const char* weaponImageName2,
 
 		spWand->setPosition(Point(0, 0));//TODO:仅仅是主角情况
 
-		spWand->setVisible(true);
+		spWand->setVisible(false);
 
 
 		spWandReverse->setPosition(Point(0, 0));//TODO:仅仅是主角情况

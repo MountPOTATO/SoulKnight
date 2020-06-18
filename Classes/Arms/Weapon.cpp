@@ -60,6 +60,42 @@ bool Weapon::init
 	return true;
 }
 
+//
+////图像调整
+//bool Weapon::resetWeapon(HelloWorld* newScene) {
+//	if (!newScene) return false;
+//	_currentScene = newScene;
+//	_isCanMove = false;
+//	_hasAnimation = false;
+//	_isAttacking = false;
+//	_target = nullptr;
+//
+//	_isCanceled = false;
+//
+//	Sprite* spWeapon = (Sprite*)getChildByTag(TAG_WEAPON1);
+//	Sprite* spWeaponReverse = (Sprite*)getChildByTag(TAG_WEAPON2);
+//	Size visibleSize = Director::getInstance()->getVisibleSize();
+//	spWeapon->setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));
+//	spWeapon->setVisible(false);
+//
+//	spWeaponReverse->setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));
+//	spWeaponReverse->setVisible(false);
+//
+//	return true;
+//}
+//
+//bool Weapon::resetImageBeforeSwitchScene() {
+//	Sprite* spWeapon = (Sprite*)getChildByTag(TAG_WEAPON1);
+//	Sprite* spWeaponReverse = (Sprite*)getChildByTag(TAG_WEAPON2);
+//	spWeapon->stopAllActions();
+//	spWeaponReverse->stopAllActions();
+//	spWeapon->setRotation(0);
+//	spWeaponReverse->setRotation(0);
+//	spWeaponReverse->setVisible(false);
+//	spWeapon->setVisible(true);
+//	return true;
+//}
+
 void Weapon::startWeapon(bool _isStopOther) {
 	Sprite* spWeapon = (Sprite*)getChildByTag(TAG_WEAPON1);
 	Sprite* spWeaponReverse = (Sprite*)getChildByTag(TAG_WEAPON2);
@@ -202,7 +238,6 @@ void Weapon::setViewPointByWeapon() {
 
 
 
-
 void Weapon::updateImageRotation(HRocker* rocker) {
 
 	if (_isCanceled) return;
@@ -245,7 +280,7 @@ void Weapon::updateImageRotation(HRocker* rocker) {
 		spWeapon->stopAllActions();
 		spWeaponReverse->stopAllActions();
 		_isAttacking = false;
-		//TODOTODO:行走移动且有目标时无法自动瞄准if (rocker->getRockerDirection() == ERocker8Direction::rockerStop){
+
 		if (rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {
 			_isCanMove = false;
 			_isAttacking = true;
@@ -264,76 +299,93 @@ void Weapon::updateImageRotation(HRocker* rocker) {
 			_hasAnimation = true;
 			return;
 		}
-		spWeapon->stopAllActions();
-		spWeaponReverse->stopAllActions();
-		/*_isAttacking = false;
-*/
+
+
 		switch (rocker->getRockerDirection()) {
 		case(ERocker8Direction::rockerRight): {
 			showWeaponPicture(1);
-			RotateTo* rotateTo = RotateTo::create(0, 0);
-			spWeapon->runAction(rotateTo);
+			/*RotateTo* rotateTo = RotateTo::create(0, 0);
+			spWeapon->runAction(rotateTo);*/
+			spWeapon -> setRotation(0);
+	
 			break;
 		}
 		case(ERocker8Direction::rockerUpRight): {
 			showWeaponPicture(1);
-			RotateTo* rotateTo = RotateTo::create(0, 315);
-			spWeapon->runAction(rotateTo);
+			/*RotateTo* rotateTo = RotateTo::create(0, 315);
+			spWeapon->runAction(rotateTo);*/
+			spWeapon->setRotation(315);
 			break;
 		}
 		case(ERocker8Direction::rockerUp): {
 			if (getVisiblePictureSide() == "left") {
 
-				RotateTo* rotateTo = RotateTo::create(0, 90);
-				spWeaponReverse->runAction(rotateTo);
+				/*RotateTo* rotateTo = RotateTo::create(0, 90);
+				spWeaponReverse->runAction(rotateTo);*/
+				showWeaponPicture(2);
+				spWeaponReverse->setRotation(90);
 				/*log(" left Angle: %f", spWeaponReverse->getRotation());*/
 			}
 			else if (getVisiblePictureSide() == "right") {
 
-				RotateTo* rotateTo = RotateTo::create(0, 270);
-				spWeapon->runAction(rotateTo);
+				/*RotateTo* rotateTo = RotateTo::create(0, 270);
+				spWeapon->runAction(rotateTo);*/
+				showWeaponPicture(1);
+				spWeapon->setRotation(270);
 				/*log(" right Angle: %f", spWeapon->getRotation());*/
 			}
 			break;
 		}
 		case(ERocker8Direction::rockerUpLeft): {
-			showWeaponPicture(2);
+			/*showWeaponPicture(2);
 			RotateTo* rotateTo = RotateTo::create(0, 45);
-			spWeaponReverse->runAction(rotateTo);
+			spWeaponReverse->runAction(rotateTo);*/
+			showWeaponPicture(2);
+			spWeaponReverse->setRotation(45);
 			/*log(" left Angle: %f", spWeaponReverse->getRotation());*/
 			break;
 		}
 		case(ERocker8Direction::rockerLeft): {
-			showWeaponPicture(2);
+			/*showWeaponPicture(2);
 			RotateTo* rotateTo = RotateTo::create(0, 0);
-			spWeaponReverse->runAction(rotateTo);
+			spWeaponReverse->runAction(rotateTo);*/
+			showWeaponPicture(2);
+			spWeaponReverse->setRotation(0);
 			/*log(" left Angle: %f", spWeaponReverse->getRotation());*/
 			break;
 		}
 		case(ERocker8Direction::rockerDownLeft): {
-			showWeaponPicture(2);
+			/*showWeaponPicture(2);
 			RotateTo* rotateTo = RotateTo::create(0, 315);
-			spWeaponReverse->runAction(rotateTo);
+			spWeaponReverse->runAction(rotateTo);*/
+			showWeaponPicture(2);
+			spWeaponReverse->setRotation(315);
 			/*log(" left Angle: %f", spWeaponReverse->getRotation());*/
 			break;
 		}
 		case(ERocker8Direction::rockerDown): {
 			if (getVisiblePictureSide() == "left") {
-				RotateTo* rotateTo = RotateTo::create(0, 270);
-				spWeaponReverse->runAction(rotateTo);
+				showWeaponPicture(2);
+				spWeaponReverse->setRotation(270);
+				/*RotateTo* rotateTo = RotateTo::create(0, 270);
+				spWeaponReverse->runAction(rotateTo);*/
 				/*log(" left Angle: %f", spWeaponReverse->getRotation());*/
 			}
 			else if (getVisiblePictureSide() == "right") {
-				RotateTo* rotateTo = RotateTo::create(0, 90);
-				spWeapon->runAction(rotateTo);
+				showWeaponPicture(1);
+				spWeapon->setRotation(90);
+				/*RotateTo* rotateTo = RotateTo::create(0, 90);
+				spWeapon->runAction(rotateTo);*/
 				/*log(" right Angle: %f", spWeapon->getRotation());*/
 			}
 			break;
 		}
 		case(ERocker8Direction::rockerDownRight): {
-			showWeaponPicture(1);
+			/*showWeaponPicture(1);
 			RotateTo* rotateTo = RotateTo::create(0, 45);
-			spWeapon->runAction(rotateTo);
+			spWeapon->runAction(rotateTo);*/
+			showWeaponPicture(1);
+			spWeapon->setRotation(45);
 			/*log(" right Angle: %f", spWeapon->getRotation());*/
 			break;
 		}
@@ -383,7 +435,6 @@ void Weapon::updateCurrentLocation() {
 	auto pos = tileCoordForPosition(weaponXYPos);
 	auto mapSize = m_map->getMapSize();
 	this->setPositionZ(pos.y - mapSize.height);
-
 
 
 	Sprite* spWeapon = (Sprite*)getChildByTag(TAG_WEAPON1);

@@ -1,6 +1,6 @@
 #include "Arms/Melee.h"
 #include "HelloWorldScene.h"
-
+#include "FlowWord/FlowWord.h"
 #include "LongRangeAttack/Bullet.h"
 #include "Entity/Monster.h"
 
@@ -113,14 +113,13 @@ bool Melee::attack() {
 	//攻击判定
 	
 	_lastAttackTime = currentTime;
-	if (!_targetInRange.size()) {//存在目标
+	if (_targetInRange.size()) {//存在目标
 		for (auto& i : _targetInRange) {
 			//TODO：执行伤害判定，给出伤害,需要后期Entity类承受伤害的功能实现
-			/*Bullet* bullet = Bullet::create("bulletImage/EmptyBullet.png", _bulletFlyingSpeed, this, NULL, true);
-			bullet->setScale(1);
-			_currentScene->_bullets.pushBack(bullet);
-			_currentScene->addChild(bullet);
-			bullet->setVisible(false);*/
+			auto flowword = FlowWord::create();
+			_currentScene->addChild(flowword);
+			const char* damage = StringUtils::format("%d", -this->getAttack()).data();
+			flowword->showWord(damage, Vec2((i)->getPositionX(), (i)->getPositionY() + 10));
 
 		}
 		_targetInRange.clear();

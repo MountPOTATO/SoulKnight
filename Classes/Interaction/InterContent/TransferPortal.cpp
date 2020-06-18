@@ -1,24 +1,34 @@
-#include "TransferPortal.h"
+#include "Interaction/InterContent/TransferPortal.h"
 #include "HelloWorldScene.h"
 
-//Layer* TransferPortal::layer = Layer::create();
-//
-Scene* TransferPortal::createScene()
-{
-	auto scene = Scene::create();
 
-	auto layer = TransferPortal::create();
-
-    scene->addChild(layer);
-	return scene;
+TransferPortal* TransferPortal::create
+(Point position, Character* hero, HelloWorld* scene, HRocker* rocker) {
+	TransferPortal* portal = new(std::nothrow)TransferPortal;
+	if (portal && portal->init(position, hero, scene, rocker)) {
+		portal->autorelease();
+		return portal;
+	}
+	CC_SAFE_DELETE(portal);
+	return NULL;
 }
 
-bool TransferPortal::init()             //对传送门动态效果的初始化
+bool TransferPortal::init(Point position, Character* hero, HelloWorld* scene, HRocker* rocker)
 {
+	setPosition(position);
 	auto transPor = Sprite::create("transferPortal1.png");
 	Size sizeV = Director::getInstance()->getVisibleSize();
-	transPor->setPosition(Vec2(sizeV.width / 2, sizeV.height/2));
+	transPor->setPosition(0,0);
+	transPor->setVisible(true);
 	this->addChild(transPor);
+	
+
+	_hero = hero;
+	_pickThingScene = scene;
+	_rocker = rocker;
+	initProtalState();
+	_isUsed = false;
+	/*transPor->setPositionZ(_hero->getPositionZ() - 100);*/
 
 	Size sizeC = transPor->getContentSize();
 	SpriteFrame* frame = NULL;
@@ -40,21 +50,25 @@ bool TransferPortal::init()             //对传送门动态效果的初始化
 	return true;
 }
 
-bool TransferPortal::isToPushScene()
-{
-	//保持传送门对主角的碰撞检测，sprite的碰撞检测，场景的切换
-	//检测到主角的碰撞并且按下按钮 则进行场景切换
-	//y为攻击 u为技能 i切换武器
-	//wasd上下左右
-	//即检测y键是否被按下
-	//Director::getInstance()->pushScene(创建场景并切换)
-	return true;
-}
+void TransferPortal::updatePortalState() {
+	if (!isUnUsed()) return;
+	if (!_isNearHero) {
+		if (this->getBoundingBox().intersectsRect(_hero->getBoundingBox())
+			&& _rocker->getRockerPressButton() != ERockerButtonPress::buttonAttack) {
+			_isNearHero = true;
+			//飘字特效加入，进入飘字状态
 
+		}
+		return;
+	}
+	else {
+		if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {
+			_isPressed = true;
+			//添加武器,创建武器,抛除武器
 
-bool TransferPortal::isColliedWithCharacter()
-{
-	//进行碰撞检测；
-	//调用isToPushScene()函数;
-	return true;
+			//停止飘字
+
+		}
+		return;
+	}
 }

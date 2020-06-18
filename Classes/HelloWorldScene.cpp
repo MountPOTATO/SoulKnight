@@ -26,21 +26,35 @@
 #include "SimpleAudioEngine.h"
 #include <cstdlib>
 #include "Const/ConstInfo.h"
+#include "Scene/StartScene.h"
+#include "Scene/LoseScene.h"
+#include "Scene/WinScene.h"
 
 USING_NS_CC;
 
 
 
-Scene* HelloWorld::createScene(int order)
+Scene* HelloWorld::createScene(int order, HeroInfo heroinfo)
 {
+	HelloWorld* helloWorld = new(std::nothrow)HelloWorld;
+	if (helloWorld && helloWorld->init(order, heroinfo)) {
+		helloWorld->autorelease();
+		return helloWorld;
+	}
+	CC_SAFE_DELETE(helloWorld);
 
-	auto helloWorld = HelloWorld::create();
-	helloWorld->_mapOrder = order;
-	return helloWorld;
 
 }
 
+Scene* HelloWorld::createScene() {
+	auto helloWorld = HelloWorld::create();
+	return helloWorld;
+}
+
+
 float MyGetRad(Point point1, Point point2);
+
+
 
 // Print useful error message instead of segfaulting when files are not there.
 static void problemLoading(const char* filename)
@@ -52,47 +66,37 @@ static void problemLoading(const char* filename)
 // on "init" you need to initialize your instance
 bool HelloWorld::init()
 {
-	//////////////////////////////
-	// 1. super init first
 	if (!Scene::init())
 	{
 		return false;
 	}
 
+	_mapOrder = 0;
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 
 	std::string levelOrder = StringUtils::format("%d", _mapOrder);
-	_map = TMXTiledMap::create(StringUtils::format("Maps/HelloWorldMap%s.tmx", levelOrder));
+	_map = TMXTiledMap::create("Maps/HelloWorldMap0.tmx");
 	this->addChild(_map);
 	//初始化英雄
 	_hero = addCharacter(_map, 1);
-
-
-
-	auto monster = Ranger::create();
-	monster->setPosition(Vec2(_hero->getPositionX(), _hero->getPositionY() - 290));
-	this->addChild(monster);
-	_currentEnemy.pushBack(monster);
-
-	initHRocker();
-
-	//初始武器
 	auto initWeapon = OldPistol::create
-	("GunImage\\OldPistol.png", "GunImage\\OldPistolReverse.png", this, sideHero, true);
+	("WeaponImage\\GunImage\\OldPistol.png", "WeaponImage\\GunImage\\OldPistolReverse.png", this, sideHero, true);
 	this->addChild(initWeapon);
 	initWeapon->startWeapon(true);
 	initWeapon->setTiledMap(_map);
 	initWeapon->setOwner(_hero);
 	_currentUsedWeapon = initWeapon;
-
 	_weapon1 = _currentUsedWeapon;
 	_weapon2 = nullptr;
 
 
-	if (_mapOrder == 0)
-		safeHouseInit();
+
+
+	initHRocker();
+
+	safeHouseInit();
 
 
 	//测试掉落物直接减起,后期加入Vector
@@ -104,12 +108,67 @@ bool HelloWorld::init()
 	//this->loadUI
 	//("Resources\\DemoHead_UI\\DemoHead_UI.ExportJson");
 
-
-
 	this->scheduleUpdate();
 	return true;
 }
 
+
+
+bool HelloWorld::init(int order, HeroInfo heroInfo) {
+	if (!Scene::init())	return false;
+
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+	_mapOrder = order;
+	std::string levelOrder = StringUtils::format("%d", order);
+	_map = TMXTiledMap::create(StringUtils::format("Maps/HelloWorldMap%s.tmx", levelOrder));
+	this->addChild(_map);
+
+	_hero = addCharacter(_map, 1);
+
+	if (heroInfo.wp1 || heroInfo.wp2) {
+		_hero->setHP(heroInfo.hp);
+		_hero->setMP(heroInfo.mp);
+		_hero->setArmor(heroInfo.armor);
+
+		resetWeapon(heroInfo);
+
+
+	}
+	else {
+		auto initWeapon = OldPistol::create
+		("GunImage\\OldPistol.png", "GunImage\\OldPistolReverse.png", this, sideHero, true);
+		this->addChild(initWeapon);
+		initWeapon->startWeapon(true);
+		initWeapon->setTiledMap(_map);
+		initWeapon->setOwner(_hero);
+		_currentUsedWeapon = initWeapon;
+		_weapon1 = _currentUsedWeapon;
+		_weapon2 = nullptr;
+	}
+
+	auto monster = Ranger::create();
+	monster->setPosition(Vec2(_hero->getPositionX(), _hero->getPositionY() - 290));
+	this->addChild(monster);
+	_currentEnemy.pushBack(monster);
+
+	initHRocker();
+
+
+	auto treasureBox = TreasureBox::create
+	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 180), _hero, this, _rocker);
+	this->addChild(treasureBox);
+	_treasureBoxVec.pushBack(treasureBox);
+
+
+	_portal = TransferPortal::create
+	(Vec2(_hero->getPositionX(), _hero->getPositionY() + 180), _hero, this, _rocker);
+	this->addChild(_portal);
+
+	this->scheduleUpdate();
+	return true;
+}
 
 void HelloWorld::menuCloseCallback(Ref* pSender)
 {
@@ -122,6 +181,34 @@ void HelloWorld::menuCloseCallback(Ref* pSender)
 	//_eventDispatcher->dispatchEvent(&customEndEvent);
 
 
+}
+
+void HelloWorld::menuReGenerateCallBack(Ref* pSender) {
+
+	HeroInfo heroinfo = { _hero->getHP(),_hero->getMP(),_hero->getArmor(),_weapon1,_weapon2,_currentUsedWeapon };
+
+	auto nextScene = HelloWorld::createScene(0, heroinfo);
+
+	Director::getInstance()->pushScene(
+		TransitionSlideInT::create(1.0f / 60, nextScene));
+	MenuItem* item = (MenuItem*)pSender;
+
+}
+
+void HelloWorld::menuLoseCallBack(Ref* pSender) {
+	auto nextScene = LoseScene::createScene();
+
+	Director::getInstance()->pushScene(
+		TransitionSlideInT::create(1.0f / 60, nextScene));
+	MenuItem* item = (MenuItem*)pSender;
+}
+
+void HelloWorld::menuWinCallBack(Ref* pSender) {
+	auto nextScene = WinScene::createScene();
+
+	Director::getInstance()->pushScene(
+		TransitionSlideInT::create(1.0f / 60, nextScene));
+	MenuItem* item = (MenuItem*)pSender;
 }
 
 bool HelloWorld::safeHouseInit() {
@@ -143,6 +230,15 @@ bool HelloWorld::safeHouseInit() {
 	this->addChild(accelerateArea2);
 	_accelerateAreaVec.pushBack(accelerateArea2);
 
+	_portal = TransferPortal::create
+	(Vec2(_hero->getPositionX(), _hero->getPositionY() + 180), _hero, this, _rocker);
+	this->addChild(_portal);
+
+	auto monster = Ranger::create();
+	monster->setPosition(Vec2(_hero->getPositionX(), _hero->getPositionY() - 290));
+	this->addChild(monster);
+	_currentEnemy.pushBack(monster);
+
 	return true;
 }
 
@@ -157,13 +253,42 @@ void HelloWorld::initHRocker()
 }
 
 
+void HelloWorld::checkPortalState() {
+	if (!_portal) return;
+	_portal->updatePortalState();
+	if (_portal->objectIsPressed() && _portal->isUnUsed()) {
+
+		_portal->initProtalState();
+		_portal->setPortalAsUsed();
+		this->clear();
+		this->menuReGenerateCallBack(this);
+
+	}
+}
 
 
+
+void HelloWorld::clear() {
+	_bullets.clear();
+	_currentEnemy.clear();
+	_enemyBullet.clear();
+	_pickableWeaponVec.clear();
+	_pickableBottleVec.clear();
+	_treasureBoxVec.clear();
+	_energyVec.clear();
+	_coinVec.clear();
+	_accelerateAreaVec.clear();
+}
 
 
 void HelloWorld::update(float delta) {
 
+	checkPortalState();
+
 	_rocker->updatePosition(Vec2(_hero->getPositionX() - 550, _hero->getPositionY() - 350));
+
+
+
 
 	for (auto j : _currentEnemy) {
 		if (_hero->getBoundingBox().intersectsRect(j->getBoundingBox()))
@@ -171,12 +296,12 @@ void HelloWorld::update(float delta) {
 	}
 
 
-	/*for (auto& j : _currentEnemy) {
+	for (auto& j : _currentEnemy) {
 		auto currentTime = GetCurrentTime() / 1000.f;
 
 		if (currentTime - _firetime < SWITCH_TIMESPACE) break;
 		_firetime = currentTime;
-		Bullet* bullet = Bullet::create("BulletImage\\SMGBullet.png", 100, j, MyGetRad(j->getPosition(), _hero->getPosition()));
+		Bullet* bullet = Bullet::create("BulletImage\\SMGBullet.png", 400, j, MyGetRad(j->getPosition(), _hero->getPosition()));
 		if (bullet) {
 			bullet->setScale(1.8);
 			bullet->setTiledMap(this->_map);
@@ -184,9 +309,6 @@ void HelloWorld::update(float delta) {
 			_enemyBullet.pushBack(bullet);
 		}
 	}
-	for (auto& j : _enemyBullet) {
-		j->calPosition();
-	}*/
 
 
 	//更新掉落物
@@ -205,11 +327,8 @@ void HelloWorld::update(float delta) {
 	_currentUsedWeapon->updateTarget();
 	_currentUsedWeapon->updateImageRotation(_rocker);
 	_currentUsedWeapon->updateCurrentLocation();
-	//if (_rocker->getRockerPressButton() == ERockerButtonPress::buttonAttack) {//按下攻击键
-
 	_currentUsedWeapon->attack();//攻击，发射子弹
 
-	/*}*/
 	updateBullet();//更新飞行物
 
 }
@@ -228,6 +347,13 @@ void HelloWorld::updateBullet() {
 		else for (auto& enmy : _currentEnemy) {//打中怪物 扣血消除
 			if (enmy->getBoundingBox().intersectsRect((*i)->getBoundingBox())) {
 				enmy->setHP(enmy->getHP() - (*i)->getBulletAttack());
+				//飘字
+
+				auto flowword = FlowWord::create();
+				this->addChild(flowword);
+				const char* damage = StringUtils::format("%d", -(*i)->getBulletAttack()).data();
+				flowword->showWord(damage, Vec2(enmy->getPositionX(), enmy->getPositionY() + 10));
+
 				(*i)->stopBullet();
 				i = _bullets.erase(i);
 				temp = false;
@@ -236,25 +362,34 @@ void HelloWorld::updateBullet() {
 		if (temp) i++;
 	}
 	//对敌方子弹遍历
-	for (auto i = _enemyBullet.begin(); i != _enemyBullet.end(); ) {
+	for (auto k = _enemyBullet.begin(); k != _enemyBullet.end(); ) {
 		bool temp = true;
-		(*i)->setVisible(true);
-		(*i)->calPosition();//位置信息更新
-		if ((*i)->isPosBlocked((*i)->getPosition())) {//被障碍物格挡，消除
-			(*i)->stopBullet();
-			i = _enemyBullet.erase(i);
+		(*k)->setVisible(true);
+		(*k)->calPosition();//位置信息更新
+		if ((*k)->isPosBlocked((*k)->getPosition())) {//被障碍物格挡，消除
+			(*k)->stopBullet();
+			k = _enemyBullet.erase(k);
 			temp = false;
 		}
 		//打中主角 击退 消除
-		else if (_hero->getBoundingBox().intersectsRect((*i)->getBoundingBox())) {
-			_hero->hit((*i)->getBulletAttack(), (*i)->getPosition());
-			(*i)->stopBullet();
-			i = _bullets.erase(i);
-			temp = false;
+		else if (_hero->getBoundingBox().intersectsRect((*k)->getBoundingBox())) {
+			if (!_hero->isInvincible) {
+				_hero->hit((*k)->getBulletAttack(), (*k)->getPosition());
+
+				auto flowword = FlowWord::create();
+				this->addChild(flowword);
+				const char* damage = StringUtils::format("%d", -(*k)->getBulletAttack()).data();
+				flowword->showWord(damage, Vec2(_hero->getPositionX(), _hero->getPositionY() + 10));
+				
+				(*k)->stopBullet();
+				k = _enemyBullet.erase(k);
+				temp = false;
+			}
 		}
-		if (temp) i++;
+		if (temp) k++;
 	}
 }
+
 
 void HelloWorld::updateWeaponHolding() {
 	auto currentTime = GetCurrentTime() / 1000.f;
@@ -323,15 +458,11 @@ Character* HelloWorld::addCharacter(TMXTiledMap* map, int HeroID) {
 		break;
 	}
 
-
 	this->addChild(m_Character);
 	ControllerOfEightDir* m_controller = ControllerOfEightDir::create();
 	m_Character->setController(m_controller);
 	m_controller->setiSpeed(m_Character->getSpeed());
 	this->addChild(m_controller, 0, CONTROLLER_TAG);
-
-
-
 
 	m_Character->setTiledMap(map);
 
@@ -346,7 +477,6 @@ Character* HelloWorld::addCharacter(TMXTiledMap* map, int HeroID) {
 
 	return m_Character;
 }
-
 
 
 
@@ -500,6 +630,7 @@ void HelloWorld::updateTreasureBoxVec() {
 
 void HelloWorld::updateAccelerateArea()
 {
+	if (_accelerateAreaVec.size() == 0) return;
 	bool doHasCollied = 0;
 	clock_t initTime = startTime;
 	endTime = clock();
@@ -558,6 +689,53 @@ float MyGetRad(Point point1, Point point2) {
 	return rad;
 }
 
+
+void HelloWorld::resetWeapon(HeroInfo heroInfo) {
+
+	if (heroInfo.wp1) {
+		if (heroInfo.wp1->getTypeName() == GUN && heroInfo.wp1->getImageName() == GUN_OLDPISTOL)
+			_weapon1 = OldPistol::create("GunImage\\OldPistol.png", "GunImage\\OldPistolReverse.png", this, sideHero, true);
+		if (heroInfo.wp1->getTypeName() == GUN && heroInfo.wp1->getImageName() == GUN_SHOTGUN)
+			_weapon1 = Shotgun::create("GunImage\\Shotgun.png", "GunImage\\ShotgunReverse.png", this, sideHero, true);
+		if (heroInfo.wp1->getTypeName() == GUN && heroInfo.wp1->getImageName() == GUN_SMG)
+			_weapon1 = SMG::create("GunImage\\SMG.png", "GunImage\\SMGReverse.png", this, sideHero, true);
+		if (heroInfo.wp1->getTypeName() == GUN && heroInfo.wp1->getImageName() == GUN_SNIPER)
+			_weapon1 = Sniper::create("GunImage\\Sniper.png", "GunImage\\SniperReverse.png", this, sideHero, true);
+		if (heroInfo.wp1->getTypeName() == MELEE && heroInfo.wp1->getImageName() == MELEE_FISH)
+			_weapon1 = Fish::create("MeleeImage\\Fish.png", "MeleeImage\\FishReverse.png", this, sideHero, true);
+		if (heroInfo.wp1->getTypeName() == MELEE && heroInfo.wp1->getImageName() == MELEE_WAND)
+			_weapon1 = Wand::create("MeleeImage\\Wand.png", "MeleeImage\\Wand.png", this, sideHero, true);
+
+		this->addChild(_weapon1);
+		_weapon1->setTiledMap(_map);
+		_weapon1->setOwner(_hero);
+	}
+	else _weapon1 = nullptr;
+	if (heroInfo.wp2) {
+		if (heroInfo.wp2->getTypeName() == GUN && heroInfo.wp2->getImageName() == GUN_OLDPISTOL)
+			_weapon2 = OldPistol::create("GunImage\\OldPistol.png", "GunImage\\OldPistolReverse.png", this, sideHero, true);
+		if (heroInfo.wp2->getTypeName() == GUN && heroInfo.wp2->getImageName() == GUN_SHOTGUN)
+			_weapon2 = Shotgun::create("GunImage\\Shotgun.png", "GunImage\\ShotgunReverse.png", this, sideHero, true);
+		if (heroInfo.wp2->getTypeName() == GUN && heroInfo.wp2->getImageName() == GUN_SMG)
+			_weapon2 = SMG::create("GunImage\\SMG.png", "GunImage\\SMGReverse.png", this, sideHero, true);
+		if (heroInfo.wp2->getTypeName() == GUN && heroInfo.wp2->getImageName() == GUN_SNIPER)
+			_weapon2 = Sniper::create("GunImage\\Sniper.png", "GunImage\\SniperReverse.png", this, sideHero, true);
+		if (heroInfo.wp2->getTypeName() == MELEE && heroInfo.wp2->getImageName() == MELEE_FISH)
+			_weapon2 = Fish::create("MeleeImage\\Fish.png", "MeleeImage\\FishReverse.png", this, sideHero, true);
+		if (heroInfo.wp2->getTypeName() == MELEE && heroInfo.wp2->getImageName() == MELEE_WAND)
+			_weapon2 = Wand::create("MeleeImage\\Wand.png", "MeleeImage\\Wand.png", this, sideHero, true);
+
+		this->addChild(_weapon2);
+		_weapon2->setTiledMap(_map);
+		_weapon2->setOwner(_hero);
+	}
+	else _weapon2 = nullptr;
+
+	if (heroInfo.curwp == heroInfo.wp1) this->_currentUsedWeapon = this->_weapon1;
+	else if (heroInfo.curwp == heroInfo.wp2) this->_currentUsedWeapon = this->_weapon2;
+	_currentUsedWeapon->startWeapon(true);
+
+}
 
 //加载ui
 /*

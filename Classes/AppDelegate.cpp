@@ -128,7 +128,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
    /* auto scene = HelloWorld::createScene(0);*/
 	//auto scene = ExploreScene::createScene();
 
-	auto scene = StartScene::create();
+	auto scene = HelloWorld::create();
     // run
     director->runWithScene(scene);
 

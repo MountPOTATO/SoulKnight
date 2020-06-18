@@ -9,5 +9,4 @@ public:
 		HelloWorld* currentScene, ESide side, bool heroOwned);
 
 
-
 };

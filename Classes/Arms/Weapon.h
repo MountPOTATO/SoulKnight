@@ -95,6 +95,7 @@ public:
 	float getWeaponBulletFlyingSpeed()const { return _bulletFlyingSpeed; }
 	INT32 getWeaponPrecision()const { return _precision; }
 
+	//图像调整
 
 
 	//角度信息：
@@ -125,6 +126,8 @@ public:
 
 	const char* getImageName() { return _imageName; }
 	const char* getTypeName() { return _typeName; }
+
+	
 
 	//位置更新相关
 	virtual void setWeaponTagPosition(int x, int y);

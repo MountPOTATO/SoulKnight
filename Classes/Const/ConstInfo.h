@@ -5,6 +5,10 @@
 
 USING_NS_CC;
 
+class Weapon;
+
+class HRocker;
+
 //摇杆的信息输入
 enum ERocker8Direction {
 	rockerUp,
@@ -73,8 +77,8 @@ enum EEntityBuffEffect {
 #define INVINCIBLE_TIME 2.0f //受伤后的无敌时间
 //Knight
 #define KNIGHT_HP 10
-#define KNIGHT_MP 10
-#define KNIGHT_SPEED 5
+#define KNIGHT_MP 200
+#define KNIGHT_SPEED 6
 #define KNIGHT_ARMOR 5
 
 
@@ -84,7 +88,7 @@ enum EEntityBuffEffect {
 //Ranger
 #define RANGER_HP 10
 #define RANGER_SPEED 5
-#define RANGER_ATK 5
+#define RANGER_ATK 3
 
 
 
@@ -115,14 +119,21 @@ enum EEntityBuffEffect {
 #define CONTROLLER_TAG 9999
 
 //加速区域加速后的速度
-#define ACCELERATE_KNIGHT_SPEED 8
+#define ACCELERATE_KNIGHT_SPEED 9
 
 //加速时间
 #define ACCELERATE_TIME 1.2f
 #define ACCELERATE_TOUCHRANGE  27.0f
 
 
-
+struct HeroInfo {
+	int hp;
+	int mp;
+	int armor;
+	Weapon* wp1;
+	Weapon* wp2;
+	Weapon* curwp;
+};
 
 
 

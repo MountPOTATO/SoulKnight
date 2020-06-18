@@ -50,7 +50,9 @@ void PickWeapon::updatePickWeaponState() {
 		if (this->getPosition().distance(_hero->getPosition()) <= 17.0f
 			&& _rocker->getRockerPressButton() != ERockerButtonPress::buttonAttack) {
 			_isNearHero = true;
-			//飘字特效加入，进入飘字状态
+			auto flowWord = FlowWord::create();
+			this->_pickThingScene->addChild(flowWord);
+			flowWord->showWord(_imageName, Vec2(getPositionX(), getPositionY() + 10));
 
 		}
 		return;

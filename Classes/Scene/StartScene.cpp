@@ -1,7 +1,7 @@
 #include "StartScene.h"
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h" 
-
+#include "Scene/LoseScene.h"
 
 USING_NS_CC;
 
@@ -90,7 +90,7 @@ bool StartScene::init()
 
 
 void StartScene::menuStartCallBack(cocos2d::Ref* pSender){
-	auto nextScene = HelloWorld::createScene(0);
+	auto nextScene = HelloWorld::createScene();
 	Director::getInstance()->replaceScene(
 		TransitionSlideInT::create(1.0f / 60, nextScene));
 	MenuItem* item = (MenuItem*)pSender;

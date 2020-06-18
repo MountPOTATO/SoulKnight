@@ -1,21 +1,32 @@
-#pragma once
 
+#ifndef __TRANSFERPORTAL_H__
+#define __TRANSFERPORTAL_H__
 #include "cocos2d.h"
+
+
+#include "Interaction/InterContent/ManualPickObject.h"
 
 USING_NS_CC;
 
-class TransferPortal :public Layer
-{
+class TransferPortal :public ManualPickObject {
+	CC_SYNTHESIZE(bool, _isUsed, IsUsed);
 public:
-	static Scene* createScene();
-	bool init();                     //初始换传送门，实现动画效果
-	CREATE_FUNC(TransferPortal);
-	bool isToPushScene();            //判断是否要切换场景
-	bool isColliedWithCharacter();
-	
-	//判断是否创建传送门，需要在主函数里进行实现
 
+	static TransferPortal* create
+	(Point position, Character* hero, HelloWorld* scene, HRocker* rocker);
 
-//public:
-//	static Layer* layer;
+	virtual bool init
+	(Point position, Character* hero, HelloWorld* scene, HRocker* rocker);
+
+	void updatePortalState();
+
+	void stopPortal(bool _isStopOther);
+
+	void initProtalState() { _isNearHero = false; _isPressed = false; }
+
+	void setPortalAsUsed() { _isUsed = true; }
+	bool isUnUsed()const { return _isUsed == false; }
+
 };
+
+#endif
