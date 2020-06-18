@@ -3,7 +3,11 @@
 bool Monster::init() {
 	return true;
 }
-
+void Monster::setTiledMap(TMXTiledMap* map) {
+	m_map = map;
+	this->meta = m_map->getLayer("Meta");
+	this->meta->setVisible(false);
+}
 
 bool Monster::isCollideWithCharacter(Character* character) {
 	Rect entityRect = character->getBoundingBox();
@@ -40,4 +44,15 @@ void Monster::setAtk(int atk){
 int Monster::attack() {
 	return 0;
 
+}
+
+Point Monster::tileCoordForPosition(Point pos) {
+	Size mapTiledNum = m_map->getMapSize();
+	Size tiledSize = m_map->getTileSize();
+
+	int x = pos.x / tiledSize.width;
+	int y = (mapTiledNum.height * tiledSize.height - pos.y) / tiledSize.height;
+
+
+	return Point(x, y);
 }

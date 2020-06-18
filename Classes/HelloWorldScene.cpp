@@ -737,12 +737,3 @@ void HelloWorld::resetWeapon(HeroInfo heroInfo) {
 
 }
 
-//¼ÓÔØui
-/*
-bool HelloWorld::loadUI(const char* file) {
-	auto UI = cocostudio::GUIReader::getInstance()->
-		widgetFromJsonFile(file);
-	UI->setPosition(Point(100, 100));
-	this->addChild(UI);
-	return true;
-}*/

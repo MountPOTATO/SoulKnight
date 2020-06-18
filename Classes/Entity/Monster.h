@@ -13,7 +13,6 @@ public:
 	
 public:
 	bool isCollideWithCharacter(Character* character);//检测是否与玩家相撞
-
 	int getHP();
 	int getSpeed();
 	float getAtkSpeed();//获取攻击间隔
@@ -23,7 +22,13 @@ public:
 	void setAtkSpeed(float atkSpeed);
 	void setAtk(int atk);
 	int attack();
+	void setTiledMap(TMXTiledMap* map);
+
+	Point tileCoordForPosition(Point pos);
+	bool isActivated;//怪物是否处于活动状态
 	float lastAAttackTime;
+	TMXTiledMap* m_map;
+	TMXLayer* meta;
 private:
 	int m_HP;
 	int m_Speed;

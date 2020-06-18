@@ -89,7 +89,7 @@ enum EEntityBuffEffect {
 #define RANGER_HP 10
 #define RANGER_SPEED 5
 #define RANGER_ATK 3
-
+#define MAX_MOVES_ROUND 3//每次进行移动时最大移动的距离 为 MAX_MOVES_ROUND*RANGER_SPEED 
 
 
 
