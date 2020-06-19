@@ -57,7 +57,7 @@ void AccelerateArea::accelerateHeroSpeed(HelloWorld* scene)
 		theHero->setSpeed(ACCELERATE_KNIGHT_SPEED);
 		auto controller = (ControllerOfEightDir*)scene->getChildByTag(CONTROLLER_TAG);
 		controller->setiSpeed(theHero->getSpeed());
-		/*log("has speedup");*/
+		log("has speedup");
 	}
 }
 

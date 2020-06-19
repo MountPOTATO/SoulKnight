@@ -106,17 +106,17 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // if the frame's height is larger than the height of medium size.
     if (frameSize.height > mediumResolutionSize.height)
     {        
-        director->setContentScaleFactor(MIN(largeResolutionSize.height/designResolutionSize.height/2.0915, largeResolutionSize.width/designResolutionSize.width/ 2.0915));
+        director->setContentScaleFactor(MIN(largeResolutionSize.height/designResolutionSize.height/2.0915 , largeResolutionSize.width/designResolutionSize.width / 2.0915));
     }
     // if the frame's height is larger than the height of small size.
     else if (frameSize.height > smallResolutionSize.height)
     {        
-        director->setContentScaleFactor(MIN(mediumResolutionSize.height/designResolutionSize.height/ 2.0915, mediumResolutionSize.width/designResolutionSize.width/ 2.0915));
+        director->setContentScaleFactor(MIN(mediumResolutionSize.height/designResolutionSize.height / 2.0915, mediumResolutionSize.width/designResolutionSize.width / 2.0915));
     }
     // if the frame's height is smaller than the height of medium size.
     else
     {        
-        director->setContentScaleFactor(MIN(smallResolutionSize.height/designResolutionSize.height/ 2.0915, smallResolutionSize.width/designResolutionSize.width/ 2.0915));
+        director->setContentScaleFactor(MIN(smallResolutionSize.height/designResolutionSize.height / 2.0915, smallResolutionSize.width/designResolutionSize.width / 2.0915));
     }
 
     register_all_packages();
@@ -128,7 +128,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
    /* auto scene = HelloWorld::createScene(0);*/
 	//auto scene = ExploreScene::createScene();
 
-	auto scene = HelloWorld::create();
+	auto scene = StartScene::create();
     // run
     director->runWithScene(scene);
 

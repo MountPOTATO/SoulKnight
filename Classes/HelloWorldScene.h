@@ -1,6 +1,5 @@
 
 
-
 /****************************************************************************
  Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
 
@@ -28,7 +27,6 @@
 #ifndef __HELLOWORLD_SCENE_H__
 #define __HELLOWORLD_SCENE_H__
 
-
 #include "cocos2d.h"
 #include "Controller/HRocker.h"
 #include "Arms/GunDerived/OldPistol.h"
@@ -51,6 +49,8 @@
 #include "Interaction/SpecialEffectArea/AccelerateArea.h"
 #include "Interaction/InterContent/TransferPortal.h"
 #include "FlowWord/FlowWord.h"
+#include "Map/Space.h"
+#include "MonsterManager/MonsterManager.h"
 
 class Weapon;
 class Character;
@@ -80,6 +80,8 @@ public:
 
 	bool safeHouseInit();
 
+	bool BattleHouseInit();
+
 	void resetWeapon(HeroInfo heroinfo);
 
 
@@ -92,7 +94,25 @@ public:
 	void clear();
 	
 
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+	//srq测试随机地图
+	//std::vector<Space*>appliedSpace;
+	//int roomCount;
+	//std::vector<int> typeNum;
+	//bool roomNotFull(int type);
+	//std::vector<std::vector<int>> placement;
+	//cocos2d::CCTMXTiledMap* curMap;
+	//Character* _knight;
+	////virtual bool initMaps();
+	////virtual void updateMap();
+	////virtual void findCurMap(Character*);
+	/////*cocos2d::EventListenerKeyboard* listenerKeyBoard;*/
+	////virtual void onKeyPressed(cocos2d::EventKeyboard::KeyCode keyCode, cocos2d::Event* event);//测试地图用
+	//////修改添加
+	//void addCharacter(Character* hero, TMXTiledMap* map);//改写自原初始函数
+	//Node* _parent;//尝试保存player->getParent(),暂时不知道有没有作用
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// implement the "static create()" method manually
 	CREATE_FUNC(HelloWorld);
@@ -115,8 +135,9 @@ public:
 	cocos2d::Vector<Sprite*> _coinVec;//金币掉落物Vector
 	//加速区域以及时间元素
 	Vector<AccelerateArea*> _accelerateAreaVec;
+	Vector<MonsterManager*>_monsterManageerVec;
 	
-	
+
 
 	//容器维护更新
 	void updateTreasureBoxVec();
@@ -126,6 +147,7 @@ public:
 	void updateDirectPickThingSprite();
 	void updatePickWeaponAndWeapon();
 
+	/*void updateBuffSkills();*/
 
 
 	//初始化摇杆
@@ -141,11 +163,13 @@ public:
 
 	
 	//地图
-	CC_SYNTHESIZE(TMXTiledMap*, _map, Map);
+	TMXTiledMap* _map;
+
 
 	//冷却时间记录
 	CC_SYNTHESIZE(float, _lastPickTime, LastPicTime);
 	CC_SYNTHESIZE(float, _lastSwitchTime, LastPickTime);
+	CC_SYNTHESIZE(float, _lastSkillTime, LastSkillTime);
 	clock_t startTime = 0;//加速带时间元素
 	clock_t endTime = 0;
 
@@ -162,8 +186,9 @@ public:
 
 
 public:
-	Character* addCharacter(TMXTiledMap* map,int HeroID);
-	 
+	/*Character* addCharacter(TMXTiledMap* map,int HeroID);*/
+
+	Character* addCharacter(TMXTiledMap* map, int HeroID);
 	
 	//加载ui
 	//bool loadUI(const char* file);

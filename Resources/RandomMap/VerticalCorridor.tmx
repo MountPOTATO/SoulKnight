@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="8" height="30" tilewidth="40" tileheight="40">
+ <tileset firstgid="1" name="roomVerge" tilewidth="40" tileheight="60">
+  <image source="1.png" width="80" height="60"/>
+  <tile id="0">
+   <properties>
+    <property name="cc_vertexz" value="automatic"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="3" name="metaTiles" tilewidth="40" tileheight="40">
+  <image source="meta_tiles.png" width="280" height="70"/>
+  <tile id="0">
+   <properties>
+    <property name="Collidable" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="10" name="floors" tilewidth="40" tileheight="40">
+  <image source="floors.png" width="160" height="40"/>
+ </tileset>
+ <layer name="Meta" width="8" height="30" visible="0">
+  <data encoding="base64" compression="zlib">
+   eJxjZsANmKF4VH5UflR+cMoDAFa3ALU=
+  </data>
+ </layer>
+ <layer name="floor" width="8" height="30">
+  <properties>
+   <property name="cc_vertexz" value="-500"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJx9k1EKBDEIQ/1u9f7XHRYMvMmELUgLNjGxtqrqbpwNnbV+595QvpFvcNyQv8DPckzAi3t21yLm4D753UOqf42D/nin/+C5u375S/5Vk72kP+FYg/rYA/EQ3/V9B9ZnjWP4BkfS71jXN4aXVupv40nv7zNI/ZwL1y+9p949dH/kSO/nM8Y8/0X6H1PvGaM/vg97RTwj9Z+zS/8PH/EIDQ==
+  </data>
+ </layer>
+ <layer name="barrier" width="8" height="30">
+  <data encoding="base64" compression="zlib">
+   eJxjZMANmICYkYA8Ex55RgLyhPQTsp+RgDyl5lNDnpLwoUb4Uep/St1HKP4Gs/vpET+UhA9IHgC8RABj
+  </data>
+ </layer>
+</map>

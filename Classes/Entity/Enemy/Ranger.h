@@ -2,6 +2,8 @@
 #include "Entity/Monster.h"
 #include "cocos2d.h"
 
+class HelloWorld;
+
 enum MovingDir {
 	left,
 	upLeft,
@@ -29,6 +31,7 @@ public:
 	MovingDir nextMovingDir;//储存当前移动方向
 	int nextMovingDistance;//预计的最大移动距离
 	int remainMovingDistance;//剩余移动步数
+	
 
 private:
 	int monsterID = 1;//仅作为标识

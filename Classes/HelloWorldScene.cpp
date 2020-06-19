@@ -32,6 +32,11 @@
 
 USING_NS_CC;
 
+//std::vector<std::string> exitRightMaps;
+//std::vector<std::string> exitLeftMaps;
+//std::vector<std::string> exitUpMaps;
+//std::vector<std::string> exitDownMaps;
+//std::vector<std::string>  corridors;
 
 
 Scene* HelloWorld::createScene(int order, HeroInfo heroinfo)
@@ -64,6 +69,7 @@ static void problemLoading(const char* filename)
 }
 
 // on "init" you need to initialize your instance
+
 bool HelloWorld::init()
 {
 	if (!Scene::init())
@@ -77,12 +83,12 @@ bool HelloWorld::init()
 
 
 	std::string levelOrder = StringUtils::format("%d", _mapOrder);
-	_map = TMXTiledMap::create("Maps/HelloWorldMap0.tmx");
+	_map = TMXTiledMap::create(StringUtils::format("Maps/HelloWorldMap%s.tmx", levelOrder));
 	this->addChild(_map);
 	//初始化英雄
 	_hero = addCharacter(_map, 1);
 	auto initWeapon = OldPistol::create
-	("WeaponImage\\GunImage\\OldPistol.png", "WeaponImage\\GunImage\\OldPistolReverse.png", this, sideHero, true);
+	("GunImage\\OldPistol.png", "GunImage\\OldPistolReverse.png", this, sideHero, true);
 	this->addChild(initWeapon);
 	initWeapon->startWeapon(true);
 	initWeapon->setTiledMap(_map);
@@ -91,13 +97,13 @@ bool HelloWorld::init()
 	_weapon1 = _currentUsedWeapon;
 	_weapon2 = nullptr;
 
+	Vector<AccelerateArea*> _accelerateAreaVec;
 
 
 
 	initHRocker();
 
 	safeHouseInit();
-
 
 	//测试掉落物直接减起,后期加入Vector
 	/*_direct = DirectPickThing::create
@@ -112,17 +118,258 @@ bool HelloWorld::init()
 	return true;
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+//bool HelloWorld::init()
+//{
+//	if (!Scene::init())
+//	{
+//		return false;
+//	}
+//
+//	_mapOrder = 0;
+//	auto visibleSize = Director::getInstance()->getVisibleSize();
+//	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+//
+//	appliedSpace = *(new std::vector<Space*>);
+//	placement = *(new std::vector<std::vector<int>>(5, std::vector<int>(5, EMPTY)));
+//	roomCount = 0;
+//	typeNum = *(new std::vector<int>(5));
+//	
+//
+//	initMaps();
+//	_knight = addCharacter(appliedSpace[0]->getMap(), 1);
+//	this->addChild(_knight, 1);
+//	_knight->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
+//
+//	_parent = _knight->getParent();
+//
+//	this->scheduleUpdate();
+//	//listenerTouch = EventListenerTouchOneByOne::create();
+//	//listenerTouch->onTouchBegan = CC_CALLBACK_2(HelloWorld::onTouchBegan, this);
+//	listenerKeyBoard = EventListenerKeyboard::create();
+//	listenerKeyBoard->onKeyPressed = CC_CALLBACK_2(HelloWorld::onKeyPressed, this);
+//	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listenerKeyBoard, this);
+//
+//	return true;
+//}
+//
+//void HelloWorld::addCharacter(Character* hero, TMXTiledMap* map) {
+//	
+//	hero->setTiledMap(map);
+//
+//	hero->setViewPointByCharacter();
+//
+//	
+//}
+//
+//void HelloWorld::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
+//
+//{
+//	//判断 keyCode 枚举来区分所按下的按键
+//	switch (keyCode) {
+//	case (EventKeyboard::KeyCode::KEY_RIGHT_ARROW):
+//	{
+//		//for (int j = 0; j < appliedSpace.size(); j++)
+//		{
+//			auto map = appliedSpace[0]->getMap();
+//			map->setPosition(map->getPosition() + Vec2(-200, 0));
+//		}
+//		break;
+//	}
+//	case (EventKeyboard::KeyCode::KEY_UP_ARROW):
+//	{
+//		//for (int j = 0; j < appliedSpace.size(); j++)
+//		{
+//			auto map = appliedSpace[0]->getMap();
+//			map->setPosition(map->getPosition() + Vec2(0, -200));
+//		}
+//		break;
+//	}
+//	case (EventKeyboard::KeyCode::KEY_LEFT_ARROW):
+//	{
+//		//for (int j = 0; j < appliedSpace.size(); j++)
+//		{
+//			auto map = appliedSpace[0]->getMap();
+//			map->setPosition(map->getPosition() + Vec2(200, 0));
+//		}
+//		break;
+//	}
+//	case (EventKeyboard::KeyCode::KEY_DOWN_ARROW):
+//	{
+//		//for (int j = 0; j < appliedSpace.size(); j++)
+//		{
+//			auto map = appliedSpace[0]->getMap();
+//			map->setPosition(map->getPosition() + Vec2(0, 200));
+//		}
+//		break;
+//	}
+//	}
+//
+//}
+//
+//
+//
+//void HelloWorld::update(float delta) {
+//
+//	updateMap();//更新地图
+//
+//}
+//
+//
+//void HelloWorld::findCurMap(Character* player)//找到主角当前地图
+//{
+//	CCTMXTiledMap* map = curMap;
+//	auto playerWorldPos = (player->getParent())->convertToWorldSpace(player->getPosition());	
+//	for (int i = 0; i < appliedSpace.size(); i++)
+//	{
+//		if (appliedSpace[i]->isInBound(playerWorldPos))
+//		{
+//			map = appliedSpace[i]->getMap();
+//						
+//		}
+//		
+//	}
+//	
+//	if (map == curMap) {
+//		return;
+//	}
+//	else if (map != nullptr)
+//	{
+//		curMap = map;
+//		auto playerLocalPos = map->convertToNodeSpace(playerWorldPos);
+//		player->setPosition(playerLocalPos);
+//		player->setParent(NULL);
+//		map->addChild(player);
+//
+//		addCharacter(player, map);
+//		log("Map changes!");
+//		
+//	}
+//
+//}
+//
+//void HelloWorld::updateMap()
+//{
+//	findCurMap(_knight);
+//}
+//
+//bool HelloWorld::initMaps()
+//{
+//	//std::string startRoom = "StartRoom.tmx";
+//	std::string verticalCorridor = "VerticalCorridor.tmx";
+//	std::string horizontalCorridor = "HorizontalCorridor.tmx";
+//	//std::string monsterRoom4Exits = "MonsterRoom4Exits.tmx";
+//	exitDownMaps = { "D1.tmx","D1.tmx","D1.tmx","DR.tmx","UD.tmx","DL.tmx","UDL.tmx","DLR.tmx","UDR.tmx","UDLR1.tmx","UDLR2.tmx","UDLR3.tmx" };
+//	exitRightMaps = { "R1.tmx","R1.tmx","R1.tmx","DR.tmx","UR.tmx","LR.tmx","ULR.tmx","DLR.tmx","UDR.tmx","UDLR1.tmx","UDLR2.tmx","UDLR3.tmx" };
+//	exitUpMaps = { "U1.tmx","U1.tmx","U1.tmx","UD.tmx","UR.tmx","UL.tmx","ULR.tmx","UDL.tmx","UDR.tmx","UDLR1.tmx","UDLR2.tmx","UDLR3.tmx" };
+//	exitLeftMaps = { "L1.tmx","L1.tmx","L1.tmx","DL.tmx","LR.tmx","UL.tmx","ULR.tmx","UDL.tmx","DLR.tmx","UDLR1.tmx","UDLR2.tmx","UDLR3.tmx" };
+//	corridors = { verticalCorridor,horizontalCorridor };
+//	auto firstRoom = Space::create(this);
+//	if (firstRoom != nullptr)
+//	{
+//		auto firstMap = firstRoom->getMap();
+//		//auto firstMap = CCTMXTiledMap::create(squareRoom);
+//		if (firstMap != nullptr)
+//		{
+//			this->addChild(firstMap, 0);
+//			placement[0][2] = FULL;
+//			auto visibleSize = Director::getInstance()->getVisibleSize();
+//			Vec2 origin = Director::getInstance()->getVisibleOrigin();
+//			firstMap->setAnchorPoint(Vec2(0.57142, 0.57142));//0.5 0.5
+//			firstMap->setPosition(Vec2(visibleSize.width / 3 + origin.x, visibleSize.height / 2 + origin.y));
+//			auto mapSize = firstMap->getMapSize();
+//			auto tileSize = firstMap->getTileSize();
+//			//firstMap->setPosition(Vec2(origin.x+20, visibleSize.height/2+ origin.y));
+//			auto curAnc = firstMap->getAnchorPoint();
+//			auto curPos = firstMap->getPosition();
+//			firstRoom->resetAnchor(Vec2(0.57142, 0.57142));//0.5 0.5
+//			firstRoom->setCover(Rect(firstMap->getPosition(), Size(mapSize.width * tileSize.width/* / 2.0915*/, mapSize.height * tileSize.height/* / 2.0915*/)));
+//			this->curMap = firstMap;
+//			this->appliedSpace.push_back(firstRoom);
+//			typeNum[1]++;
+//			roomCount++;
+//		}
+//		else
+//		{
+//			log("Map access failed!");
+//			return false;
+//		}
+//	}
+//	else
+//	{
+//		log("Room building failed!");
+//		return false;
+//	}
+//	while (roomCount < 9)
+//	{
+//		for (int j = 0; j < appliedSpace.size(); j++)
+//		{
+//			appliedSpace[j]->getCover();
+//			for (int i = 1; i <= 4; i++)
+//			{
+//				if (i > 4)
+//				{
+//					log("exitInfo out of range.");
+//				}
+//				else
+//				{
+//					if (appliedSpace[j] != nullptr && appliedSpace[j]->exitInfo[i] == E_UNAPPENDED)//存在出口未延伸
+//					{
+//						Space* temp = appliedSpace[j]->append(this, i);
+//						if (temp != nullptr)
+//						{
+//							temp->count = appliedSpace.size();
+//							this->appliedSpace.push_back(temp);
+//							appliedSpace[j]->exitInfo[i] = E_APPENDED;
+//							int otherExit = i > 2 ? i - 2 : i + 2;
+//							appliedSpace[appliedSpace.size() - 1]->exitInfo[otherExit] = E_APPENDED;
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
+//
+//}
+//
+//bool HelloWorld::roomNotFull(int type)
+//{
+//	switch (type)
+//	{
+//	case(1):
+//		return true;
+//		//return typeNum[type] < 5 ? true : false;
+//	case(2):
+//		return typeNum[type] < 4 ? true : false;
+//	case(3):
+//		return typeNum[type] < 2 ? true : false;
+//	case(4):
+//		return typeNum[type] < 2 ? true : false;
+//	default:
+//		return false;
+//	}
+//}
 
 
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool HelloWorld::init(int order, HeroInfo heroInfo) {
 	if (!Scene::init())	return false;
 
 	auto visibleSize = Director::getInstance()->getVisibleSize();
-	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
 
 	_mapOrder = order;
 	std::string levelOrder = StringUtils::format("%d", order);
 	_map = TMXTiledMap::create(StringUtils::format("Maps/HelloWorldMap%s.tmx", levelOrder));
+
+	if(_mapOrder==1)
+	_map->setPosition(_map->getPositionX() , _map->getPositionY() + 40);
+	if (_mapOrder == 2)
+		_map->setPosition(_map->getPositionX(), _map->getPositionY()+80);
+
 	this->addChild(_map);
 
 	_hero = addCharacter(_map, 1);
@@ -131,10 +378,7 @@ bool HelloWorld::init(int order, HeroInfo heroInfo) {
 		_hero->setHP(heroInfo.hp);
 		_hero->setMP(heroInfo.mp);
 		_hero->setArmor(heroInfo.armor);
-
 		resetWeapon(heroInfo);
-
-
 	}
 	else {
 		auto initWeapon = OldPistol::create
@@ -148,23 +392,22 @@ bool HelloWorld::init(int order, HeroInfo heroInfo) {
 		_weapon2 = nullptr;
 	}
 
-	auto monster = Ranger::create();
-	monster->setPosition(Vec2(_hero->getPositionX(), _hero->getPositionY() - 290));
-	this->addChild(monster);
-	_currentEnemy.pushBack(monster);
-
 	initHRocker();
 
-
-	auto treasureBox = TreasureBox::create
-	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 180), _hero, this, _rocker);
-	this->addChild(treasureBox);
-	_treasureBoxVec.pushBack(treasureBox);
+	BattleHouseInit();
 
 
-	_portal = TransferPortal::create
-	(Vec2(_hero->getPositionX(), _hero->getPositionY() + 180), _hero, this, _rocker);
-	this->addChild(_portal);
+	//auto monster = Ranger::create();
+	//monster->setPosition(Vec2(_hero->getPositionX(), _hero->getPositionY() - 290));
+	//this->addChild(monster);
+	//_currentEnemy.pushBack(monster);
+	//auto treasureBox = TreasureBox::create
+	//(Vec2(_hero->getPositionX(), _hero->getPositionY() - 180), _hero, this, _rocker);
+	//this->addChild(treasureBox);
+	//_treasureBoxVec.pushBack(treasureBox);
+	//_portal = TransferPortal::create
+	//(Vec2(_hero->getPositionX(), _hero->getPositionY() + 180), _hero, this, _rocker);
+	//this->addChild(_portal);
 
 	this->scheduleUpdate();
 	return true;
@@ -187,11 +430,15 @@ void HelloWorld::menuReGenerateCallBack(Ref* pSender) {
 
 	HeroInfo heroinfo = { _hero->getHP(),_hero->getMP(),_hero->getArmor(),_weapon1,_weapon2,_currentUsedWeapon };
 
-	auto nextScene = HelloWorld::createScene(0, heroinfo);
+	if (_mapOrder == 2) this->menuWinCallBack(this);
+	else {
+		clear();
+		auto nextScene = HelloWorld::createScene(_mapOrder + 1, heroinfo);
 
-	Director::getInstance()->pushScene(
-		TransitionSlideInT::create(1.0f / 60, nextScene));
-	MenuItem* item = (MenuItem*)pSender;
+		Director::getInstance()->pushScene(
+			TransitionSlideInT::create(1.0f / 60, nextScene));
+		MenuItem* item = (MenuItem*)pSender;
+	}
 
 }
 
@@ -219,25 +466,18 @@ bool HelloWorld::safeHouseInit() {
 	_treasureBoxVec.pushBack(treasureBox);
 
 
-	//accelerateDemo
-	auto accelerateArea1 = AccelerateArea::create
-	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 300), _hero, this);
-	this->addChild(accelerateArea1);
-	_accelerateAreaVec.pushBack(accelerateArea1);
 
-	auto accelerateArea2 = AccelerateArea::create
-	(Vec2(_hero->getPositionX() + 300, _hero->getPositionY() - 300), _hero, this);
-	this->addChild(accelerateArea2);
-	_accelerateAreaVec.pushBack(accelerateArea2);
 
 	_portal = TransferPortal::create
 	(Vec2(_hero->getPositionX(), _hero->getPositionY() + 180), _hero, this, _rocker);
 	this->addChild(_portal);
 
-	auto monster = Ranger::create();
-	monster->setPosition(Vec2(_hero->getPositionX(), _hero->getPositionY() - 290));
-	this->addChild(monster);
-	_currentEnemy.pushBack(monster);
+	auto manager = MonsterManager::create(Vec2(_hero->getPositionX(), _hero->getPositionY() - 200),this,_hero);
+	manager->setTiledMap(_map);
+	this->addChild(manager);
+	_monsterManageerVec.pushBack(manager);
+
+
 
 	return true;
 }
@@ -261,6 +501,7 @@ void HelloWorld::checkPortalState() {
 		_portal->initProtalState();
 		_portal->setPortalAsUsed();
 		this->clear();
+		_currentUsedWeapon->clearBuff();
 		this->menuReGenerateCallBack(this);
 
 	}
@@ -287,34 +528,16 @@ void HelloWorld::update(float delta) {
 
 	_rocker->updatePosition(Vec2(_hero->getPositionX() - 550, _hero->getPositionY() - 350));
 
-
-
-
-	for (auto j : _currentEnemy) {
-		if (_hero->getBoundingBox().intersectsRect(j->getBoundingBox()))
-			_hero->hit(1, j->getPosition());
-	}
+	for (auto& j : _monsterManageerVec) j->update(1);
 
 
 	for (auto& j : _currentEnemy) {
-		auto currentTime = GetCurrentTime() / 1000.f;
-
-		if (currentTime - _firetime < SWITCH_TIMESPACE) break;
-		_firetime = currentTime;
-		Bullet* bullet = Bullet::create("BulletImage\\SMGBullet.png", 400, j, MyGetRad(j->getPosition(), _hero->getPosition()));
-		if (bullet) {
-			bullet->setScale(1.8);
-			bullet->setTiledMap(this->_map);
-			this->addChild(bullet);
-			_enemyBullet.pushBack(bullet);
-		}
+		j->update(1);
 	}
 
 
 	//更新掉落物
 	//_direct->updatePickThingSprite();
-
-
 
 	updateTreasureBoxVec();
 	updatePickBottleVec();
@@ -328,10 +551,14 @@ void HelloWorld::update(float delta) {
 	_currentUsedWeapon->updateImageRotation(_rocker);
 	_currentUsedWeapon->updateCurrentLocation();
 	_currentUsedWeapon->attack();//攻击，发射子弹
+	/*updateBuffSkills();*/
+
 
 	updateBullet();//更新飞行物
 
 }
+
+
 
 void HelloWorld::updateBullet() {
 	//对我方子弹进行遍历
@@ -380,7 +607,7 @@ void HelloWorld::updateBullet() {
 				this->addChild(flowword);
 				const char* damage = StringUtils::format("%d", -(*k)->getBulletAttack()).data();
 				flowword->showWord(damage, Vec2(_hero->getPositionX(), _hero->getPositionY() + 10));
-				
+
 				(*k)->stopBullet();
 				k = _enemyBullet.erase(k);
 				temp = false;
@@ -389,7 +616,6 @@ void HelloWorld::updateBullet() {
 		if (temp) k++;
 	}
 }
-
 
 void HelloWorld::updateWeaponHolding() {
 	auto currentTime = GetCurrentTime() / 1000.f;
@@ -474,6 +700,7 @@ Character* HelloWorld::addCharacter(TMXTiledMap* map, int HeroID) {
 
 	m_Character->setPosition(Point(characterPointX, characterPointY));//根据tmx对象确定出生点
 	m_Character->setViewPointByCharacter();
+
 
 	return m_Character;
 }
@@ -737,3 +964,59 @@ void HelloWorld::resetWeapon(HeroInfo heroInfo) {
 
 }
 
+bool HelloWorld::BattleHouseInit() {
+	if (!_map) { log("ERROR:Map Missing"); return false; }
+	TMXObjectGroup* objGroup = _map->getObjectGroup("Object");
+
+	//宝箱位置
+	ValueMap TreasureBoxPointMap = objGroup->getObject("Treasure");
+	float trePointX = TreasureBoxPointMap.at("x").asFloat();
+	float trePointY = TreasureBoxPointMap.at("y").asFloat();
+	auto treasureBox = TreasureBox::create
+	(Vec2(trePointX, trePointY), _hero, this, _rocker);
+	this->addChild(treasureBox);
+	_treasureBoxVec.pushBack(treasureBox);
+
+
+	////传送门位置
+	TMXObjectGroup* objGroup2 = _map->getObjectGroup("Object");
+	ValueMap PortalPointMap = objGroup2->getObject("Portal");
+	float portalPointX = PortalPointMap.at("x").asFloat();
+	float portalPointY = PortalPointMap.at("y").asFloat();
+	_portal = TransferPortal::create
+	(Vec2(portalPointX, portalPointY), _hero, this, _rocker);
+	this->addChild(_portal);
+
+	for (int i = 1; i < 5; i++) {
+		TMXObjectGroup* objGroup3 = _map->getObjectGroup("Object");
+		std::string number = StringUtils::format("%d", i);
+		ValueMap SpeedUpPointMap = objGroup3->getObject(StringUtils::format("Speed%s", number));
+		float acPointX = SpeedUpPointMap.at("x").asFloat();
+		float acPointY = SpeedUpPointMap.at("y").asFloat();
+		auto accelerateArea = AccelerateArea::create
+		(Vec2(acPointX, acPointY), _hero, this);
+		this->addChild(accelerateArea);
+		_accelerateAreaVec.pushBack(accelerateArea);
+	}
+
+	TMXObjectGroup* objGroup4 = _map->getObjectGroup("Object");
+	ValueMap ManagerMap = objGroup2->getObject("Manager");
+	float PointX = ManagerMap.at("x").asFloat();
+	float PointY = ManagerMap.at("y").asFloat();
+	auto manager = MonsterManager::create(Vec2(PointX,PointY), this, _hero);
+	manager->setTiledMap(_map);
+	this->addChild(manager);
+	_monsterManageerVec.pushBack(manager);
+	return true;
+}
+
+
+//加载ui
+/*
+bool HelloWorld::loadUI(const char* file) {
+	auto UI = cocostudio::GUIReader::getInstance()->
+		widgetFromJsonFile(file);
+	UI->setPosition(Point(100, 100));
+	this->addChild(UI);
+	return true;
+}*/

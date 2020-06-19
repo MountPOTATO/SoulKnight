@@ -3,8 +3,8 @@
 
 #include "Arms/Weapon.h"
 
-#define RIGHT true
-#define LEFT false
+//#define RIGHT true
+//#define LEFT false
 
 class Monster;
 

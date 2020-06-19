@@ -7,11 +7,11 @@
             <key>AttackSpeed</key>
             <real>0.2</real>
             <key>AttackRange</key>
-            <real>10000.0</real>
+            <real>500.0</real>
             <key>HardStrikeRate</key>
             <real>0.20</real>
             <key>BulletFlyingSpeed</key>
-            <real>600.0</real>
+            <real>800.0</real>
       </dict>       
 </array>
 </plist>

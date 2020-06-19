@@ -8,21 +8,21 @@ bool Ranger::init() {
 	setHP(RANGER_HP);
 	isAiMoving = false;
 
-	this->isActivated = false;
-	this->getSprite()->setVisible(false);//不活跃的怪物先不显示
+	this->isActivated = true;
+	this->getSprite()->setVisible(true);//不活跃的怪物先不显示
 	this->scheduleUpdate();//开启，如果严重影响帧数就考虑放到怪物活跃时再启用
 
 	return true;
 }
 
  int Ranger::attack() {
-	 //内容待定
-	 return 0;
+	 
 }
 
  void Ranger::calDistance() {
-	 if (isAiMoving = true) { return; }//如果正在执行上一个移动指令，就不要重复移动了
+	 if (isAiMoving == true) { return; }//如果正在执行上一个移动指令，就不要重复移动了
 	 auto dir = (int)(8 * CCRANDOM_0_1());//随机生成0-7
+	 log("%f", dir);
 	 switch (dir)
 	 {
 	 case 0:
@@ -109,7 +109,7 @@ bool Ranger::init() {
 
 		 Entity::setTagPosition(x, y);
 	 }
-	 if (remainMovingDistance == 0) { isAiMoving = false; }
+	 if (remainMovingDistance == 0) { isAiMoving = false; remainMovingDistance = 50; }
 	 return;
 
 

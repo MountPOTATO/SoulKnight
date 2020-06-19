@@ -1,6 +1,8 @@
 #include "Entity/Monster.h"
 
+
 bool Monster::init() {
+
 	return true;
 }
 void Monster::setTiledMap(TMXTiledMap* map) {

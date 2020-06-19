@@ -78,6 +78,8 @@ void Character::setViewPointByCharacter() {
 	parent->setPosition(viewPos);
 
 }
+//调试
+
 
 void Character::setTagPosition(int x, int y) {
 	if (isKnockBack) { return; }//正在被击退时不能行动
@@ -151,7 +153,7 @@ void Character::hit(int damage,Point enemyPos) {
 	CallBackTimeCounter* invincibleTimer = CallBackTimeCounter::create();
 	this->addChild(invincibleTimer);
 	invincibleTimer->start(INVINCIBLE_TIME, [&]() {
-		setIsInvincible(false); });//定时结束后将无敌状态取消
+	setIsInvincible(false); });//定时结束后将无敌状态取消
 
 	
 	//造成伤害 有护甲先扣护甲，没护甲再扣血

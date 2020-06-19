@@ -2,6 +2,9 @@
 #define __CONSTINFO_H__
 
 #include "cocos2d.h"
+#include <vector>
+#include<string>
+
 
 USING_NS_CC;
 
@@ -92,6 +95,13 @@ enum EEntityBuffEffect {
 #define MAX_MOVES_ROUND 3//每次进行移动时最大移动的距离 为 MAX_MOVES_ROUND*RANGER_SPEED 
 
 
+//Ranger
+#define RANGER_HP 10
+#define RANGER_SPEED 2
+#define RANGER_ATK 3
+
+
+
 
 
 
@@ -109,8 +119,8 @@ enum EEntityBuffEffect {
 #define BLUE "blue"
 
 //一些时间间隔
-#define SWITCH_TIMESPACE 1.0f
-#define PICK_TIMESPACE 1.0f
+#define SWITCH_TIMESPACE 0.6f
+#define PICK_TIMESPACE 0.7f
 
 
 
@@ -135,6 +145,37 @@ struct HeroInfo {
 	Weapon* curwp;
 };
 
+
+//GlobalConst
+#define HIT_WHEN_COLLIDE_WITH_ENEMY 1 //与普通敌人相撞扣血量
+#define KNOCKBACK_DISTANCE 80//被击退后退的距离
+#define KNOCKBACK_TIME 0.1f//被击退持续的时间
+
+//space type
+#define V_CORI 0
+#define H_CORI 1
+#define ROOM 2
+
+//space exit info
+#define NONE 0
+#define E_UNAPPENDED 1
+#define E_APPENDED 2
+
+#define DOWN 1
+#define RIGHT 2
+#define UP 3
+#define LEFT 4
+
+#define EMPTY 0
+#define FULL 1
+#define APPOINTED 2
+
+
+extern std::vector<std::string> exitRightMaps;
+extern std::vector<std::string> exitLeftMaps;
+extern std::vector<std::string> exitUpMaps;
+extern std::vector<std::string> exitDownMaps;
+extern std::vector<std::string>  corridors;
 
 
 #endif

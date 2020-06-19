@@ -33,6 +33,7 @@ public:
 	void updatePosition(Point position) { setPosition(position); }
 
 	bool isPressSwitch() {	return m_pressSwitch == true;	}
+	bool isPressSkill() { return m_pressLimitBreak == true; }
 private:
 	EventListenerTouchOneByOne* listener;
 	EventListenerKeyboard* listenerKeyboard;
