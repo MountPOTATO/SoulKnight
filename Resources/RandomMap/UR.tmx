@@ -20,7 +20,7 @@
  <tileset firstgid="15" name="exit" tilewidth="40" tileheight="40">
   <image source="上下门（关）.png" width="40" height="80"/>
  </tileset>
- <layer name="Meta" width="20" height="20" visible="0">
+ <layer name="Meta" width="20" height="20">
   <data encoding="base64" compression="zlib">
    eJzjYGBg4MCBcQFc6gnpIxXQwzxS3c6Bxqa1eZSAwW4ezMyBNg9ffA0G8wjZRWvzyM3n+MKAmuaRCwajechm0Mp91MQAq/gC8Q==
   </data>
