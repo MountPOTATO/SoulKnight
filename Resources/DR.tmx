@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="22" height="22" tilewidth="40" tileheight="40">
+ <tileset firstgid="1" name="floors" tilewidth="40" tileheight="40">
+  <image source="floors.png" width="160" height="40"/>
+ </tileset>
+ <tileset firstgid="5" name="meta_tiles" tilewidth="40" tileheight="40">
+  <image source="meta_tiles.png" width="280" height="70"/>
+  <tile id="0">
+   <properties>
+    <property name="Collidable" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="12" name="1" tilewidth="40" tileheight="60">
+  <image source="1.png" width="80" height="60"/>
+  <tile id="0">
+   <properties>
+    <property name="cc_vertexz" value="automatic"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="14" name="木箱" tilewidth="40" tileheight="60">
+  <image source="木箱.png" width="40" height="60"/>
+ </tileset>
+ <tileset firstgid="15" name="上下门（关）" tilewidth="40" tileheight="40">
+  <image source="上下门（关）.png" width="40" height="80"/>
+ </tileset>
+ <layer name="Meta" width="22" height="22">
+  <data encoding="base64" compression="zlib">
+   eJxjZWBgYMWDcQF8egjpJRcgm0tNO9HNRRenl7nEhiUucxlwiBHrfnqYi0ueXHNJkadWmiQl3kixcyDMxSY+GM3FpY6UOCbXXFqmX1LL2MFsLrlgqJhLTJ1Hab0JADOVAsw=
+  </data>
+ </layer>
+ <layer name="floor" width="22" height="22">
+  <properties>
+   <property name="cc_vertexz" value="-500"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJy1lVEOxCAIRIV6/zPvbtJJ3r7S/tXE1CgOMA50rfdGf2ed87fe33lo7zj397m3sRfbfIlr+2AZz76Il7sZudvALKwZb+GMPrlmvMFibLTNXuu8cR6MjLvce83xOn/bMV7yVuvfP+8xZ8bKeDLIea0rZ46fsdN3bMiDY5x4LWEzB747eUgeJR/WBvVibcQveTB/va687gGTvoJPHvz+zPdJU+Q7d8wDbfw2xzCnujOutT69RwuP+pr0wD1/7zAn39bDxK9z9HtR46z5KV7WBbmZasV2U99xn6MPa9tadK1OenA/Y01MPbHwveuTriPjTHVFO+oog3fcz4ztf9RTX39jfAARkQQB
+  </data>
+ </layer>
+ <layer name="exit" width="22" height="22">
+  <properties>
+   <property name="cc_vertexz" value="-500"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUIAOBUXNHzR0Fo4ACIIADEwIAdN8AwQ==
+  </data>
+ </layer>
+ <layer name="barrier" width="22" height="22">
+  <properties>
+   <property name="cc_vertexz" value="automatic"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYMAPWHHggQZ8ODA1zCVGjBbm4vITPvuJNZdUQCtzibGLFHPxpUV6mkts3A0Wc3GpG+rm4gMDbS6pgBblGy3NHe6AHmEFABYaBFc=
+  </data>
+ </layer>
+ <layer name="roomVerge" width="22" height="22">
+  <properties>
+   <property name="cc_vertexz" value="automatic"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzjYWBg4EXCPFCMzMcnh46RzaI2gJlPbUAr9w5Fc3loYC4sbVAb0Mq9MLNHzaVd+A4lc0fzGwSMhgPCXEL1JS6AXtei8wGJ+gOK
+  </data>
+ </layer>
+ <layer name="box" width="22" height="22">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFuAAPFA8Vc0fBKCAWjKbtUTAKBh8AANifAGE=
+  </data>
+ </layer>
+</map>

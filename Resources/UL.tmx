@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="18" height="18" tilewidth="40" tileheight="40">
+ <tileset firstgid="1" name="floor" tilewidth="40" tileheight="40">
+  <image source="floors.png" width="160" height="40"/>
+ </tileset>
+ <tileset firstgid="5" name="roomVerge" tilewidth="40" tileheight="60">
+  <image source="1.png" width="80" height="60"/>
+ </tileset>
+ <tileset firstgid="7" name="barrier" tilewidth="40" tileheight="60">
+  <image source="木箱.png" width="40" height="60"/>
+ </tileset>
+ <tileset firstgid="8" name="meta" tilewidth="40" tileheight="40">
+  <image source="meta_tiles.png" width="280" height="70"/>
+  <tile id="0">
+   <properties>
+    <property name="Collidable" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
+ <tileset firstgid="15" name="exit" tilewidth="40" tileheight="40">
+  <image source="上下门（关）.png" width="40" height="80"/>
+  <tile id="1">
+   <properties>
+    <property name="cc_vertexz" value="-500"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Meta" width="18" height="18">
+  <data encoding="base64" compression="zlib">
+   eJzjYGBg4MCCcQFsagnpIRYgm8OBJk4sm1buoZY55PoLnU2pe6htzqi/sLOHazocDP7CVxaRiwE+agKh
+  </data>
+ </layer>
+ <layer name="floor" width="18" height="18">
+  <properties>
+   <property name="cc_vertexz" value="-500"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJytk0EOBCEIBEX8/5t3DnZSqWVuQ0IkAg0NutZ3ch7tR+va+9p97b4a35FGCnmFWGMc3NMXacW3cuhLzY1Y49T6r1+wyY0cyGuqeXTX8KWnrTmTw1G8Md0TcYLBk3PwrsghQj9nvhXPvlLjbT7J3wOO79MXeU37ZPyWr+CPeFfGYG4NdTxn1iWn4LOnqZ/p/ZHD9M84+4j/JWt6PuQ6/Qu/wyMMzyWn//v03sznbZdfyg+vigKc
+  </data>
+ </layer>
+ <layer name="exit" width="18" height="18">
+  <properties>
+   <property name="cc_vertexz" value="-500"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYMAOBHDgUTCwgFpxMGoOfcwZBUMLAADe7gDB
+  </data>
+ </layer>
+ <layer name="barrier" width="18" height="18">
+  <properties>
+   <property name="cc_vertexz" value="automatic"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBicgJ1MNrLYYATk+muwg1F/YbIHMxgO/mJnoL67AP2rAMU=
+  </data>
+ </layer>
+ <layer name="roomVerge" width="18" height="18">
+  <properties>
+   <property name="cc_vertexz" value="automatic"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjZWBgYANiVjQaF0BWh44pBdQyh40Bvx9IMYda7qGWOdQAo+bgB9SIK5g51HATNfPXcMwXMH/BMHq5hE2ODQcGALhiATY=
+  </data>
+ </layer>
+</map>

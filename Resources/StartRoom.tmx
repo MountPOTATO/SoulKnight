@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="40" tileheight="40">
+ <tileset firstgid="1" name="floor" tilewidth="40" tileheight="40">
+  <image source="floors.png" width="160" height="40"/>
+ </tileset>
+ <tileset firstgid="5" name="roomVerge" tilewidth="40" tileheight="60">
+  <image source="1.png" width="80" height="60"/>
+ </tileset>
+ <tileset firstgid="7" name="exit" tilewidth="40" tileheight="40">
+  <image source="上下门（关）.png" width="40" height="80"/>
+ </tileset>
+ <tileset firstgid="9" name="meta" tilewidth="40" tileheight="40">
+  <image source="meta_tiles.png" width="280" height="70"/>
+  <tile id="0">
+   <properties>
+    <property name="Collidable" value="ture"/>
+   </properties>
+  </tile>
+ </tileset>
+ <layer name="Meta" width="20" height="20">
+  <data encoding="base64" compression="zlib">
+   eJzjZGBg4KQyphYYNW94mwczc9S84WneYE9/I9U8UsttfHoAu30CQQ==
+  </data>
+ </layer>
+ <layer name="exit" width="20" height="20">
+  <properties>
+   <property name="cc_vertexz" value="-500"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2BgAMeoecPavFEwtAAHDowPAACdYABh
+  </data>
+ </layer>
+ <layer name="floor" width="20" height="20">
+  <properties>
+   <property name="cc_vertexz" value="-500"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJy1k1sOwzAIBI3h/mdOKxlpMqL5apAsvxcWlrX+b/EZ+4zS/rtOrRNvek7g1dmXMBNz4d4jzp3jS2DHgM+zxFnjEo9c+k+sO3/zYAwhvpNP+onBR8lPG/O99YZx9Mx8EpPxkS9j83qvO19iEq8GrNAf7x2j+ZJf6a816Pgmvvbn+hHXuSEedUduHK6ltU6+rqfX5Gn9MB9t093Ub9Y19foLj7rINeuNOWEvtNkf6+F+YB2e6kFO5OB/1Kdz0+bcWXOurTlM/bH1duox68rxvmEX+zcDPQ==
+  </data>
+ </layer>
+ <layer name="barrier" width="20" height="20">
+  <properties>
+   <property name="cc_vertexz" value="automatic"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjY2BgYINiVhxsXPLoamB8agGYudQCMDdT0zxqu4/a4UdN/1LbPJiZg9k8avt3sIffYM4fgz09U7t8oYX78JXz+PQhl/fINADX6AFk
+  </data>
+ </layer>
+</map>
