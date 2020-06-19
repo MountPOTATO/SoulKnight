@@ -104,6 +104,16 @@ enum EEntityBuffEffect {
 #define CHARGER_MAX_CHARGES_ROUND 40//最大冲撞距离
 #define CHARGER_MOVE_PAUSE_TIME 3.0f
 
+enum MovingDir {
+	left,
+	upLeft,
+	up,
+	upRight,
+	right,
+	downRight,
+	down,
+	downLeft,
+};
 
 
 //武器类型名与所属名

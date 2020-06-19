@@ -3,16 +3,7 @@
 #include "cocos2d.h"
 class HelloWorld;
 
-enum MovingDir {
-	left,
-	upLeft,
-	up,
-	upRight,
-	right,
-	downRight,
-	down,
-	downLeft,
-};
+
 
 class Ranger :public Monster {
 public:

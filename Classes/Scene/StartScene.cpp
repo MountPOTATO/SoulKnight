@@ -91,9 +91,6 @@ bool StartScene::init()
 
 void StartScene::menuStartCallBack(cocos2d::Ref* pSender){
 	auto nextScene = HelloWorld::createScene();
-	auto audioEffect = CocosDenshion::SimpleAudioEngine::getInstance();
-	audioEffect->playEffect("Audio/button.mp3", false);
-
 	Director::getInstance()->replaceScene(
 		TransitionSlideInT::create(1.0f / 60, nextScene));
 	MenuItem* item = (MenuItem*)pSender;
@@ -104,18 +101,12 @@ void StartScene::menuStartCallBack(cocos2d::Ref* pSender){
 
 
 void StartScene::menuEndCallBack(cocos2d::Ref* pSender){
-	auto audioEffect = CocosDenshion::SimpleAudioEngine::getInstance();
-	audioEffect->playEffect("Audio/button.mp3", false);
-
 	Director::getInstance()->end();
 }
 
 
 void StartScene::menuMusicCallBack(cocos2d::Ref* pSender)
 {
-	auto audioEffect = CocosDenshion::SimpleAudioEngine::getInstance();
-	audioEffect->playEffect("Audio/button.mp3", false);
-
 	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
 	if (audio->isBackgroundMusicPlaying()) {
 		audio->pauseBackgroundMusic();
