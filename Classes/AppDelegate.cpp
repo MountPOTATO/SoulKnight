@@ -23,8 +23,9 @@
  ****************************************************************************/
 
 #include "AppDelegate.h"
+#include "StartExplore.h"
 #include "HelloWorldScene.h"
-
+#include "Scene/StartScene.h"
 // #define USE_AUDIO_ENGINE 1
 // #define USE_SIMPLE_AUDIO_ENGINE 1
 
@@ -80,7 +81,7 @@ static int register_all_packages()
 bool AppDelegate::applicationDidFinishLaunching() {
 
     Director::getInstance()->setProjection(cocos2d::Director::Projection::_2D);
-   Director::getInstance()->setDepthTest(true);
+    Director::getInstance()->setDepthTest(true);
     // initialize director
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
@@ -100,29 +101,34 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0f / 60);
 
     // Set the design resolution
-    glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
+    glview->setDesignResolutionSize(designResolutionSize.width*2, designResolutionSize.height*2, ResolutionPolicy::NO_BORDER);
     auto frameSize = glview->getFrameSize();
     // if the frame's height is larger than the height of medium size.
     if (frameSize.height > mediumResolutionSize.height)
     {        
-        director->setContentScaleFactor(MIN(largeResolutionSize.height/designResolutionSize.height, largeResolutionSize.width/designResolutionSize.width));
+        director->setContentScaleFactor(MIN(largeResolutionSize.height/designResolutionSize.height/2.0915 , largeResolutionSize.width/designResolutionSize.width / 2.0915));
     }
     // if the frame's height is larger than the height of small size.
     else if (frameSize.height > smallResolutionSize.height)
     {        
-        director->setContentScaleFactor(MIN(mediumResolutionSize.height/designResolutionSize.height, mediumResolutionSize.width/designResolutionSize.width));
+        director->setContentScaleFactor(MIN(mediumResolutionSize.height/designResolutionSize.height / 2.0915, mediumResolutionSize.width/designResolutionSize.width / 2.0915));
     }
     // if the frame's height is smaller than the height of medium size.
     else
     {        
-        director->setContentScaleFactor(MIN(smallResolutionSize.height/designResolutionSize.height, smallResolutionSize.width/designResolutionSize.width));
+        director->setContentScaleFactor(MIN(smallResolutionSize.height/designResolutionSize.height / 2.0915, smallResolutionSize.width/designResolutionSize.width / 2.0915));
     }
 
     register_all_packages();
     // create a scene. it's an autorelease object
-    //auto scene = HelloWorld::createScene();
-    auto scene = HelloWorld::createScene();
 
+    Director::getInstance()->setProjection(cocos2d::Director::Projection::_2D);
+    Director::getInstance()->setDepthTest(true);//开启openGl的深度渲染
+
+   /* auto scene = HelloWorld::createScene(0);*/
+	//auto scene = ExploreScene::createScene();
+
+	auto scene = StartScene::create();
     // run
     director->runWithScene(scene);
 

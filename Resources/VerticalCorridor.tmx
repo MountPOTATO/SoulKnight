@@ -19,7 +19,7 @@
  <tileset firstgid="10" name="floors" tilewidth="40" tileheight="40">
   <image source="floors.png" width="160" height="40"/>
  </tileset>
- <layer name="Meta" width="8" height="30" visible="0">
+ <layer name="Meta" width="8" height="30">
   <data encoding="base64" compression="zlib">
    eJxjZsANmKF4VH5UflR+cMoDAFa3ALU=
   </data>

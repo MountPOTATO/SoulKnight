@@ -64,6 +64,8 @@ bool SMG::init(const char* weaponImageName1, const char* weaponImageName2,
 	_hasAnimation = false;
 	_bulletImageName = "BulletImage\\SMGBullet.png";
 
+	_imageName = GUN_SMG;
+	_typeName = GUN;
 
 	return true;
 }

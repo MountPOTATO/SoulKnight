@@ -9,8 +9,6 @@
 #include <string>
 #include <iostream>
 #include <Const/ConstInfo.h>
-#include "Entity/Entity.h"
-
 
 using namespace cocos2d;
 
@@ -22,8 +20,8 @@ using namespace cocos2d;
 
 
 class HelloWorld;
-
-
+class Character;
+class Monster;
 //TODO:常量移到专门的常量库里
 
 
@@ -48,9 +46,9 @@ private:
 	//场景，持有信息
 	CC_SYNTHESIZE(HelloWorld*, _currentScene, CurrentScene);	
 	CC_SYNTHESIZE(ESide, _side, Side);//武器持有者阵营
-	CC_SYNTHESIZE(Entity*, _target, Target);//武器攻击者
-
-	CC_SYNTHESIZE(Entity*, _owner, Owner);//武器持有者阵营
+	CC_SYNTHESIZE(Monster*, _target, Target);//武器攻击者
+	
+	CC_SYNTHESIZE(Character*, _owner, Owner);//武器持有者阵营
 
 	//时间信息
 	CC_SYNTHESIZE(float, _lastAttackTime, LastAttackTime);
@@ -73,8 +71,11 @@ private:
 
 
 
-	
+	bool _isCanceled = false;//是否被停用，初始化为false
 
+
+	CC_SYNTHESIZE(const char*, _imageName, ImageName);
+	CC_SYNTHESIZE(const char*, _typeName, TypeName);
 
 public:
 
@@ -90,10 +91,11 @@ public:
 	virtual bool attack();//TODO:待多态形式
 	INT32 getWeaponAttack()const { return _attack; }
 	HelloWorld* getWeaponCurrentScene() { return this->_currentScene; }
-	//void stopWeapon();TODO
+
 	float getWeaponBulletFlyingSpeed()const { return _bulletFlyingSpeed; }
 	INT32 getWeaponPrecision()const { return _precision; }
 
+	//图像调整
 
 
 	//角度信息：
@@ -109,7 +111,7 @@ public:
 	  HelloWorld* currentScene, ESide side, bool heroOwned);
 	void startWeapon(bool _isStopOther);
 	void stopWeapon(bool _isStopOther);
-
+	
 
 	void showWeaponPicture(int type);//1代表指向右边的图片，2代表指向左边（反向）的图片
 	
@@ -122,6 +124,11 @@ public:
 	virtual void updateTarget();
 
 
+	const char* getImageName() { return _imageName; }
+	const char* getTypeName() { return _typeName; }
+
+	
+
 	//位置更新相关
 	virtual void setWeaponTagPosition(int x, int y);
 	virtual Point getWeaponTagPosition()const { return getPosition(); }
@@ -131,7 +138,7 @@ public:
 
 public:
 
-	void setWeaponOwner(Entity* owner) { if(owner)_owner = owner; }
+	void setWeaponOwner(Character* owner) { if(owner)_owner = owner; }
 
 	void updateCurrentLocation();
 
@@ -139,11 +146,10 @@ public:
 
 	Point tileCoordForPosition(Point pos);
 
-
-
-
-private:
 	TMXTiledMap* m_map;
+	
+private:
+	
 	TMXLayer* meta;
 
 };

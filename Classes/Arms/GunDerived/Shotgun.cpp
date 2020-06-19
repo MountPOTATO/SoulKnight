@@ -63,6 +63,9 @@ bool Shotgun::init(const char* weaponImageName1, const char* weaponImageName2,
 	_hasAnimation = false;
 	_bulletImageName = "BulletImage\\ShotgunBullet.png";
 
+	_imageName = GUN_SHOTGUN;
+	_typeName = GUN;
+
 
 	return true;
 }

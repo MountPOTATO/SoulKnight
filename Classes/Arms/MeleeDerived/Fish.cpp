@@ -23,12 +23,17 @@ bool Fish::init(const char* weaponImageName1, const char* weaponImageName2,
 	Sprite* spFishReverse = Sprite::create(weaponImageName2);
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 
+	setScale(2.3);
 	if (_heroOwned) {
 		setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));
+
 		spFish->setPosition(Point(0, 0));//TODO:仅仅是主角情况
+		
 		spFish->setVisible(false);
+	
 		spFishReverse->setPosition(Point(0, 0));//TODO:仅仅是主角情况
 		spFishReverse->setVisible(false);
+		
 	}
 	else {
 		//TODO:怪物与主角位置的绑定
@@ -62,7 +67,8 @@ bool Fish::init(const char* weaponImageName1, const char* weaponImageName2,
 	_isCanMove = false;
 	_hasAnimation = false;
 
-
+	_imageName = MELEE_FISH;
+	_typeName = MELEE;
 
 	return true;
 }

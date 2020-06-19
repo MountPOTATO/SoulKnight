@@ -1,7 +1,10 @@
 #include "Arms/Melee.h"
 #include "HelloWorldScene.h"
-#include "Entity/Entity.h"
+#include "FlowWord/FlowWord.h"
+#include "LongRangeAttack/Bullet.h"
+#include "Entity/Monster.h"
 
+#include "Entity/Character.h"
 Melee* Melee::create
 (const char* weaponImageName1, const char* weaponImageName2,
 	HelloWorld* currentScene, ESide side, bool _heroOwned) {
@@ -59,12 +62,15 @@ bool Melee::startWeapon(bool _isStopOther) {
 	//TODO:捡起武器时
 	spMelee->setVisible(true);
 	spMeleeReverse->setVisible(false);
+
+	_isCanceled = false;
 	return true;
 }
 
 void Melee::updateTarget() {
+	if (_isCanceled) return;
 
-	Vector<Entity*>& currentEnermies = _currentScene->_currentUnit;
+	Vector<Monster*>& currentEnermies = _currentScene->_currentEnemy;
 	Sprite* spMelee = (Sprite*)getChildByTag(TAG_WEAPON1);
 	Sprite* spMeleeReverse = (Sprite*)getChildByTag(TAG_WEAPON2);
 
@@ -77,16 +83,16 @@ void Melee::updateTarget() {
 		return;
 	}
 	for (auto i = currentEnermies.begin(); i != currentEnermies.end(); i++) {
-		//TODO:阵营划分，注意好人为一类坏人为一类;或不引入
-		if (/*阵营判断*/(*i)->getPosition().distance(getPosition()) <= _attackRange) {
+
+		if ((*i)->getPosition().distance(getPosition()) <= _attackRange) {
 			_target = (*i);
-			_targetInRange.pushBack(*i);
+			_targetInRange.push_back(*i);
 			float d = (*i)->getPosition().distance(getPosition());
 			//log("%f", d);
 
 			for (i++; i != currentEnermies.end(); i++) {
 				if((*i)->getPosition().distance(getPosition()) <= _attackRange)
-					_targetInRange.pushBack(*i);
+					_targetInRange.push_back(*i);
 				if ((*i)->getPosition().distance(getPosition()) <= d)
 					_target = (*i);
 			}
@@ -99,6 +105,7 @@ void Melee::updateTarget() {
 
 bool Melee::attack() {
 	if (!_isAttacking) return false;
+	if (_isCanceled) return false;
 
 	auto currentTime = GetCurrentTime() / 1000.f;
 
@@ -106,10 +113,16 @@ bool Melee::attack() {
 	//攻击判定
 	
 	_lastAttackTime = currentTime;
-	if (!_targetInRange.size()) {//存在目标
+	if (_targetInRange.size()) {//存在目标
 		for (auto& i : _targetInRange) {
 			//TODO：执行伤害判定，给出伤害,需要后期Entity类承受伤害的功能实现
+			auto flowword = FlowWord::create();
+			_currentScene->addChild(flowword);
+			const char* damage = StringUtils::format("%d", -this->getAttack()).data();
+			flowword->showWord(damage, Vec2((i)->getPositionX(), (i)->getPositionY() + 10));
+
 		}
+		_targetInRange.clear();
 	}
 	else {//不存在目标
 		//TODO:执行场景破坏判定，需要后期场景要素实现

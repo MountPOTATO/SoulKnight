@@ -1,7 +1,7 @@
 #include "Gun.h"
 #include "HelloWorldScene.h"
 #include "LongRangeAttack/Bullet.h"
-#include "Const/ConstInfo.h"
+
 
 Gun* Gun::create
 (const char* weaponImageName1, const char* weaponImageName2,
@@ -57,11 +57,16 @@ bool Gun::startWeapon(bool _isStopOther) {
 
 	spWeapon->setVisible(true);
 	spWeaponReverse->setVisible(false);
+
+	_isCanceled = false;
 	return true;
 }
 
 void Gun::updateTarget() {
-	Vector<Entity*>& currentEnermies = _currentScene->_currentUnit;
+
+	if (_isCanceled) return;
+
+	Vector<Monster*>& currentEnermies = _currentScene->_currentEnemy;
 
 	//TODO:涉及中间有障碍物时的重新指认，待场景元素加入后决定
 	//指认最近距离目标
@@ -85,14 +90,16 @@ void Gun::updateTarget() {
 }
 
 bool Gun::attack() {
+
 	if (!_isAttacking) return false;
 
-	auto currentTime = GetCurrentTime() / 1000.f;
+	if (_isCanceled) return false;
 
+	auto currentTime = GetCurrentTime() / 1000.f;
+	
 	if (currentTime - _lastAttackTime < _attackSpeed) { return false; }
 
-	//TODO:在增加对敌人的搜索后增加功能
-	//if (!_target) {//没有敌人的情况
+
 	_lastAttackTime = currentTime;
 
 	//默认子弹Buff
@@ -101,10 +108,10 @@ bool Gun::attack() {
 	//TODO:叠加Weapon的buff容器里所有weaponBuff
 	//子弹生成方式因枪支不同而异
 	
-
 	for (int i = 0; i <=this->getBulletPerTime() - 1; i++) {
 		Bullet* bullet = Bullet::create(_bulletImageName, _bulletFlyingSpeed, this, bulletBuff, true);
-		bullet->setScale(1);
+		bullet->setScale(1.8f);
+		bullet->setTiledMap(this->m_map);
 		_currentScene->_bullets.pushBack(bullet);
 		_currentScene->addChild(bullet);
 	}

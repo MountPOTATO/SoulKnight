@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"/>
+
+<plist version="1.0">
+<array>    
+      <dict>
+            <key>AttackSpeed</key>
+            <real>0.8</real>
+            <key>AttackRange</key>
+            <real>136</real>
+            <key>HardStrikeRate</key>
+            <real>0.5</real>
+            <key>BulletFlyingSpeed</key>
+            <real>0</real>
+      </dict>       
+</array>
+</plist>
