@@ -51,6 +51,7 @@
 #include "FlowWord/FlowWord.h"
 #include "Map/Space.h"
 #include "MonsterManager/MonsterManager.h"
+#include "Pause/PauseLayer.h"
 
 class Weapon;
 class Character;
@@ -71,6 +72,8 @@ public:
 	CC_SYNTHESIZE(Character*, _hero, Hero);
 
 	CC_SYNTHESIZE(HRocker*, _rocker, Rocker);
+
+	CC_SYNTHESIZE(Sprite*, pauseBtn, PauseBtn);
 
 
 

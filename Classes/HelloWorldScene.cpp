@@ -105,6 +105,65 @@ bool HelloWorld::init()
 
 	safeHouseInit();
 
+	pauseBtn = Sprite::create("Pause/pauseButton.png");
+	pauseBtn->setPosition(_hero->getPositionX() + 380, _hero->getPositionY() + 220);
+	pauseBtn->setAnchorPoint(Vec2(0, 0));
+	pauseBtn->setTag(50);
+	pauseBtn->setScale(0.2);
+	this->addChild(pauseBtn, 10);
+
+	Point positionSp = pauseBtn->getPosition();
+	/*log("%f,%f", positionSp.x, positionSp.y);*/
+	Size sizeC = pauseBtn->getContentSize();
+	log("%f,%f", sizeC.width, sizeC.height);
+
+	/*auto rc = Rect(positionSp.x, positionSp.y, sizeC.width, sizeC.height);*/
+
+	auto listener = EventListenerTouchOneByOne::create();
+	listener->onTouchBegan = ([&, sizeC](Touch* t, Event* e) {
+		/*log("began");*/
+		auto node = (Sprite*)this->getChildByTag(50);
+		auto pauseB = HelloWorld::getPauseBtn();
+		/*log("%f %f", node->getPositionX(), node->getPositionY());
+		log("%f %f", pauseB->getPositionX(), node->getPositionY());*/
+
+
+		auto touchLocation = t->getLocation();
+		auto rc = Rect(node->getPositionX(), node->getPositionY(), sizeC.width, sizeC.height);
+		Point localPos = convertToNodeSpace(touchLocation);
+		bool isTouched = rc.containsPoint(localPos);
+		if (isTouched)
+		{
+			auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+			audio->playEffect("Audio/button.mp3", false);
+			node->setScale(0.16);
+		}
+		return true; });
+	listener->onTouchEnded = ([&, sizeC](Touch* t, Event* e) {
+		/*log("end");*/
+		auto node = (Sprite*)this->getChildByTag(50);
+		auto touchLocation = t->getLocation();
+		auto rc = Rect(node->getPositionX(), node->getPositionY(), sizeC.width, sizeC.height);
+		Point localPos = convertToNodeSpace(touchLocation);
+		bool isTouched = rc.containsPoint(localPos);
+		if (isTouched)
+		{
+			node->setScale(0.2);
+			Director::getInstance()->pause();
+
+			CCRenderTexture* renderTexture = CCRenderTexture::create(960, 640);
+
+			renderTexture->begin();
+			node->getParent()->visit();
+			renderTexture->end();
+
+			Director::getInstance()->pushScene(PauseLayer::createScene(renderTexture));
+		}
+		});
+	listener->onTouchMoved = ([&](Touch* t, Event* e) {/*log("move");*/ });
+
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, pauseBtn);
+
 	//测试掉落物直接减起,后期加入Vector
 	/*_direct = DirectPickThing::create
 	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 250), _hero, 20.f, 3, 3, 5, this);
@@ -527,6 +586,10 @@ void HelloWorld::update(float delta) {
 	checkPortalState();
 
 	_rocker->updatePosition(Vec2(_hero->getPositionX() - 550, _hero->getPositionY() - 350));
+
+	auto node = (Sprite*)this->getChildByTag(50);
+	node->setPosition(_hero->getPositionX() + 380, _hero->getPositionY() + 220);
+
 
 	for (auto& j : _monsterManageerVec) j->update(1);
 
