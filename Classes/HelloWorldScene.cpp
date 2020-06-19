@@ -88,7 +88,7 @@ bool HelloWorld::init()
 	//³õÊ¼»¯Ó¢ĞÛ
 	_hero = addCharacter(_map, 1);
 	auto initWeapon = OldPistol::create
-	("GunImage\\OldPistol.png", "GunImage\\OldPistolReverse.png", this, sideHero, true);
+	("WeaponImage\\GunImage\\OldPistol.png", "WeaponImage\\GunImage\\OldPistolReverse.png", this, sideHero, true);
 	this->addChild(initWeapon);
 	initWeapon->startWeapon(true);
 	initWeapon->setTiledMap(_map);
