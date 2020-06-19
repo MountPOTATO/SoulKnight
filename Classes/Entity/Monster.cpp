@@ -5,6 +5,9 @@ bool Monster::init() {
 
 	return true;
 }
+void Monster::bindCharacter(Character* character) {
+	m_character = character;
+}
 void Monster::setTiledMap(TMXTiledMap* map) {
 	m_map = map;
 	this->meta = m_map->getLayer("Meta");

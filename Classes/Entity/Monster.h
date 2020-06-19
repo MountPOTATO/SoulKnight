@@ -23,12 +23,15 @@ public:
 	void setAtk(int atk);
 	int attack();
 	void setTiledMap(TMXTiledMap* map);
-
+	void bindCharacter(Character* character);
 	Point tileCoordForPosition(Point pos);
 	bool isActivated;//怪物是否处于活动状态
 	float lastAAttackTime;
 	TMXTiledMap* m_map;
 	TMXLayer* meta;
+
+	Character* m_character;
+
 private:
 	int m_HP;
 	int m_Speed;

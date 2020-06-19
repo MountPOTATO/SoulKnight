@@ -51,7 +51,7 @@ bool Ranger::init() {
 		 break;
 	 }//储存对应的八向
 
-	 nextMovingDistance = (int)(MAX_MOVES_ROUND * CCRANDOM_0_1() + 1);//生成介于1-3的整数
+	 nextMovingDistance = (int)(RANGER_MAX_MOVES_ROUND * CCRANDOM_0_1() + 1);//生成介于1-3的整数
 
 
  }
@@ -109,7 +109,7 @@ bool Ranger::init() {
 
 		 Entity::setTagPosition(x, y);
 	 }
-	 if (remainMovingDistance == 0) { isAiMoving = false; remainMovingDistance = 50; }
+	 if (remainMovingDistance == 0) { isAiMoving = false; remainMovingDistance = RANGER_MAX_MOVES_ROUND; }
 	 return;
 
 

@@ -53,6 +53,7 @@ public:
 	void die();//顾名思义，嗝屁了
 	bool isInvincible;//是否处于无敌状态
 	bool isKnockBack;//是否处于被击退状态
+	bool isAlive;//是否活着
 	int max_HP;//生命上限
 	int max_MP;//蓝量上限
 	int max_Armor;//护甲上限

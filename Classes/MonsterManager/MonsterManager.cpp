@@ -1,6 +1,6 @@
 #include "MonsterManager/MonsterManager.h"
 #include "Const/ConstInfo.h"
-#include "Entity/Enemy/Ranger.h"
+
 #include "HelloWorldScene.h"
 bool MonsterManager::init() {
 	
@@ -52,16 +52,18 @@ void MonsterManager::bindCharacter(Character* character) {
 
 void MonsterManager::createMonster(int MonsterID, Point monsterSpawnPoint) {
 	Monster* monster = Monster::create();
+	
 	switch (MonsterID)
 	{
-	case 1: {
+	case 1: 
 		monster = Ranger::create();
-
 		break;
-	}
+	case 2:
+		monster = Charger::create();
 	default:
 		break;
 	}
+	monster->bindCharacter(m_Character);
 	monster->setVisible(true);
 	currentScene->_currentEnemy.pushBack(monster);
 	currentScene->addChild(monster);
@@ -84,7 +86,7 @@ void MonsterManager::spawnLotsOfMonsters(Point spawnPoint, float rad, int spawnN
 		if (isPosBlocked(Point(x + halfOfHitBox, y - halfOfHitBox))) { continue; }
 		if (isPosBlocked(Point(x - halfOfHitBox, y + halfOfHitBox))) { continue; }
 		if (isPosBlocked(Point(x - halfOfHitBox, y - halfOfHitBox))) { continue; }//检查这个点是否被遮挡
-		createMonster(1, randomPoint);
+		createMonster((int)(2*CCRANDOM_0_1()+1), randomPoint);
 		i++;//成功生成了
 	}
 }

@@ -11,6 +11,7 @@ bool Knight::init() {
 	setSpeed(KNIGHT_SPEED);
 	
 	isInvincible = false;
+	isAlive = true;
 	Sprite* sprite=Sprite::create("Characters/Knight.png");
 	this->setAnchorPoint(Point(0.5f, 0.5f));
 	this->bindSprite(sprite);

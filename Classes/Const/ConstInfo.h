@@ -92,16 +92,17 @@ enum EEntityBuffEffect {
 #define RANGER_HP 10
 #define RANGER_SPEED 5
 #define RANGER_ATK 3
-#define MAX_MOVES_ROUND 3//每次进行移动时最大移动的距离 为 MAX_MOVES_ROUND*RANGER_SPEED 
+#define RANGER_MAX_MOVES_ROUND 50//每次进行移动时最大移动的距离 为 MAX_MOVES_ROUND*RANGER_SPEED 
+#define RANGER_MOVE_PAUSE_TIME 3.0f//进行完一轮移动后原地等待的时间
 
 
-//Ranger
-#define RANGER_HP 10
-#define RANGER_SPEED 2
-#define RANGER_ATK 3
-
-
-
+//Charger
+#define Charger_HP 10
+#define Charger_SPEED 5
+#define Charger_ATK 0 //预想的是直接用碰撞伤害 
+#define CHARGER_MAX_MOVES_ROUND 50
+#define CHARGER_MAX_CHARGES_ROUND 40//最大冲撞距离
+#define CHARGER_MOVE_PAUSE_TIME 3.0f
 
 
 
