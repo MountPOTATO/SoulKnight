@@ -16,7 +16,7 @@ bool Ranger::init() {
 }
 
  int Ranger::attack() {
-	 
+	 return 0;
 }
 
  void Ranger::calDistance() {

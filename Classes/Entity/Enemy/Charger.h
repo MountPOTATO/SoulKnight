@@ -4,16 +4,7 @@
 
 class HelloWorld;
 
-enum MovingDir {
-	left,
-	upLeft,
-	up,
-	upRight,
-	right,
-	downRight,
-	down,
-	downLeft,
-};
+
 
 class Charger :public Monster {
 public:
@@ -30,7 +21,8 @@ public:
 public:
 	MovingDir nextMovingDir;//储存当前移动方向
 	int nextMovingDistance;//预计的最大移动距离
-	int remainMovingDistance;//剩余移动步数
+	int remainChargingDistance;
+	int remainMovingDistance;
 
 
 private:
