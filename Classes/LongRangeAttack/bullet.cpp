@@ -39,6 +39,7 @@ bool Bullet::init
 	spBullet->setVisible(true);
 	this->addChild(spBullet);
 
+	_initMethod = 1;
 	_initAngle = AngleRad;
 	_attack = 3;
 	_flyingSpeed = flyingSpeed;
@@ -63,6 +64,7 @@ bool Bullet::init
 	spBullet->setVisible(true);
 	this->addChild(spBullet);
 
+	_initMethod = 2;
 	_attack = shooter->getWeaponAttack();
 	_flyingSpeed = shooter->getWeaponBulletFlyingSpeed();
 	_shooter = shooter;
@@ -216,4 +218,14 @@ bool Bullet::isPosBlocked(Point dstPos) {
 		}
 	}
 	return false;//·´Ö®£¬·µ»Øfalse
+}
+
+
+
+INT32 Bullet::getBulletAttack() {
+	if (_initMethod==2) {
+		if (CCRANDOM_0_1() <= _shooter->getHardStrikeRate()) return _attack + 2;
+		else return _attack;
+	}
+	else return _attack;
 }

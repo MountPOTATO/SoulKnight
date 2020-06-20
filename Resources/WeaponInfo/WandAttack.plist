@@ -5,9 +5,9 @@
 <array>    
       <dict>
             <key>AttackSpeed</key>
-            <real>0.8</real>
+            <real>1.2</real>
             <key>AttackRange</key>
-            <real>136</real>
+            <real>140</real>
             <key>HardStrikeRate</key>
             <real>0.5</real>
             <key>BulletFlyingSpeed</key>

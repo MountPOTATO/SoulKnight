@@ -1,4 +1,9 @@
 #include "Entity/Enemy/Ranger.h"
+#include "LongRangeAttack/Bullet.h"
+#include "Const/ConstInfo.h"
+#include "HelloWorldScene.h"
+
+float MyMathGetRad(Point point1, Point point2);
 
 bool Ranger::init() {
 	Sprite* sprite = Sprite::create("Enemy\\Ranger.png");
@@ -7,7 +12,7 @@ bool Ranger::init() {
 	setSpeed(RANGER_SPEED);
 	setHP(RANGER_HP);
 	isAiMoving = false;
-
+	m_monsterID = 1;
 	this->isActivated = true;
 	this->getSprite()->setVisible(true);//不活跃的怪物先不显示
 	this->scheduleUpdate();//开启，如果严重影响帧数就考虑放到怪物活跃时再启用
@@ -15,9 +20,6 @@ bool Ranger::init() {
 	return true;
 }
 
- int Ranger::attack() {
-	 return 0;
-}
 
  void Ranger::calDistance() {
 	 if (isAiMoving == true) { return; }//如果正在执行上一个移动指令，就不要重复移动了
@@ -53,12 +55,14 @@ bool Ranger::init() {
 
 	 nextMovingDistance = (int)(RANGER_MAX_MOVES_ROUND * CCRANDOM_0_1() + 1);//生成介于1-3的整数
 
-
  }
+
 
  void Ranger::update(float delta) {
 	 //移动 
 	 auto curPos = this->getPosition();
+	 float x = curPos.x;
+	 float y = curPos.y;
 	 this->calDistance();
 	 if (remainMovingDistance > 0) {
 		 isAiMoving = true;//进入移动模式
@@ -147,3 +151,4 @@ bool Ranger::init() {
 	 }
 	 return false;//反之，返回false
  }
+

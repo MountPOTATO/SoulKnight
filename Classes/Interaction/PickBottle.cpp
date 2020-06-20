@@ -85,18 +85,18 @@ void PickBottle::stopPickBottle() {
 
 void PickBottle::addPoint() {
 	if (_imageName == RED) {
-		_hero->setHP(_hero->getHP() + 2);
+		_hero->setHP((_hero->getHP() + 2>=10)?10:_hero->getHP()+2);
 		auto flowword = FlowWord::create();
 		_pickThingScene->addChild(flowword);
 
 		flowword->showWord("+2", Vec2(getPositionX(),getPositionY() + 10));
 	}
 	if (_imageName == BLUE) {
-		_hero->setMP(_hero->getMP() + 80);
+		_hero->setArmor((_hero->getArmor() + 2 >= 5) ? 5 : _hero->getHP() + 2);
 
 		auto flowword = FlowWord::create();
 		_pickThingScene->addChild(flowword);
 
-		flowword->showWord("+80", Vec2(getPositionX(), getPositionY() + 10));
+		flowword->showWord("+2", Vec2(getPositionX(), getPositionY() + 10));
 	}
 }

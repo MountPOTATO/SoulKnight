@@ -69,5 +69,8 @@ bool Sniper::init(const char* weaponImageName1, const char* weaponImageName2,
 	_imageName = GUN_SNIPER;
 	_typeName = GUN;
 
+
+	this->setLastAttackTime(GetCurrentTime() / 1000.0f);
+
 	return true;
 }

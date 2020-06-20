@@ -70,5 +70,7 @@ bool Fish::init(const char* weaponImageName1, const char* weaponImageName2,
 	_imageName = MELEE_FISH;
 	_typeName = MELEE;
 
+
+	this->setLastAttackTime(GetCurrentTime() / 1000.0f);
 	return true;
 }

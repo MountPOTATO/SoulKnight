@@ -3,7 +3,6 @@
 #include "cocos2d.h"
 #include "Entity/Enemy/Ranger.h"
 #include "Entity/Enemy/Charger.h"
-
 USING_NS_CC;
 
 class HelloWorld;

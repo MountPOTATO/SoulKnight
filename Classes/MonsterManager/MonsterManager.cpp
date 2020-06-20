@@ -1,7 +1,13 @@
 #include "MonsterManager/MonsterManager.h"
 #include "Const/ConstInfo.h"
-
+#include "Entity/Enemy/Ranger.h"
+#include "Entity/Enemy/Charger.h"
+#include "Entity/Enemy/Tower.h"
+#include "Entity/Enemy/Mummy.h"
 #include "HelloWorldScene.h"
+#include <stdlib.h>
+#include "Interaction/DirectPickThing.h"
+
 bool MonsterManager::init() {
 	
 	this->scheduleUpdate();
@@ -30,19 +36,34 @@ bool MonsterManager::initWithData(Point pos, HelloWorld* scene, Character* chara
 }
 
 void MonsterManager::update(float delta) {
-
-	if (this->getPosition().distance(m_Character->getPosition()) <= 250.0f && m_isUsed == false) {
+	//怪物生成
+	if (this->getPosition().distance(m_Character->getPosition()) <=350.0f && m_isUsed == false) {
 		srand((unsigned)time(NULL));
-		int monsterNum = rand() % 2 + 3;
-		spawnLotsOfMonsters(this->getPosition(), 210.0f, monsterNum);
+		int monsterNum = rand() % 5 + 4;
+		spawnLotsOfMonsters(this->getPosition(), 350.f, monsterNum);
 		m_isUsed = true;
 	}
-
-	for (auto monster : m_MonsterArray) {
+	//怪物撞击
+	for (auto monster : currentScene->_currentEnemy) {
+		
 		if (monster->isCollideWithCharacter(m_Character)) {
 			m_Character->hit(HIT_WHEN_COLLIDE_WITH_ENEMY, monster->getPosition());
 
 		}
+	}
+	//怪物死亡
+	for (auto i = currentScene->_currentEnemy.begin(); i != currentScene->_currentEnemy.end();) {
+		if ((*i)->getHP() <= 0) {
+			(*i)->getSprite()->setVisible(false);
+
+			
+
+			i = currentScene->_currentEnemy.erase(i);
+
+			
+
+		}
+		else i++;
 	}
 }
 
@@ -52,31 +73,42 @@ void MonsterManager::bindCharacter(Character* character) {
 
 void MonsterManager::createMonster(int MonsterID, Point monsterSpawnPoint) {
 	Monster* monster = Monster::create();
-	
 	switch (MonsterID)
 	{
-	case 1: 
+	case 1: {
 		monster = Ranger::create();
+
 		break;
+	}
 	case 2:
+		monster = Tower::create();
+		break;
+	case 3:
 		monster = Charger::create();
+		break;
+	case 4:
+		monster = Mummy::create();
+		break;
+
 	default:
 		break;
 	}
 	monster->bindCharacter(m_Character);
 	monster->setVisible(true);
+	monster->currentScene = this->currentScene;
 	currentScene->_currentEnemy.pushBack(monster);
 	currentScene->addChild(monster);
 
+
 	monster->setTiledMap(currentScene->_map);
 	monster->setPosition(monsterSpawnPoint);
-	m_MonsterArray.pushBack(monster);
+	/*m_MonsterArray.pushBack(monster);*/
 
 }
 
 void MonsterManager::spawnLotsOfMonsters(Point spawnPoint, float rad, int spawnNum) {
 	int i = 0;
-	while (i<1){
+	while (i<spawnNum){
 		auto randomPoint = spawnPoint + Point(
 			(CCRANDOM_0_1() - CCRANDOM_0_1()) * CCRANDOM_0_1() * rad,
 			(CCRANDOM_0_1() - CCRANDOM_0_1()) * CCRANDOM_0_1() * rad);	//随机生成一个点
@@ -86,7 +118,8 @@ void MonsterManager::spawnLotsOfMonsters(Point spawnPoint, float rad, int spawnN
 		if (isPosBlocked(Point(x + halfOfHitBox, y - halfOfHitBox))) { continue; }
 		if (isPosBlocked(Point(x - halfOfHitBox, y + halfOfHitBox))) { continue; }
 		if (isPosBlocked(Point(x - halfOfHitBox, y - halfOfHitBox))) { continue; }//检查这个点是否被遮挡
-		createMonster(2, randomPoint);
+		
+		createMonster((int)(4 * CCRANDOM_0_1() + 1), randomPoint);
 		i++;//成功生成了
 	}
 }
@@ -103,8 +136,6 @@ bool MonsterManager::isPosBlocked(Point dstPos) {
 	if (tiledGid != 0) {
 
 		auto propMap = m_map->getPropertiesForGID(tiledGid).asValueMap();
-
-
 
 
 		if (propMap.find("Collidable") != propMap.end()) {

@@ -1,5 +1,6 @@
 #include "Entity/Enemy/Charger.h"
 
+
 bool Charger::init() {
 	Sprite* sprite = Sprite::create("Enemy\\Charger.png");
 	this->bindSprite(sprite);
@@ -7,21 +8,18 @@ bool Charger::init() {
 	setSpeed(CHARGER_SPEED);
 	setHP(CHARGER_HP);
 	isAiMoving = false;
+	m_monsterID = 3;
 	isChargeBlocked = false;
 	this->isActivated = true;
 	this->getSprite()->setVisible(true);//不活跃的怪物先不显示
 	this->scheduleUpdate();//开启，如果严重影响帧数就考虑放到怪物活跃时再启用
 	remainChargingDistance = CHARGER_MAX_CHARGES_ROUND;
-	remainMovingDistance = CHARGER_MAX_MOVES_ROUND;
 	return true;
 }
 
 void Charger::update(float delta) {
-	//能否正常进行冲撞？
-	
-	//先尝试直接冲向主角
-	
-	if(remainChargingDistance > 0&&isChargeBlocked==false) {
+
+	if (remainChargingDistance > 0 && isChargeBlocked == false) {
 		isAiMoving = true;
 		Point characterPos = m_character->getPosition();
 		Point curPos = this->getPosition();//怪物自身的位置
@@ -41,10 +39,10 @@ void Charger::update(float delta) {
 		//检查是否被障碍物遮挡
 		auto x = dstPos.x;
 		auto y = dstPos.y;
-		if (isPosBlocked(Point(x + halfOfHitBox, y + halfOfHitBox))) { 
-			isAiMoving = false; isChargeBlocked = true; 
+		if (isPosBlocked(Point(x + halfOfHitBox, y + halfOfHitBox))) {
+			isAiMoving = false; isChargeBlocked = true;
 		}
-		if (isPosBlocked(Point(x + halfOfHitBox, y - halfOfHitBox))) { 
+		if (isPosBlocked(Point(x + halfOfHitBox, y - halfOfHitBox))) {
 			isAiMoving = false; isChargeBlocked = true;
 		}
 		if (isPosBlocked(Point(x - halfOfHitBox, y + halfOfHitBox))) {
@@ -68,13 +66,13 @@ void Charger::update(float delta) {
 			}
 			return;
 		}
-		
+
 	}
-	if (!isAiMoving) { this->calDistance(); isAiMoving = true;  }
+	if (!isAiMoving) { this->calDistance(); isAiMoving = true; }
 	if (isChargeBlocked) {
 		//随机走
 		if (max_twist > 0) {
-			
+
 			auto curPos = this->getPosition();
 
 			if (remainMovingDistance > 0) {
@@ -130,15 +128,16 @@ void Charger::update(float delta) {
 			}
 			if (remainMovingDistance == 0) {
 				//必须走完一整条随机移动再进行下一次冲撞
-				max_twist -= 1;this->calDistance();
+				max_twist -= 1; this->calDistance();
 				remainMovingDistance = CHARGER_MAX_MOVES_ROUND;
 			}
 		}
 		if (max_twist == 0) {
-			max_twist = 3;isChargeBlocked = false;
-			
+			max_twist = 3; isChargeBlocked = false;
+
 		}
 	}
+
 
 }
 
@@ -203,7 +202,7 @@ void Charger::calDistance() {
 		break;
 	}//储存对应的八向
 
-	nextMovingDistance = (int)(RANGER_MAX_MOVES_ROUND * CCRANDOM_0_1() + 1);//生成介于1-3的整数
+	nextMovingDistance = (int)(CHARGER_MAX_MOVES_ROUND * CCRANDOM_0_1() + 1);//生成介于1-3的整数
 
 
 }

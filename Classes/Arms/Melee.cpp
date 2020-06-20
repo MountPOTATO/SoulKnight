@@ -116,9 +116,10 @@ bool Melee::attack() {
 	if (_targetInRange.size()) {//存在目标
 		for (auto& i : _targetInRange) {
 			//TODO：执行伤害判定，给出伤害,需要后期Entity类承受伤害的功能实现
+			i->setHP(i->getHP() - this->getWeaponAttack());
 			auto flowword = FlowWord::create();
 			_currentScene->addChild(flowword);
-			const char* damage = StringUtils::format("%d", -this->getAttack()).data();
+			const char* damage = StringUtils::format("%d", -this->getWeaponAttack()).data();
 			flowword->showWord(damage, Vec2((i)->getPositionX(), (i)->getPositionY() + 10));
 
 		}
@@ -154,6 +155,7 @@ bool Melee::runCombatAction() {
 	EaseSineIn* speedAdjust = EaseSineIn::create(rotateBy1);
 	_hasAnimation = false;
 	runAction(speedAdjust);
+	
 	
 	
 

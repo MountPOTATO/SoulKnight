@@ -20,7 +20,7 @@
   </data>
  </layer>
  <objectgroup id="4" name="Object">
-  <object id="1" name="CharacterPoint" x="400.71" y="335.478"/>
+  <object id="1" name="CharacterPoint" x="400" y="400"/>
  </objectgroup>
  <layer id="2" name="floor" width="20" height="20">
   <properties>
