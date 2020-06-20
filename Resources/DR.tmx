@@ -25,9 +25,20 @@
  <tileset firstgid="15" name="上下门（关）" tilewidth="40" tileheight="40">
   <image source="上下门（关）.png" width="40" height="80"/>
  </tileset>
- <layer name="Meta" width="22" height="22">
+ <layer name="MonsterMeta" width="22" height="22">
+  <properties>
+   <property name="cc_vertexz" value="-800"/>
+  </properties>
   <data encoding="base64" compression="zlib">
-   eJxjZWBgYMWDcQF8egjpJRcgm0tNO9HNRRenl7nEhiUucxlwiBHrfnqYi0ueXHNJkadWmiQl3kixcyDMxSY+GM3FpY6UOCbXXFqmX1LL2MFsLrlgqJhLTJ1Hab0JADOVAsw=
+   eJxjZWBgYKURpjZANpeadqKbiy5OL3OJDUtc5jLgECPW/fQwF5f8UDeXmLgbjOZiEx+M5uJSN5TMJWQPLnlSy6GBMpdcMFTMJabOoxQDAPpUA0Q=
+  </data>
+ </layer>
+ <layer name="Meta" width="22" height="22">
+  <properties>
+   <property name="cc_vertexz" value="-800"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjZWBgYKURpjZANpeadqKbiy5OL3OJDUtc5jLgECPW/fQwF5f8YDKXkFpS4o0UNwyEudjEB6O5uNTRw9yBTL/klG8DZS65YKiYS426j5A+AIgwAwg=
   </data>
  </layer>
  <layer name="floor" width="22" height="22">
@@ -67,4 +78,7 @@
    eJxjYBgFuAAPFA8Vc0fBKCAWjKbtUTAKBh8AANifAGE=
   </data>
  </layer>
+ <objectgroup name="ObjectManager">
+  <object name="Manager" x="377.333" y="420"/>
+ </objectgroup>
 </map>

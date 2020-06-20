@@ -18,6 +18,9 @@
   </tile>
  </tileset>
  <layer name="Meta" width="14" height="14">
+  <properties>
+   <property name="cc_vertexz" value="-500"/>
+  </properties>
   <data encoding="base64" compression="zlib">
    eJzjZGBg4CQTkwqGij6Y3lF91NE3UPFODgYAhdYBnw==
   </data>
@@ -48,5 +51,11 @@
  </layer>
  <objectgroup name="Object">
   <object name="CharacterPoint" x="270" y="234" width="27" height="19"/>
+ </objectgroup>
+ <objectgroup name="ObjectPortal">
+  <object name="Portal" x="262" y="249"/>
+ </objectgroup>
+ <objectgroup name="ObjectTreasure">
+  <object name="Treasure" x="273" y="260"/>
  </objectgroup>
 </map>

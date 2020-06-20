@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="8" height="30" tilewidth="40" tileheight="40">
+ <properties>
+  <property name="cc_vertexz" value="-800"/>
+ </properties>
  <tileset firstgid="1" name="roomVerge" tilewidth="40" tileheight="60">
   <image source="1.png" width="80" height="60"/>
   <tile id="0">
@@ -20,6 +23,9 @@
   <image source="floors.png" width="160" height="40"/>
  </tileset>
  <layer name="Meta" width="8" height="30">
+  <properties>
+   <property name="cc_vertexz" value="-800"/>
+  </properties>
   <data encoding="base64" compression="zlib">
    eJxjZsANmKF4VH5UflR+cMoDAFa3ALU=
   </data>

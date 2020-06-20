@@ -148,9 +148,10 @@ bool Character::isPosBlocked(Point dstPos) {/////加了判断点是否在层内
 Point Character::tileCoordForPosition(Point pos) {
 	Size mapTiledNum = m_map->getMapSize();
 	Size tiledSize = m_map->getTileSize();
+	Point mapPos = m_map->getPosition();
 
-	int x = pos.x / tiledSize.width;
-	int y = (mapTiledNum.height * tiledSize.height - pos.y) / tiledSize.height;
+	int x = (pos.x -mapPos.x)/ tiledSize.width;
+	int y = (mapTiledNum.height * tiledSize.height - (pos.y-mapPos.y)) / tiledSize.height;
 
 
 	return Point(x, y);

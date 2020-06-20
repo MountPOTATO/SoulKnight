@@ -20,7 +20,18 @@
  <tileset firstgid="16" name="box" tilewidth="40" tileheight="60">
   <image source="木箱.png" width="40" height="60"/>
  </tileset>
+ <layer name="MonsterMeta" width="18" height="22">
+  <properties>
+   <property name="cc_vertexz" value="-800"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJxjZWBgYKUyJgUg66G2OZSCkWgOreObVPeMmkN9cyiN18HqL0r0DyZzkM0biHjHhwHX2gIY
+  </data>
+ </layer>
  <layer name="Meta" width="18" height="22">
+  <properties>
+   <property name="cc_vertexz" value="-800"/>
+  </properties>
   <data encoding="base64" compression="zlib">
    eJxjZWBgYKUyJgUg66G2OZSCkWgOLeN6FAw8oEbcDqX0TKz+wWQOsnnUNIcaGAAdwgHc
   </data>
@@ -65,4 +76,7 @@
    eJxjYKAeEIBiSvVQy5xRMApGwSggBKhVboyE8gcA+U4AoQ==
   </data>
  </layer>
+ <objectgroup name="ObjectManager">
+  <object name="Manager" x="337.333" y="416"/>
+ </objectgroup>
 </map>

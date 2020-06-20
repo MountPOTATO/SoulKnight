@@ -124,7 +124,7 @@ bool Space::setPlace(HelloWorld* scene, Space* pre, const int dir)
 		place = prePlace + Vec2(1, 0);
 		break;
 	}
-	if (place.x >= 0 && place.y >= 0 && place.x < 5 && place.y < 5 )//&& scene->placement[place.x][place.y] == EMPTY)
+	if (place.x >= 0 && place.y >= 0 && place.x < PLACE_SIZE && place.y < PLACE_SIZE )//&& scene->placement[place.x][place.y] == EMPTY)
 	{
 		scene->placement[place.x][place.y] = FULL;
 		return true;
@@ -293,7 +293,7 @@ bool Space::isDirAvailable(HelloWorld* scene, Vec2 plc,int dir)
 	{
 	case(DOWN):
 	{
-		if (plc.y - 1 >= 0 && plc.y - 1 < 5)
+		if (plc.y - 1 >= 0 && plc.y - 1 < PLACE_SIZE)
 		{
 			if (vec[plc.x][plc.y - 1] == 0)
 				return true;
@@ -305,19 +305,19 @@ bool Space::isDirAvailable(HelloWorld* scene, Vec2 plc,int dir)
 	}
 	case(UP):
 	{
-		if (plc.y + 1 >= 0 && plc.y + 1 < 5 && (!vec[plc.x][plc.y + 1]))
+		if (plc.y + 1 >= 0 && plc.y + 1 < PLACE_SIZE && (!vec[plc.x][plc.y + 1]))
 			return true;
 		else return false;
 	}
 	case(LEFT):
 	{
-		if (plc.x - 1 >= 0 && plc.x - 1 < 5 && (!vec[plc.x-1][plc.y]))
+		if (plc.x - 1 >= 0 && plc.x - 1 < PLACE_SIZE&& (!vec[plc.x-1][plc.y]))
 			return true;
 		else return false;
 	}
 	case(RIGHT):
 	{
-		if (plc.x + 1 >= 0 && plc.x + 1 < 5 && (!vec[plc.x + 1][plc.y]))
+		if (plc.x + 1 >= 0 && plc.x + 1 < PLACE_SIZE && (!vec[plc.x + 1][plc.y]))
 			return true;
 		else return false;
 	}

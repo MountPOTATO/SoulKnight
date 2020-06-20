@@ -20,7 +20,18 @@
  <tileset firstgid="15" name="exit" tilewidth="40" tileheight="40">
   <image source="上下门（关）.png" width="40" height="80"/>
  </tileset>
+ <layer name="MonsterMeta" width="20" height="20">
+  <properties>
+   <property name="cc_vertexz" value="-800"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzjYGBg4KAyphagh3mkup0DjU1r8ygBo+aRpg9XXA60eYTsobV55OZzeplHLhiM5iGbQSv3URMDAGA2A1E=
+  </data>
+ </layer>
  <layer name="Meta" width="20" height="20">
+  <properties>
+   <property name="cc_vertexz" value="-800"/>
+  </properties>
   <data encoding="base64" compression="zlib">
    eJzjYGBg4MCBcQFc6gnpIxXQwzxS3c6Bxqa1eZSAwW4ezMyBNg9ffA0G8wjZRWvzyM3n+MKAmuaRCwajechm0Mp91MQAq/gC8Q==
   </data>
@@ -57,4 +68,7 @@
    eJxjYBjZgB0NE6OenuaNAtoDUuJrIMwbaICepin1G7XNG05gqIUFAJHqANM=
   </data>
  </layer>
+ <objectgroup name="ObjectManager">
+  <object name="Manager" x="379" y="375"/>
+ </objectgroup>
 </map>

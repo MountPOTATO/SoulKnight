@@ -138,18 +138,23 @@ bool HelloWorld::init()
 	{
 		return false;
 	}
-
 	_mapOrder = 0;
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	appliedSpace = *(new std::vector<Space*>);
-	placement = *(new std::vector<std::vector<int>>(5, std::vector<int>(5, EMPTY)));
+	placement = *(new std::vector<std::vector<int>>(PLACE_SIZE, std::vector<int>(PLACE_SIZE, EMPTY)));
 	roomCount = 0;
 	typeNum = *(new std::vector<int>(5));
+	littleMap = *(new std::vector<std::vector<Sprite*>>(PLACE_SIZE, std::vector<Sprite*>(PLACE_SIZE,nullptr)));
 	
 
 	initMaps();
+
+	//littleMap
+	initLittleMap();
+	////
+
 	_knight = addCharacter(appliedSpace[0]->getMap(), 1);
 	//this->addChild(_knight, 1);
 	_knight->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
@@ -225,20 +230,20 @@ void HelloWorld::onKeyPressed(EventKeyboard::KeyCode keyCode, Event* event)
 void HelloWorld::update(float delta) {
 
 	updateMap();//更新地图
-
 }
 
 
 void HelloWorld::findCurMap(Character* player)//找到主角当前地图
 {
 	CCTMXTiledMap* map = curMap;
+	Vec2 prePlace = curMapPlace;
 	auto playerWorldPos = player->getPosition();	
 	for (int i = 0; i < appliedSpace.size(); i++)
 	{
 		if (appliedSpace[i]->isInBound(playerWorldPos))
 		{
 			map = appliedSpace[i]->getMap();
-						
+			curMapPlace = appliedSpace[i]->place;
 		}
 		
 	}
@@ -248,6 +253,8 @@ void HelloWorld::findCurMap(Character* player)//找到主角当前地图
 	}
 	else if (map != nullptr)
 	{
+		littleMap[prePlace.x][prePlace.y]->setColor(Color3B::GREEN);
+		littleMap[curMapPlace.x][curMapPlace.y]->setColor(Color3B(255,0,0));
 		curMap = map;
 		//auto playerLocalPos = map->convertToNodeSpace(playerWorldPos);
 		//player->setPosition(playerLocalPos);
@@ -261,9 +268,81 @@ void HelloWorld::findCurMap(Character* player)//找到主角当前地图
 
 }
 
+
+///////////////////////////littleMap
+
+void HelloWorld::initLittleMap()
+{
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	Sprite* firstOne= Sprite::create("White.jpg");
+	firstOne->setScale(0.2,0.2);
+	littleMap[3][0] = firstOne;
+	this->addChild(firstOne, 2);
+	firstOne->setPosition(origin.x + visibleSize.width - 10, origin.y + 10);
+	firstOne->setOpacity(180);
+	for (int i = 0; i < PLACE_SIZE; i++)
+	{
+		for (int j = 0; j < PLACE_SIZE; j++)
+		{
+			if (littleMap[3 - i][j] == nullptr)
+			{
+				Sprite* temp = Sprite::create("White.jpg");
+				temp->setOpacity(180);
+				temp->setScale(0.2,0.2);
+				littleMap[3 - i][j] = temp;
+				this->addChild(temp, 2);
+				temp->setPosition(firstOne->getPosition() + Vec2(-15*i,15*j));
+			}
+			if (!placement[3 - i][j])
+				littleMap[3 - i][j]->setVisible(false);
+		}
+	}
+	littleMap[0][2]->setColor(Color3B(255,0,0));
+}
+
+void HelloWorld::updateLittleMap()
+{
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	//Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	Point centerPoint = _knight->getPosition();
+	Sprite* firstOne = littleMap[3][0];
+	firstOne->setPosition(centerPoint.x+visibleSize.width/2 - 10, centerPoint.y-visibleSize.height/2+10);
+	for (int i = 0; i < PLACE_SIZE; i++)
+	{
+		for (int j = 0; j < PLACE_SIZE; j++)
+		{
+			if (i||j)
+			{
+				littleMap[3-i][j]->setPosition(firstOne->getPosition() + Vec2(-15 * i, 15 * j));
+			}
+		}
+	}
+
+}
+
+
+////////////////////////////
+
+
+//////deleteNew
+void HelloWorld::clearNewedObjects()
+{
+	delete& placement;
+	delete& appliedSpace;
+	delete& littleMap;
+}
+
+
+
+
 void HelloWorld::updateMap()
 {
 	findCurMap(_knight);
+
+	///littleMap
+	updateLittleMap();
+	////
 }
 
 bool HelloWorld::initMaps()
@@ -297,6 +376,7 @@ bool HelloWorld::initMaps()
 			auto curPos = firstMap->getPosition();
 			firstRoom->resetAnchor(Vec2(0.57142, 0.57142));//0.5 0.5
 			this->curMap = firstMap;
+			this->curMapPlace = Vec2(0, 2);
 			this->appliedSpace.push_back(firstRoom);
 			typeNum[1]++;
 			roomCount++;
@@ -351,11 +431,11 @@ bool HelloWorld::roomNotFull(int type)
 		return true;
 		//return typeNum[type] < 5 ? true : false;
 	case(2):
-		return typeNum[type] < 4 ? true : false;
+		return typeNum[type] < 2 ? true : false;
 	case(3):
 		return typeNum[type] < 2 ? true : false;
 	case(4):
-		return typeNum[type] < 2 ? true : false;
+		return typeNum[type] < 1 ? true : false;
 	default:
 		return false;
 	}

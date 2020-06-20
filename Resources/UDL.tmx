@@ -25,7 +25,18 @@
    </properties>
   </tile>
  </tileset>
+ <layer name="MonsterMeta" width="18" height="18">
+  <properties>
+   <property name="cc_vertexz" value="-800"/>
+  </properties>
+  <data encoding="base64" compression="zlib">
+   eJzjYGBg4KASphQgm8OBJk4sm1buoZY55PqLVu6hljmj/sLOHvUXce6hRD81MQCrWQMB
+  </data>
+ </layer>
  <layer name="Meta" width="18" height="18">
+  <properties>
+   <property name="cc_vertexz" value="-800"/>
+  </properties>
   <data encoding="base64" compression="zlib">
    eJzjYGBg4MCCcQFsagnpIRYgm8OBJk4sm1buoZY55PoLnU2pe6htzqi/sLOHazocDP7CVxaRW44BADdKAnE=
   </data>
@@ -62,4 +73,7 @@
    eJxjZWBgYANiVjQaF0BWh44pBdQyh40Bvx9IMYda7qGWOdQAo+bgB9SIK5g51HATNfPXcMwXMH/BMDFlEhsODACzdgEV
   </data>
  </layer>
+ <objectgroup name="ObjectManager">
+  <object name="Manager" x="389" y="377"/>
+ </objectgroup>
 </map>

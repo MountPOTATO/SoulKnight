@@ -191,7 +191,16 @@ public:
 	//bool loadUI(const char* file);
 private:
 	
-	
+	////littleMap
+	Vec2 curMapPlace;//记录当下地图在4*4总地图中的位置
+	std::vector<std::vector<Sprite*>> littleMap;
+	void initLittleMap();
+	void updateLittleMap();
+	/////
+
+	////////deleteNew
+	void clearNewedObjects();
+	////////
 
 	//监听装置
 	EventListenerTouchOneByOne* listenerTouch;

@@ -159,6 +159,9 @@ struct HeroInfo {
 #define FULL 1
 #define APPOINTED 2
 
+////placeSize
+#define PLACE_SIZE 4
+////
 
 extern std::vector<std::string> exitRightMaps;
 extern std::vector<std::string> exitLeftMaps;
