@@ -166,12 +166,23 @@ enum MovingDir {
 #define ACCELERATE_TOUCHRANGE  27.0f
 
 //状态框创建标识
+<<<<<<< HEAD
 #define QHP 1
 #define QARMOR 2
 #define QMP 3
 
 //状态框标识
 #define STATUS_BOX_TAG 7999
+=======
+#define HP 1
+#define ARMOR 2
+#define MP 3
+
+//状态框标识
+#define STATUS_BOX_TAG 7999
+
+
+>>>>>>> 5ee7058665984be474fea769690cefecb80807d2
 
 struct HeroInfo {
 	int hp;

@@ -21,7 +21,11 @@ bool StatusBar::init(Point position, Character* hero, int color)
 	this->setPosition(position);
 	theHero = hero;
 
+<<<<<<< HEAD
 	if (color == QHP)
+=======
+	if (color == HP)
+>>>>>>> 5ee7058665984be474fea769690cefecb80807d2
 	{
 		Sprite* blankBar = Sprite::create("StatusBar/blankBar.png");
 		blankBar->setPosition(0, 0);
@@ -43,7 +47,11 @@ bool StatusBar::init(Point position, Character* hero, int color)
 		/*hpLabel->setString("456789");*/
 		scale = hpBar->getContentSize().width / KNIGHT_HP;
 	}
+<<<<<<< HEAD
 	else if (color == QARMOR)
+=======
+	else if (color == ARMOR)
+>>>>>>> 5ee7058665984be474fea769690cefecb80807d2
 	{
 		Sprite* blankBar = Sprite::create("StatusBar/blankBar.png");
 		blankBar->setPosition(0, 0);
@@ -90,7 +98,11 @@ bool StatusBar::init(Point position, Character* hero, int color)
 
 void StatusBar::updateStatusBar(int color)
 {
+<<<<<<< HEAD
 	if (color == QHP)
+=======
+	if (color == HP)
+>>>>>>> 5ee7058665984be474fea769690cefecb80807d2
 	{
 		int status = theHero->getHP();
 		if (status > KNIGHT_HP)
@@ -110,7 +122,11 @@ void StatusBar::updateStatusBar(int color)
 
 		setStatusBar(rect);
 	}
+<<<<<<< HEAD
 	else if (color == QARMOR)
+=======
+	else if (color == ARMOR)
+>>>>>>> 5ee7058665984be474fea769690cefecb80807d2
 	{
 		int status = theHero->getArmor();
 		if (status > KNIGHT_ARMOR)

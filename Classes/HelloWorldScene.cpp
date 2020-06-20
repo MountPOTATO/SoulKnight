@@ -106,17 +106,47 @@ bool HelloWorld::init()
 
 	safeHouseInit();
 
+<<<<<<< HEAD
 	setStatusBox();
 
 
 	setPauseButton();
+=======
+	//测试掉落物直接减起,后期加入Vector
+	/*_direct = DirectPickThing::create
+	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 250), _hero, 20.f, 3, 3, 5, this);
+	this->addChild(_direct);*/
+
+
+	setPauseButton();
+
+	setStatusBox();
+
+	/*pauseBtn2 = Sprite::create("StatusBar/hpWarn.png");
+	pauseBtn2->setPosition(_hero->getPositionX() + 200, _hero->getPositionY() + 220);
+	pauseBtn2->setAnchorPoint(Vec2(0, 0));
+	pauseBtn2->setScale(0.2);
+	this->addChild(pauseBtn2, 10, 7);*/
+
+
+	/*pauseBtn = Sprite::create("Pause/pauseButton.png");
+	pauseBtn->setPosition(_hero->getPositionX() + 380, _hero->getPositionY() + 220);
+	pauseBtn->setAnchorPoint(Vec2(0, 0));
+	pauseBtn->setScale(0.2);
+	this->addChild(pauseBtn, 10, PAUSE_TAG);*/
+>>>>>>> 5ee7058665984be474fea769690cefecb80807d2
 
 	auto node = (Sprite*)this->getChildByTag(PAUSE_TAG);
 	node->setPosition(_hero->getPositionX() + 380, _hero->getPositionY() + 220);
 
+<<<<<<< HEAD
 	auto nodeBox = (Sprite*)this->getChildByTag(STATUS_BOX_TAG);
 	nodeBox->setPosition(_hero->getPositionX() - 480, _hero->getPositionY() + 155);
 	this->addChild(nodeBox);
+=======
+	/*auto nodeBox = (Sprite*)this->getChildByTag(STATUS_BOX_TAG);
+	nodeBox->setPosition(_hero->getPositionX() - 480, _hero->getPositionY() + 155);*/
+>>>>>>> 5ee7058665984be474fea769690cefecb80807d2
 
 	this->scheduleUpdate();
 
@@ -407,16 +437,24 @@ bool HelloWorld::init(int order, HeroInfo heroInfo) {
 
 	setStatusBox();
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 5ee7058665984be474fea769690cefecb80807d2
 	_currentUsedWeapon->setLastAttackTime(GetCurrentTime() / 1000.0f);
 
 	auto node = (Sprite*)this->getChildByTag(PAUSE_TAG);
 	node->setPosition(_hero->getPositionX() + 380, _hero->getPositionY() + 220);
 
+<<<<<<< HEAD
 	auto nodeBox = (Sprite*)this->getChildByTag(STATUS_BOX_TAG);
 	nodeBox->setPosition(_hero->getPositionX() - 480, _hero->getPositionY() + 155);
 	nodeBox->setVisible(false);
 	this->addChild(nodeBox);
+=======
+	/*auto nodeBox = (Sprite*)this->getChildByTag(STATUS_BOX_TAG);
+	nodeBox->setPosition(_hero->getPositionX() - 480, _hero->getPositionY() + 155);*/
+>>>>>>> 5ee7058665984be474fea769690cefecb80807d2
 
 	this->scheduleUpdate();
 	return true;
@@ -484,6 +522,15 @@ bool HelloWorld::safeHouseInit() {
 	(Vec2(_hero->getPositionX(), _hero->getPositionY() + 180), _hero, this, _rocker);
 	this->addChild(_portal);
 
+<<<<<<< HEAD
+=======
+	/*auto monster = Monster::create();
+	monster->setPosition(Vec2(_hero->getPositionX(), _hero->getPositionY() - 180));
+	this->addChild(monster);
+	_currentEnemy.pushBack(monster);*/
+
+
+>>>>>>> 5ee7058665984be474fea769690cefecb80807d2
 	return true;
 }
 
@@ -529,7 +576,10 @@ void HelloWorld::clear() {
 	_coinVec.clear();
 	_accelerateAreaVec.clear();
 	_monsterManageerVec.clear();
+<<<<<<< HEAD
 	_directPickVec.clear();
+=======
+>>>>>>> 5ee7058665984be474fea769690cefecb80807d2
 }
 
 
@@ -537,6 +587,7 @@ void HelloWorld::update(float delta) {
 
 	_currentUsedWeapon->startWeapon(true);
 
+<<<<<<< HEAD
 	if (_hero->getHP()<=0) {
 		this->clear();
 		_currentUsedWeapon->clearBuff();
@@ -556,6 +607,19 @@ void HelloWorld::update(float delta) {
 
 	auto node = (Sprite*)this->getChildByTag(PAUSE_TAG);
 	pauseBtn->setPosition(_hero->getPositionX() + 380, _hero->getPositionY() + 220);
+=======
+	auto node = (Sprite*)this->getChildByTag(PAUSE_TAG);
+	node->setPosition(_hero->getPositionX() + 380, _hero->getPositionY() + 220);
+
+	/*auto node2 = (Sprite*)this->getChildByTag(7);
+	node2->setPosition(_hero->getPositionX() + 200, _hero->getPositionY() + 220);*/
+
+	auto nodeBox = (Sprite*)this->getChildByTag(STATUS_BOX_TAG);
+	statusBox->setPosition(_hero->getPositionX() - 480, _hero->getPositionY() + 155);
+	hpBar->updateStatusBar(HP);
+	armorBar->updateStatusBar(ARMOR);
+	mpBar->updateStatusBar(MP);
+>>>>>>> 5ee7058665984be474fea769690cefecb80807d2
 
 	checkPortalState();
 
@@ -566,8 +630,11 @@ void HelloWorld::update(float delta) {
 	//更新怪物位置
 
 	for (auto& j : _currentEnemy) { j->update(1); j->attack(this); }
+<<<<<<< HEAD
 
 	for (auto& j : _directPickVec) j->updatePickThingSprite();
+=======
+>>>>>>> 5ee7058665984be474fea769690cefecb80807d2
 
 
 
@@ -603,6 +670,7 @@ void HelloWorld::updateBullet() {
 			i = _bullets.erase(i);
 			temp = false;
 		}
+<<<<<<< HEAD
 		else {
 			int get = 0;
 			for (auto& enmy : _currentEnemy) {
@@ -610,6 +678,17 @@ void HelloWorld::updateBullet() {
 					get++;
 			}
 			if (get >= 2) {
+=======
+		else for (auto& enmy : _currentEnemy) {//打中怪物 扣血消除
+			if (enmy->getBoundingBox().intersectsRect((*i)->getBoundingBox())) {
+				enmy->setHP(enmy->getHP() - (*i)->getBulletAttack());
+
+				auto flowword = FlowWord::create();
+				this->addChild(flowword);
+				const char* damage = StringUtils::format("%d", -(*i)->getBulletAttack()).data();
+				flowword->showWord(damage, Vec2(enmy->getPositionX(), enmy->getPositionY() + 10));
+
+>>>>>>> 5ee7058665984be474fea769690cefecb80807d2
 				(*i)->stopBullet();
 				i = _bullets.erase(i);
 				temp = false;
@@ -1085,7 +1164,11 @@ void HelloWorld::setPauseButton() {
 	Point positionSp = pauseBtn->getPosition();
 	/*log("%f,%f", positionSp.x, positionSp.y);*/
 	Size sizeC = pauseBtn->getContentSize();
+<<<<<<< HEAD
 	log("%f,%f", sizeC.width, sizeC.height);
+=======
+	/*log("%f,%f", sizeC.width, sizeC.height);*/
+>>>>>>> 5ee7058665984be474fea769690cefecb80807d2
 
 	/*auto rc = Rect(positionSp.x, positionSp.y, sizeC.width, sizeC.height);*/
 
@@ -1124,7 +1207,11 @@ void HelloWorld::setPauseButton() {
 			CCRenderTexture* renderTexture = CCRenderTexture::create(960, 640);
 
 			renderTexture->begin();
+<<<<<<< HEAD
 			node->getParent()->visit();
+=======
+			this->visit();
+>>>>>>> 5ee7058665984be474fea769690cefecb80807d2
 			renderTexture->end();
 
 			Director::getInstance()->pushScene(PauseLayer::createScene(renderTexture));
@@ -1135,6 +1222,7 @@ void HelloWorld::setPauseButton() {
 	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, pauseBtn);
 }
 
+<<<<<<< HEAD
 
 void HelloWorld::setStatusBox()
 {
@@ -1175,3 +1263,34 @@ void HelloWorld::setStatusBox()
 	statusBox->addChild(mpBar, 1);
 	this->addChild(mpBar, 1);
 }
+=======
+void HelloWorld::setStatusBox()
+{
+	statusBox = Sprite::create("StatusBar/statusbox.png");
+	statusBox->setPosition(_hero->getPositionX() - 480, _hero->getPositionY() + 155);
+	statusBox->setAnchorPoint(Vec2::ZERO);
+	statusBox->setScale(0.45);
+	statusBox->setTag(STATUS_BOX_TAG);
+	this->addChild(statusBox, 0);
+
+	Point sPos = statusBox->getPosition();
+
+	hpBar = StatusBar::create(sPos, _hero, HP);
+	hpBar->setPosition(sPos.x + 367, sPos.y - 230);
+	hpBar->setAnchorPoint(Vec2::ZERO);
+	hpBar->setScale(0.75);
+	statusBox->addChild(hpBar,1);
+
+	armorBar = StatusBar::create(sPos, _hero, ARMOR);
+	armorBar->setPosition(sPos.x + 367, sPos.y - 290);
+	armorBar->setAnchorPoint(Vec2::ZERO);
+	armorBar->setScale(0.75);
+	statusBox->addChild(armorBar,1);
+
+	mpBar = StatusBar::create(sPos, _hero, MP);
+	mpBar->setPosition(sPos.x + 367, sPos.y - 350);
+	mpBar->setAnchorPoint(Vec2::ZERO);
+	mpBar->setScale(0.75);
+	statusBox->addChild(mpBar,1);
+}
+>>>>>>> 5ee7058665984be474fea769690cefecb80807d2

@@ -53,6 +53,10 @@
 #include "MonsterManager/MonsterManager.h"
 #include "Pause/PauseLayer.h"
 #include "StatusBar/StatusBar.h"
+<<<<<<< HEAD
+=======
+#include "Const/ConstInfo.h"
+>>>>>>> 5ee7058665984be474fea769690cefecb80807d2
 
 class Weapon;
 class Character;
@@ -205,7 +209,10 @@ public:
 
 	Character* addCharacter(TMXTiledMap* map, int HeroID);
 	
+<<<<<<< HEAD
 	
+=======
+>>>>>>> 5ee7058665984be474fea769690cefecb80807d2
 private:
 	
 	
