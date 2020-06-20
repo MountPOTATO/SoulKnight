@@ -147,6 +147,15 @@ enum MovingDir {
 #define ACCELERATE_TIME 1.2f
 #define ACCELERATE_TOUCHRANGE  27.0f
 
+//状态框创建标识
+#define HP 1
+#define ARMOR 2
+#define MP 3
+
+//状态框标识
+#define STATUS_BOX_TAG 7999
+
+
 
 struct HeroInfo {
 	int hp;

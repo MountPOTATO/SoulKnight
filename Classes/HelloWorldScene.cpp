@@ -82,9 +82,8 @@ bool HelloWorld::init()
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 
-	std::string levelOrder = StringUtils::format("%d", _mapOrder);
-	
-	_map = TMXTiledMap::create(StringUtils::format("Maps/HelloWorldMap0.tmx", levelOrder));
+	_map = TMXTiledMap::create("Maps/HelloWorldMap0.tmx");
+
 	this->addChild(_map);
 	//初始化英雄
 	_hero = addCharacter(_map, 1);
@@ -106,73 +105,34 @@ bool HelloWorld::init()
 
 	safeHouseInit();
 
-	pauseBtn = Sprite::create("Pause/pauseButton.png");
-	pauseBtn->setPosition(_hero->getPositionX() + 380, _hero->getPositionY() + 220);
-	pauseBtn->setAnchorPoint(Vec2(0, 0));
-	pauseBtn->setTag(50);
-	pauseBtn->setScale(0.2);
-	this->addChild(pauseBtn, 10);
-
-	Point positionSp = pauseBtn->getPosition();
-	/*log("%f,%f", positionSp.x, positionSp.y);*/
-	Size sizeC = pauseBtn->getContentSize();
-	log("%f,%f", sizeC.width, sizeC.height);
-
-	/*auto rc = Rect(positionSp.x, positionSp.y, sizeC.width, sizeC.height);*/
-
-	auto listener = EventListenerTouchOneByOne::create();
-	listener->onTouchBegan = ([&, sizeC](Touch* t, Event* e) {
-		/*log("began");*/
-		auto node = (Sprite*)this->getChildByTag(50);
-		auto pauseB = HelloWorld::getPauseBtn();
-		/*log("%f %f", node->getPositionX(), node->getPositionY());
-		log("%f %f", pauseB->getPositionX(), node->getPositionY());*/
-
-
-		auto touchLocation = t->getLocation();
-		auto rc = Rect(node->getPositionX(), node->getPositionY(), sizeC.width, sizeC.height);
-		Point localPos = convertToNodeSpace(touchLocation);
-		bool isTouched = rc.containsPoint(localPos);
-		if (isTouched)
-		{
-			auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
-			audio->playEffect("Audio/button.mp3", false);
-			node->setScale(0.16);
-		}
-		return true; });
-	listener->onTouchEnded = ([&, sizeC](Touch* t, Event* e) {
-		/*log("end");*/
-		auto node = (Sprite*)this->getChildByTag(50);
-		auto touchLocation = t->getLocation();
-		auto rc = Rect(node->getPositionX(), node->getPositionY(), sizeC.width, sizeC.height);
-		Point localPos = convertToNodeSpace(touchLocation);
-		bool isTouched = rc.containsPoint(localPos);
-		if (isTouched)
-		{
-			node->setScale(0.2);
-			Director::getInstance()->pause();
-
-			CCRenderTexture* renderTexture = CCRenderTexture::create(960, 640);
-
-			renderTexture->begin();
-			node->getParent()->visit();
-			renderTexture->end();
-
-			Director::getInstance()->pushScene(PauseLayer::createScene(renderTexture));
-		}
-		});
-	listener->onTouchMoved = ([&](Touch* t, Event* e) {/*log("move");*/ });
-
-	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, pauseBtn);
-
 	//测试掉落物直接减起,后期加入Vector
 	/*_direct = DirectPickThing::create
 	(Vec2(_hero->getPositionX(), _hero->getPositionY() - 250), _hero, 20.f, 3, 3, 5, this);
 	this->addChild(_direct);*/
 
-	//加载ui
-	//this->loadUI
-	//("Resources\\DemoHead_UI\\DemoHead_UI.ExportJson");
+
+	setPauseButton();
+
+	setStatusBox();
+
+	/*pauseBtn2 = Sprite::create("StatusBar/hpWarn.png");
+	pauseBtn2->setPosition(_hero->getPositionX() + 200, _hero->getPositionY() + 220);
+	pauseBtn2->setAnchorPoint(Vec2(0, 0));
+	pauseBtn2->setScale(0.2);
+	this->addChild(pauseBtn2, 10, 7);*/
+
+
+	/*pauseBtn = Sprite::create("Pause/pauseButton.png");
+	pauseBtn->setPosition(_hero->getPositionX() + 380, _hero->getPositionY() + 220);
+	pauseBtn->setAnchorPoint(Vec2(0, 0));
+	pauseBtn->setScale(0.2);
+	this->addChild(pauseBtn, 10, PAUSE_TAG);*/
+
+	auto node = (Sprite*)this->getChildByTag(PAUSE_TAG);
+	node->setPosition(_hero->getPositionX() + 380, _hero->getPositionY() + 220);
+
+	/*auto nodeBox = (Sprite*)this->getChildByTag(STATUS_BOX_TAG);
+	nodeBox->setPosition(_hero->getPositionX() - 480, _hero->getPositionY() + 155);*/
 
 	this->scheduleUpdate();
 	return true;
@@ -422,13 +382,15 @@ bool HelloWorld::init(int order, HeroInfo heroInfo) {
 
 
 	_mapOrder = order;
-	std::string levelOrder = StringUtils::format("%d", order);
-	_map = TMXTiledMap::create(StringUtils::format("Maps/HelloWorldMap%s.tmx", levelOrder));
+	if (order == 1)
+		_map = TMXTiledMap::create("Maps/HelloWorldMap1.tmx");
+	if (order == 2)
+		_map = TMXTiledMap::create("Maps/HelloWorldMap2.tmx");
 
-	if(_mapOrder==1)
-	_map->setPosition(_map->getPositionX() , _map->getPositionY() + 40);
+	if (_mapOrder == 1)
+		_map->setPosition(_map->getPositionX(), _map->getPositionY() + 40);
 	if (_mapOrder == 2)
-		_map->setPosition(_map->getPositionX(), _map->getPositionY()+80);
+		_map->setPosition(_map->getPositionX(), _map->getPositionY() + 80);
 
 	this->addChild(_map);
 
@@ -442,7 +404,7 @@ bool HelloWorld::init(int order, HeroInfo heroInfo) {
 	}
 	else {
 		auto initWeapon = OldPistol::create
-		("WeaponImage\\GunImage\\OldPistol.png", "WeaponImage\\GunImage\\OldPistolReverse.png", this, sideHero, true);
+		("Weapon\\GunImage\\OldPistol.png", "Weapon\\GunImage\\OldPistolReverse.png", this, sideHero, true);
 		this->addChild(initWeapon);
 		initWeapon->startWeapon(true);
 		initWeapon->setTiledMap(_map);
@@ -456,18 +418,17 @@ bool HelloWorld::init(int order, HeroInfo heroInfo) {
 
 	BattleHouseInit();
 
+	setPauseButton();
 
-	//auto monster = Ranger::create();
-	//monster->setPosition(Vec2(_hero->getPositionX(), _hero->getPositionY() - 290));
-	//this->addChild(monster);
-	//_currentEnemy.pushBack(monster);
-	//auto treasureBox = TreasureBox::create
-	//(Vec2(_hero->getPositionX(), _hero->getPositionY() - 180), _hero, this, _rocker);
-	//this->addChild(treasureBox);
-	//_treasureBoxVec.pushBack(treasureBox);
-	//_portal = TransferPortal::create
-	//(Vec2(_hero->getPositionX(), _hero->getPositionY() + 180), _hero, this, _rocker);
-	//this->addChild(_portal);
+	setStatusBox();
+
+	_currentUsedWeapon->setLastAttackTime(GetCurrentTime() / 1000.0f);
+
+	auto node = (Sprite*)this->getChildByTag(PAUSE_TAG);
+	node->setPosition(_hero->getPositionX() + 380, _hero->getPositionY() + 220);
+
+	/*auto nodeBox = (Sprite*)this->getChildByTag(STATUS_BOX_TAG);
+	nodeBox->setPosition(_hero->getPositionX() - 480, _hero->getPositionY() + 155);*/
 
 	this->scheduleUpdate();
 	return true;
@@ -525,18 +486,14 @@ bool HelloWorld::safeHouseInit() {
 	this->addChild(treasureBox);
 	_treasureBoxVec.pushBack(treasureBox);
 
-
-
-
 	_portal = TransferPortal::create
 	(Vec2(_hero->getPositionX(), _hero->getPositionY() + 180), _hero, this, _rocker);
 	this->addChild(_portal);
 
-	auto manager = MonsterManager::create(Vec2(_hero->getPositionX(), _hero->getPositionY() - 200),this,_hero);
-	manager->setTiledMap(_map);
-	this->addChild(manager);
-	_monsterManageerVec.pushBack(manager);
-
+	/*auto monster = Monster::create();
+	monster->setPosition(Vec2(_hero->getPositionX(), _hero->getPositionY() - 180));
+	this->addChild(monster);
+	_currentEnemy.pushBack(monster);*/
 
 
 	return true;
@@ -579,24 +536,35 @@ void HelloWorld::clear() {
 	_energyVec.clear();
 	_coinVec.clear();
 	_accelerateAreaVec.clear();
+	_monsterManageerVec.clear();
 }
 
 
 void HelloWorld::update(float delta) {
 
+	_currentUsedWeapon->startWeapon(true);
+
+	auto node = (Sprite*)this->getChildByTag(PAUSE_TAG);
+	node->setPosition(_hero->getPositionX() + 380, _hero->getPositionY() + 220);
+
+	/*auto node2 = (Sprite*)this->getChildByTag(7);
+	node2->setPosition(_hero->getPositionX() + 200, _hero->getPositionY() + 220);*/
+
+	auto nodeBox = (Sprite*)this->getChildByTag(STATUS_BOX_TAG);
+	statusBox->setPosition(_hero->getPositionX() - 480, _hero->getPositionY() + 155);
+	hpBar->updateStatusBar(HP);
+	armorBar->updateStatusBar(ARMOR);
+	mpBar->updateStatusBar(MP);
+
 	checkPortalState();
 
 	_rocker->updatePosition(Vec2(_hero->getPositionX() - 550, _hero->getPositionY() - 350));
 
-	auto node = (Sprite*)this->getChildByTag(50);
-	node->setPosition(_hero->getPositionX() + 380, _hero->getPositionY() + 220);
-
 	for (auto& j : _monsterManageerVec) j->update(1);
 
+	//更新怪物位置
 
-	for (auto& j : _currentEnemy) {
-		j->update(1);
-	}
+	for (auto& j : _currentEnemy) { j->update(1); j->attack(this); }
 
 
 	//更新掉落物
@@ -637,7 +605,6 @@ void HelloWorld::updateBullet() {
 		else for (auto& enmy : _currentEnemy) {//打中怪物 扣血消除
 			if (enmy->getBoundingBox().intersectsRect((*i)->getBoundingBox())) {
 				enmy->setHP(enmy->getHP() - (*i)->getBulletAttack());
-				//飘字
 
 				auto flowword = FlowWord::create();
 				this->addChild(flowword);
@@ -754,6 +721,7 @@ Character* HelloWorld::addCharacter(TMXTiledMap* map, int HeroID) {
 	this->addChild(m_controller, 0, CONTROLLER_TAG);
 
 	m_Character->setTiledMap(map);
+
 
 	TMXObjectGroup* objGroup = map->getObjectGroup("Object");
 
@@ -1029,20 +997,24 @@ void HelloWorld::resetWeapon(HeroInfo heroInfo) {
 
 bool HelloWorld::BattleHouseInit() {
 	if (!_map) { log("ERROR:Map Missing"); return false; }
-	TMXObjectGroup* objGroup = _map->getObjectGroup("Object");
+	
+	_map->getLayer("MonsterMeta")->setVisible(false);
 
-	//宝箱位置
-	ValueMap TreasureBoxPointMap = objGroup->getObject("Treasure");
-	float trePointX = TreasureBoxPointMap.at("x").asFloat();
-	float trePointY = TreasureBoxPointMap.at("y").asFloat();
-	auto treasureBox = TreasureBox::create
-	(Vec2(trePointX, trePointY), _hero, this, _rocker);
-	this->addChild(treasureBox);
-	_treasureBoxVec.pushBack(treasureBox);
+	CCTMXObjectGroup* objGroup1 = this->_map->getObjectGroup("ObjectTreasure");
+	ValueVector arrGroup1 = objGroup1->getObjects();
+	int gpsize = arrGroup1.size();
+	for (int i = 0; i < gpsize; i++) {
+		ValueMap objInfo = arrGroup1.at(i).asValueMap();
+		float x = objInfo.at("x").asFloat();
+		float y = objInfo.at("y").asFloat();
+		auto treasureBox = TreasureBox::create
+		(Vec2(x, y), _hero, this, _rocker);
+		this->addChild(treasureBox);
+		_treasureBoxVec.pushBack(treasureBox);
+	}
 
-
-	////传送门位置
-	TMXObjectGroup* objGroup2 = _map->getObjectGroup("Object");
+	//传送门位置
+	CCTMXObjectGroup* objGroup2 = this->_map->getObjectGroup("ObjectPortal");
 	ValueMap PortalPointMap = objGroup2->getObject("Portal");
 	float portalPointX = PortalPointMap.at("x").asFloat();
 	float portalPointY = PortalPointMap.at("y").asFloat();
@@ -1050,36 +1022,125 @@ bool HelloWorld::BattleHouseInit() {
 	(Vec2(portalPointX, portalPointY), _hero, this, _rocker);
 	this->addChild(_portal);
 
-	for (int i = 1; i < 5; i++) {
-		TMXObjectGroup* objGroup3 = _map->getObjectGroup("Object");
-		std::string number = StringUtils::format("%d", i);
-		ValueMap SpeedUpPointMap = objGroup3->getObject(StringUtils::format("Speed%s", number));
-		float acPointX = SpeedUpPointMap.at("x").asFloat();
-		float acPointY = SpeedUpPointMap.at("y").asFloat();
+
+	////加速带位置
+	CCTMXObjectGroup* objGroup3 = this->_map->getObjectGroup("ObjectSpeed");
+	ValueVector arrGroup3 = objGroup3->getObjects();
+	gpsize = arrGroup3.size();
+	for (int i = 0; i < gpsize; i++) {
+		ValueMap objInfo = arrGroup3.at(i).asValueMap();
+		float x = objInfo.at("x").asFloat();
+		float y = objInfo.at("y").asFloat();
 		auto accelerateArea = AccelerateArea::create
-		(Vec2(acPointX, acPointY), _hero, this);
+		(Vec2(x, y), _hero, this);
 		this->addChild(accelerateArea);
 		_accelerateAreaVec.pushBack(accelerateArea);
 	}
 
-	TMXObjectGroup* objGroup4 = _map->getObjectGroup("Object");
-	ValueMap ManagerMap = objGroup2->getObject("Manager");
-	float PointX = ManagerMap.at("x").asFloat();
-	float PointY = ManagerMap.at("y").asFloat();
-	auto manager = MonsterManager::create(Vec2(PointX,PointY), this, _hero);
-	manager->setTiledMap(_map);
-	this->addChild(manager);
-	_monsterManageerVec.pushBack(manager);
-	return true;
+	//怪物管理器
+	CCTMXObjectGroup* objGroup4 = this->_map->getObjectGroup("ObjectManager");
+	ValueVector arrGroup4 = objGroup4->getObjects();
+	gpsize = arrGroup4.size();
+	for (int i = 0; i < gpsize; i++) {
+		ValueMap objInfo = arrGroup4.at(i).asValueMap();
+		float x = objInfo.at("x").asFloat();
+		float y = objInfo.at("y").asFloat();
+		auto manager = MonsterManager::create(Vec2(x, y), this, _hero);
+		manager->setTiledMap(_map);
+		this->addChild(manager);
+		_monsterManageerVec.pushBack(manager);
+	}
+
+
+
 }
 
+void HelloWorld::setPauseButton() {
+	pauseBtn = Sprite::create("Pause/pauseButton.png");
+	pauseBtn->setPosition(_hero->getPositionX() + 380, _hero->getPositionY() + 220);
+	pauseBtn->setAnchorPoint(Vec2(0, 0));
+	pauseBtn->setScale(0.2);
+	this->addChild(pauseBtn, 10, PAUSE_TAG);
 
-//加载ui
-/*
-bool HelloWorld::loadUI(const char* file) {
-	auto UI = cocostudio::GUIReader::getInstance()->
-		widgetFromJsonFile(file);
-	UI->setPosition(Point(100, 100));
-	this->addChild(UI);
-	return true;
-}*/
+	Point positionSp = pauseBtn->getPosition();
+	/*log("%f,%f", positionSp.x, positionSp.y);*/
+	Size sizeC = pauseBtn->getContentSize();
+	/*log("%f,%f", sizeC.width, sizeC.height);*/
+
+	/*auto rc = Rect(positionSp.x, positionSp.y, sizeC.width, sizeC.height);*/
+
+	auto listener = EventListenerTouchOneByOne::create();
+	listener->onTouchBegan = ([&, sizeC](Touch* t, Event* e) {
+		/*log("began");*/
+		auto node = (Sprite*)this->getChildByTag(PAUSE_TAG);
+		auto pauseB = HelloWorld::getPauseBtn();
+		/*log("%f %f", node->getPositionX(), node->getPositionY());
+		log("%f %f", pauseB->getPositionX(), node->getPositionY());*/
+
+
+		auto touchLocation = t->getLocation();
+		auto rc = Rect(node->getPositionX(), node->getPositionY(), sizeC.width, sizeC.height);
+		Point localPos = convertToNodeSpace(touchLocation);
+		bool isTouched = rc.containsPoint(localPos);
+		if (isTouched)
+		{
+			auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
+			audio->playEffect("Audio/button.mp3", false);
+			node->setScale(0.16);
+		}
+		return true; });
+	listener->onTouchEnded = ([&, sizeC](Touch* t, Event* e) {
+		/*log("end");*/
+		auto node = (Sprite*)this->getChildByTag(PAUSE_TAG);
+		auto touchLocation = t->getLocation();
+		auto rc = Rect(node->getPositionX(), node->getPositionY(), sizeC.width, sizeC.height);
+		Point localPos = convertToNodeSpace(touchLocation);
+		bool isTouched = rc.containsPoint(localPos);
+		if (isTouched)
+		{
+			node->setScale(0.2);
+			Director::getInstance()->pause();
+
+			CCRenderTexture* renderTexture = CCRenderTexture::create(960, 640);
+
+			renderTexture->begin();
+			this->visit();
+			renderTexture->end();
+
+			Director::getInstance()->pushScene(PauseLayer::createScene(renderTexture));
+		}
+		});
+	listener->onTouchMoved = ([&](Touch* t, Event* e) {/*log("move");*/ });
+
+	Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(listener, pauseBtn);
+}
+
+void HelloWorld::setStatusBox()
+{
+	statusBox = Sprite::create("StatusBar/statusbox.png");
+	statusBox->setPosition(_hero->getPositionX() - 480, _hero->getPositionY() + 155);
+	statusBox->setAnchorPoint(Vec2::ZERO);
+	statusBox->setScale(0.45);
+	statusBox->setTag(STATUS_BOX_TAG);
+	this->addChild(statusBox, 0);
+
+	Point sPos = statusBox->getPosition();
+
+	hpBar = StatusBar::create(sPos, _hero, HP);
+	hpBar->setPosition(sPos.x + 367, sPos.y - 230);
+	hpBar->setAnchorPoint(Vec2::ZERO);
+	hpBar->setScale(0.75);
+	statusBox->addChild(hpBar,1);
+
+	armorBar = StatusBar::create(sPos, _hero, ARMOR);
+	armorBar->setPosition(sPos.x + 367, sPos.y - 290);
+	armorBar->setAnchorPoint(Vec2::ZERO);
+	armorBar->setScale(0.75);
+	statusBox->addChild(armorBar,1);
+
+	mpBar = StatusBar::create(sPos, _hero, MP);
+	mpBar->setPosition(sPos.x + 367, sPos.y - 350);
+	mpBar->setAnchorPoint(Vec2::ZERO);
+	mpBar->setScale(0.75);
+	statusBox->addChild(mpBar,1);
+}
