@@ -7,29 +7,32 @@ bool Charger::init() {
 	setSpeed(CHARGER_SPEED);
 	setHP(CHARGER_HP);
 	isAiMoving = false;
-
+	isChargeBlocked = false;
 	this->isActivated = true;
 	this->getSprite()->setVisible(true);//不活跃的怪物先不显示
 	this->scheduleUpdate();//开启，如果严重影响帧数就考虑放到怪物活跃时再启用
 	remainChargingDistance = CHARGER_MAX_CHARGES_ROUND;
+	remainMovingDistance = CHARGER_MAX_MOVES_ROUND;
 	return true;
 }
 
 void Charger::update(float delta) {
-	bool isChargeBlocked = false;//能否正常进行冲撞？
-	if (isAiMoving) { return; }//正在进行上一个移动，不发出指令
+	//能否正常进行冲撞？
+	
 	//先尝试直接冲向主角
-	if(remainChargingDistance > 0) {
+	
+	if(remainChargingDistance > 0&&isChargeBlocked==false) {
 		isAiMoving = true;
 		Point characterPos = m_character->getPosition();
 		Point curPos = this->getPosition();//怪物自身的位置
 		float x_distance = fabs(characterPos.x - curPos.x);
 		float y_distance = fabs(characterPos.y - curPos.y);
 		float xy_distance = sqrt(pow(x_distance, 2) + pow(y_distance, 2));
-		float x_move = x_distance / xy_distance * CHARGER_SPEED;
-		float y_move = y_distance / xy_distance * CHARGER_SPEED;//按比例获取x,y的移动距离
+		if (xy_distance <= 1) { return; }
+		float x_move = x_distance / xy_distance * CHARGER_CHARGE_SPEED;
+		float y_move = y_distance / xy_distance * CHARGER_CHARGE_SPEED;//按比例获取x,y的移动距离
 
-		Point dstPos = Point(0, 0);
+		Point dstPos = curPos;
 		if (curPos.x <= characterPos.x && curPos.y <= characterPos.y) { dstPos += Point(x_move, y_move); }
 		if (curPos.x <= characterPos.x && curPos.y >= characterPos.y) { dstPos += Point(x_move, -y_move); }
 		if (curPos.x >= characterPos.x && curPos.y <= characterPos.y) { dstPos += Point(-x_move, y_move); }
@@ -50,7 +53,7 @@ void Charger::update(float delta) {
 		if (isPosBlocked(Point(x - halfOfHitBox, y - halfOfHitBox))) {
 			isAiMoving = false; isChargeBlocked = true;
 		}
-		if (isAiMoving) {
+		if (!isChargeBlocked) {
 			auto pos = tileCoordForPosition(curPos);
 			auto mapSize = m_map->getMapSize();
 
@@ -58,71 +61,83 @@ void Charger::update(float delta) {
 
 			Entity::setTagPosition(x, y);
 			remainChargingDistance -= 1;
+			if (remainChargingDistance == 0) {
+				remainChargingDistance = CHARGER_MAX_CHARGES_ROUND;
+				isChargeBlocked = true;
+				isAiMoving = false;
+			}
 			return;
 		}
 		
 	}
+	if (!isAiMoving) { this->calDistance(); isAiMoving = true;  }
 	if (isChargeBlocked) {
 		//随机走
-		auto curPos = this->getPosition();
-		this->calDistance();
-		if (remainMovingDistance > 0) {
-			isAiMoving = true;//进入移动模式
-		   //进行一次移动
+		if (max_twist > 0) {
 			
-			//检测移动路径是否被挡住
-			auto dstPos = Point(0, 0);//先随便生成一个点
-			//计算出终点
-			switch (nextMovingDir)
-			{
-			case left:
-				dstPos = curPos + Point(-CHARGER_SPEED, 0);
-				break;
-			case upLeft:
-				dstPos = curPos + Point(-CHARGER_SPEED / 1.414, CHARGER_SPEED / 1.414);
-				break;
-			case up:
-				dstPos = curPos + Point(0, CHARGER_SPEED);
-				break;
-			case upRight:
-				dstPos = curPos + Point(CHARGER_SPEED / 1.414, CHARGER_SPEED / 1.414);
-				break;
-			case right:
-				dstPos = curPos + Point(CHARGER_SPEED, 0);
-				break;
-			case downRight:
-				dstPos = curPos + Point(CHARGER_SPEED / 1.414, -CHARGER_SPEED / 1.414);
-				break;
-			case down:
-				dstPos = curPos + Point(0, -CHARGER_SPEED);
-				break;
-			case downLeft:
-				dstPos = curPos + Point(-CHARGER_SPEED / 1.414, -CHARGER_SPEED / 1.414);
-				break;
-			default:
-				break;
+			auto curPos = this->getPosition();
+
+			if (remainMovingDistance > 0) {
+				isAiMoving = true;//进入移动模式
+			   //进行一次移动
+
+				//检测移动路径是否被挡住
+				auto dstPos = Point(0, 0);//先随便生成一个点
+				//计算出终点
+				switch (nextMovingDir)
+				{
+				case left:
+					dstPos = curPos + Point(-CHARGER_SPEED, 0);
+					break;
+				case upLeft:
+					dstPos = curPos + Point(-CHARGER_SPEED / 1.414, CHARGER_SPEED / 1.414);
+					break;
+				case up:
+					dstPos = curPos + Point(0, CHARGER_SPEED);
+					break;
+				case upRight:
+					dstPos = curPos + Point(CHARGER_SPEED / 1.414, CHARGER_SPEED / 1.414);
+					break;
+				case right:
+					dstPos = curPos + Point(CHARGER_SPEED, 0);
+					break;
+				case downRight:
+					dstPos = curPos + Point(CHARGER_SPEED / 1.414, -CHARGER_SPEED / 1.414);
+					break;
+				case down:
+					dstPos = curPos + Point(0, -CHARGER_SPEED);
+					break;
+				case downLeft:
+					dstPos = curPos + Point(-CHARGER_SPEED / 1.414, -CHARGER_SPEED / 1.414);
+					break;
+				default:
+					break;
+				}
+				auto x = dstPos.x;
+				auto y = dstPos.y;
+				if (isPosBlocked(Point(x + halfOfHitBox, y + halfOfHitBox))) { isAiMoving = false; return; }
+				if (isPosBlocked(Point(x + halfOfHitBox, y - halfOfHitBox))) { isAiMoving = false; return; }
+				if (isPosBlocked(Point(x - halfOfHitBox, y + halfOfHitBox))) { isAiMoving = false; return; }
+				if (isPosBlocked(Point(x - halfOfHitBox, y - halfOfHitBox))) { isAiMoving = false; return; }//移动路径被阻挡了 不能行动
+				auto pos = tileCoordForPosition(curPos);
+				auto mapSize = m_map->getMapSize();
+
+				this->setPositionZ(pos.y - mapSize.height);
+
+				Entity::setTagPosition(x, y);
+				remainMovingDistance -= 1;
+
 			}
-			auto x = dstPos.x;
-			auto y = dstPos.y;
-			if (isPosBlocked(Point(x + halfOfHitBox, y + halfOfHitBox))) { isAiMoving = false; return; }
-			if (isPosBlocked(Point(x + halfOfHitBox, y - halfOfHitBox))) { isAiMoving = false; return; }
-			if (isPosBlocked(Point(x - halfOfHitBox, y + halfOfHitBox))) { isAiMoving = false; return; }
-			if (isPosBlocked(Point(x - halfOfHitBox, y - halfOfHitBox))) { isAiMoving = false; return; }//移动路径被阻挡了 不能行动
-			auto pos = tileCoordForPosition(curPos);
-			auto mapSize = m_map->getMapSize();
-
-			this->setPositionZ(pos.y - mapSize.height);
-
-			Entity::setTagPosition(x, y);
-			remainMovingDistance -= 1;
+			if (remainMovingDistance == 0) {
+				//必须走完一整条随机移动再进行下一次冲撞
+				max_twist -= 1;this->calDistance();
+				remainMovingDistance = CHARGER_MAX_MOVES_ROUND;
+			}
+		}
+		if (max_twist == 0) {
+			max_twist = 3;isChargeBlocked = false;
 			
 		}
-		if (remainMovingDistance == 0) { 
-			isAiMoving = false; 
-			isChargeBlocked = false;//必须走完一整条随机移动再进行下一次冲撞
-
-			remainMovingDistance = CHARGER_MAX_MOVES_ROUND; }
-		return;
 	}
 
 }

@@ -16,7 +16,8 @@ public:
 	void calDistance();//怪物移动
 	bool isAiMoving;//是否正在自行移动
 	bool isPosBlocked(Point dstPos);
-	
+	bool isChargeBlocked;
+	int max_twist = 3;
 
 public:
 	MovingDir nextMovingDir;//储存当前移动方向

@@ -76,7 +76,7 @@ void MonsterManager::createMonster(int MonsterID, Point monsterSpawnPoint) {
 
 void MonsterManager::spawnLotsOfMonsters(Point spawnPoint, float rad, int spawnNum) {
 	int i = 0;
-	while (i<spawnNum){
+	while (i<1){
 		auto randomPoint = spawnPoint + Point(
 			(CCRANDOM_0_1() - CCRANDOM_0_1()) * CCRANDOM_0_1() * rad,
 			(CCRANDOM_0_1() - CCRANDOM_0_1()) * CCRANDOM_0_1() * rad);	//随机生成一个点
@@ -86,7 +86,7 @@ void MonsterManager::spawnLotsOfMonsters(Point spawnPoint, float rad, int spawnN
 		if (isPosBlocked(Point(x + halfOfHitBox, y - halfOfHitBox))) { continue; }
 		if (isPosBlocked(Point(x - halfOfHitBox, y + halfOfHitBox))) { continue; }
 		if (isPosBlocked(Point(x - halfOfHitBox, y - halfOfHitBox))) { continue; }//检查这个点是否被遮挡
-		createMonster((int)(2*CCRANDOM_0_1()+1), randomPoint);
+		createMonster(2, randomPoint);
 		i++;//成功生成了
 	}
 }

@@ -84,7 +84,7 @@ bool HelloWorld::init()
 
 	std::string levelOrder = StringUtils::format("%d", _mapOrder);
 	
-	_map = TMXTiledMap::create(StringUtils::format("Maps/HelloWorldMap%s.tmx", levelOrder));
+	_map = TMXTiledMap::create(StringUtils::format("Maps/HelloWorldMap0.tmx", levelOrder));
 	this->addChild(_map);
 	//≥ı ºªØ”¢–€
 	_hero = addCharacter(_map, 1);

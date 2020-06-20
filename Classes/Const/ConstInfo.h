@@ -98,10 +98,11 @@ enum EEntityBuffEffect {
 
 //Charger
 #define CHARGER_HP 10
-#define CHARGER_SPEED 5
+#define CHARGER_SPEED 1
+#define CHARGER_CHARGE_SPEED 2
 #define CHARGER_ATK 0 //预想的是直接用碰撞伤害 
 #define CHARGER_MAX_MOVES_ROUND 50
-#define CHARGER_MAX_CHARGES_ROUND 40//最大冲撞距离
+#define CHARGER_MAX_CHARGES_ROUND 100//最大冲撞距离
 #define CHARGER_MOVE_PAUSE_TIME 3.0f
 
 enum MovingDir {
