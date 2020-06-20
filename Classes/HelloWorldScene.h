@@ -52,11 +52,6 @@
 #include "Map/Space.h"
 #include "MonsterManager/MonsterManager.h"
 #include "Pause/PauseLayer.h"
-#include "StatusBar/StatusBar.h"
-<<<<<<< HEAD
-=======
-#include "Const/ConstInfo.h"
->>>>>>> 5ee7058665984be474fea769690cefecb80807d2
 
 class Weapon;
 class Character;
@@ -78,19 +73,8 @@ public:
 
 	CC_SYNTHESIZE(HRocker*, _rocker, Rocker);
 
-	CC_SYNTHESIZE(Sprite*, pauseBtn, PauseBtn);	
-	void setPauseButton();
+	CC_SYNTHESIZE(Sprite*, pauseBtn, PauseBtn);
 
-	CC_SYNTHESIZE(Sprite*, pauseBtn2, PauseBtn2);
-
-	CC_SYNTHESIZE(Sprite*, statusBox, Box);
-	void setStatusBox();
-
-	CC_SYNTHESIZE(StatusBar*, hpBar, HpBar);
-
-	CC_SYNTHESIZE(StatusBar*, armorBar, armorBar);
-
-	CC_SYNTHESIZE(StatusBar*, mpBar, mpBar);
 
 	virtual bool init();
 
@@ -154,7 +138,6 @@ public:
 	//加速区域以及时间元素
 	Vector<AccelerateArea*> _accelerateAreaVec;
 	Vector<MonsterManager*>_monsterManageerVec;
-	Vector<DirectPickThing*>_directPickVec;
 	
 
 
@@ -209,10 +192,8 @@ public:
 
 	Character* addCharacter(TMXTiledMap* map, int HeroID);
 	
-<<<<<<< HEAD
-	
-=======
->>>>>>> 5ee7058665984be474fea769690cefecb80807d2
+	//加载ui
+	//bool loadUI(const char* file);
 private:
 	
 	

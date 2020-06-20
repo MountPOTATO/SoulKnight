@@ -91,9 +91,6 @@ bool Shotgun::runShootingAction() {
 	}
 	_hasAnimation = false;
 	_isAttacking = false;
-
-
-	this->setLastAttackTime(GetCurrentTime() / 1000.0f);
 	return true;
 
 }

@@ -17,7 +17,7 @@
    </properties>
   </tile>
  </tileset>
- <layer name="Meta" width="14" height="14" visible="0">
+ <layer name="Meta" width="14" height="14">
   <data encoding="base64" compression="zlib">
    eJzjZGBg4CQTkwqGij6Y3lF91NE3UPFODgYAhdYBnw==
   </data>
@@ -46,4 +46,7 @@
    eJxjZWBgYANiVjQanY1NjFQA00sqoLd9MDvJAax0tm8o6CM3/mDpjVz7cKVdbGmcFYoBmT8BBw==
   </data>
  </layer>
+ <objectgroup name="Object">
+  <object name="CharacterPoint" x="270" y="234" width="27" height="19"/>
+ </objectgroup>
 </map>

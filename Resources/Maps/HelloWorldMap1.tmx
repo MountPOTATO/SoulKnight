@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="left-down" width="120" height="96" tilewidth="40" tileheight="40" infinite="0" nextlayerid="12" nextobjectid="8">
+<map version="1.2" tiledversion="1.3.4" orientation="orthogonal" renderorder="left-down" width="120" height="96" tilewidth="40" tileheight="40" infinite="0" nextlayerid="10" nextobjectid="20">
  <tileset firstgid="1" name="floors" tilewidth="40" tileheight="40" tilecount="4" columns="4">
   <image source="floors.png" width="160" height="40"/>
  </tileset>
@@ -20,17 +20,22 @@
  <tileset firstgid="16" name="木箱" tilewidth="40" tileheight="60" tilecount="1" columns="1">
   <image source="木箱.png" width="40" height="60"/>
  </tileset>
- <layer id="1" name="MonsterMeta" width="120" height="96" opacity="0">
+ <objectgroup id="8" name="Object">
+  <object id="11" name="CharacterPoint" x="600" y="1284"/>
+  <object id="13" name="Treasure" x="4344" y="1264"/>
+  <object id="14" name="Portal" x="4320" y="3165"/>
+  <object id="15" name="Speed1" x="2260" y="1059"/>
+  <object id="16" name="Speed2" x="2664" y="1060"/>
+  <object id="17" name="Speed3" x="2260" y="1498"/>
+  <object id="18" name="Speed4" x="2662" y="1502"/>
+  <object id="19" name="Manager" x="2464" y="1260"/>
+ </objectgroup>
+ <layer id="1" name="Meta" width="120" height="96">
   <data encoding="base64" compression="zlib">
-   eJzt21tugzAURdH8dv4T7gQggOPH9WEtiZ8KN9g7JqFSPx8AAAAAAAAAAAAg1d+ggxpGtNC3jl4t7N+a7N82u3xupfSdvdYt46v1bV2bavPocX6P8VXXZfbatdil74rj6trvnldtHt+s6LvCk253z9th7vpej9O3vrO+V/c8ffeg75rxs7T2PRv77eeVvL1v69gn41fyfHTveivPo+XaR45f8b5/8l357jpWnccv5/cYX21dWvdKtXn0OP9o/Oh7TA8jXnPVPKqv9QopfTnWs8Xb9sYO9M1W4VmFNa6+W7M3fbPpm03fbPpm0zebvtn0zaZvNn2z6ZtN32z6ZtM3m77Z9M2mbzZ9s+mbTd9s+mbTN5u+2fTNpm82fbPpm03f/fn/smxHLX7tM7uv9+C5nn1XrV3L6+nb93eOpO+5UX1nHy3X+Aa/9h3x/phhh2vs4azP3T2ib232bzZ9sz3pc/e+vcPa7XCNPdi/2UY863o+qmNU35n0PddzH/j7ZD0pfWfc03dU5fMQAAAAgL7+AZeQFWo=
+   eJzt21FuwyAURcH8dv8b7gZixcYP87iekfJnGuCUuK6UzwcAAAAAAAAAAABI9TfpRQ8zWujbR1UL57cn53fMLvetlL5P7/XI+G59R/em2zoqrq8Yv8O+rPqZ1e+5qu+K1+jcj67rso6RuT81fqW7fXeg7+9r0tc4c/xKZz7z9N2XvvPHr9T5OajK2/tWXteR56Nz8+28jpG5zxy/4jxc+Vv57D52Xced6yvGd9uX0bPSbR0V138bP/szpsKM91y1ju57vUJKX76rbPG2s7EDfbON3qPc2/b3qy970zebvtn0zaZvNn2z6ZtN32z6ZtM3m77Z9M2mbzZ9s+mbTd9s+mbTN5u+2fTNpm82fbPpm03fbPpm0zebvtn03Z/vl2X71uJun6f7jnx3/y2/g5V9V+3dyPvpW/szZ9L32Ky+T79G5vgGd/vuuk+7zvuqo75nz8iu+7TrvK9yfrPpm+1K36TnyF3nfZXzm23Gs67noz5m9X2Svscqz4H/T/aT0veJz/QddbkfAgAAAFDrH/92FEE=
   </data>
  </layer>
- <layer id="2" name="Meta" width="120" height="96" opacity="0">
-  <data encoding="base64" compression="zlib">
-   eJzt20FygzAQRUFvc/8L5wImATFCo093lXdgJL3IBFf58wEAAAAAAAAAAABS/Ux60cOMFvr2UdXC/u3J/h2zy32rS9+743h6rVfMccRf1xxdm27zqDi+4vwd1mXVe1Zfc1XfFa/RsR8d12UeI2N/6vyV7vbdgb7/H5M+x5nnr3TmM0/ffek7//yVOj8HVXl738rjOvJ8dG68necxMvaZ56/YD1f+Vz67jl3ncef4ivO7rcvoXuk2j4rjv50/+zOmwoxrrppH97VeIaUv31W2eNve2IG+2UbvUe5t+/uvL3vTN5u+2fTNpm82fbPpm03fbPpm0zebvtn0zaZvNn2z6ZtN32z6ZtM3m77Z9M2mbzZ9s+mbTd9s+mbTN5u+2fTdn9+XZfvW4m6fp/uO/Hb/LX+DlX1Xrd3I9fStfc+Z9D02q+/Tr5ExvsHdvruu067jvuqo79k9sus67Truq+zfbPpmu9I36Tly13FfZf9mm/Gs6/moj1l9n6Tvscp94PvJflL6PvGZvqMu90MAAAAAav0CohEUSg==
-  </data>
- </layer>
- <layer id="3" name="exit" width="120" height="96">
+ <layer id="2" name="exit" width="120" height="96">
   <properties>
    <property name="cc_vertexz" value="-500"/>
   </properties>
@@ -38,7 +43,7 @@
    eJzt27ENwCAUQ0FK9p84E6T7CsrjTqJGthsa1gIAAAAAAAAAAAAAAACAGTt0bynLlFInpSxTSp2UskwpdVLKMqXUSSnLlFInpSwAAADcYb8cAAAAAAAAAAAAAAAAAOC//B8EADjvxPvLm+879m2zb5t92+zbZl8AAAAAAOA2D98AAYE=
   </data>
  </layer>
- <layer id="4" name="floor" width="120" height="96">
+ <layer id="3" name="floor" width="120" height="96">
   <properties>
    <property name="cc_vertexz" value="-500"/>
   </properties>
@@ -46,7 +51,7 @@
    eJztnIlu2zAQRFfH/39zW8BERy9DB4iMUiXnAUJiWefepElWhRBCCCGEEEIIIYQQQgghhBBCCCGEEEIIIYT/meP3tr22P//vr217/T1l22U7X8fo3/MfP3v4nqZf6lb3N91tOEb13r4Pz6LpTHV3lvfTtv/Acfo3PAuNw4zJTZfq220ffbr5+gqofTdZMAa2+LcPesZG01N7tkO2Dd/pc+vxGq9Honamz9feQeuMu/dh3NrqGvf080hUl2pzKqfDfMe4/QRbVXt0Ot1ku4PWnO16rEvVtkaicUb9V+XE92DeVXseCW2VMUjzzh12s6kduZrzOz/nuepPGj9Z57IW0usV7nfimmrvLj6r/zYZltyHz7vj84Fj2C5j7Hf217aeDCm7T8RnlQvjGnW9yzkuplOW7hjarZMP42zTr16b+trKy9jVVdr+5X73bHxu2qN7dtdG03ehvatt6jt+Ij4zzzMHqPxLPrvaVffp+fS3np+qXvT7quuzOJ9jjKO8Gb/1ms6eqVfKg3bh5HDiXHdf1oDU+R2c37JNqc9ZOEafj3JgnOe7atxizHAxyrWBaD8qa8ZbjRUaE/iOPFbvRf0xZ7IWdjlI5U5753Xv1gn0U/ov5VR11YOLuTyPdt6TDW1M/bPqqy7os73cyXsduOZmrsnc4nIQbZcy6MWrgvzcfdUm7sC6QeMi7ZBypj84H3ExnPJkbac6Uf/ltViP9GxOj9O/VVdbdDmTccnl272+vr/L2/oujO+0b9rDT1Fd8PqMf3fvdRfGQPos8y9jgL7L3bh3F+qceURj0h1cbOI+xudRONt28Y05gvGgnTMSxi6XE7S2/Cm8h6tNWfuN4l0Nq7GQOZe5sslvJPRdtUvWpqvAmsDlbOq31w4Zrd/wFa1verpUf2Y7j23t8CycT7KOVl32cls7JzwL1k/s63B9D66eeEJbIITwl14bPsyB6w+NfudB6+fUUPPh6ueV+gZmh30/T+hjDp+Dfauf6LsNz8H1ZaW+mgf2UT7hN6LwOTi2I33Mc+HGk6R+ngeOQ0j9PBccdxL9zgXH66W+mgvqNv1Xc8ExuunfmAv+tp/fj+aC42NTX81Fb55KmAPO8Yj/zgXnZ7XPYQ6o24yRnAvOUYj/zoWbhxr/nYfeHNowB5wHmvGTc+HWSYj/zoOOr9P5SGEOenP6wxxwzr6uoRJCGI9bK4fzjTZ8r/PNOL8/PAs3n5vx2K3t5H4bHtl2UttzazpttWYboLeOGNfY4Dpnup6DynQUfGauFcI1YVahJwu3bhTXN3vS3G/2wfTWNlutDaC/DzHH0m+5fhj7ppvcOKZWx+hx7Q7mAT2Xc2OY8/X3LMYTnROnuWS1MWRcw4qyVL9Q3TIXt31V7/2GsaF3f673QhtjLuU4E5dHVpzj6sZXaQ5WeapcuV9l3fNVtRG3lhbH4rq6Xe+psdatAaTX4Vz1VaBuueaRmwNMXak9VF39czfXZHxlvFZdsu6jH29yT70W48GqY0BZL1OWPRmxjaR+0Rv3wXOoR2cHrH1Z/+k9mcNd7F9tjALrYOdj7+I182jV1X92XJ81OG1Lv2cccG0gzfkuz9OPtU5YAZWxyoA1NWsX5rUntH9ZizEPr1g/a/vXtUu4X+Mi+7BGyo2+yjjOttIq9OIyaxsXN1nTjtSva98xt+t7rQLbr67vgXJinNbYHUIIIYQQQgghhBDG8gtQDRFh
   </data>
  </layer>
- <layer id="5" name="box" width="120" height="96">
+ <layer id="4" name="box" width="120" height="96">
   <properties>
    <property name="cc_vertexz" value="automatic"/>
   </properties>
@@ -54,7 +59,7 @@
    eJzt3MEJACAIBVBHaP9pu3aLIELtPWiCfwgVjQAAAAAAAAAAAAAAOhvLAwAA+Ik6qLZdLSvf2uTbm14UQH4jzA8AICv/c2/yBQAAAAAAAAAAAAAAAAAAeMN+NwAAAABw6tbtbv3JnOQLAAAA0MsE4s0CAQ==
   </data>
  </layer>
- <layer id="6" name="roomVerge" width="120" height="96">
+ <layer id="5" name="roomVerge" width="120" height="96">
   <properties>
    <property name="cc_vertexz" value="automatic"/>
   </properties>
@@ -62,21 +67,4 @@
    eJzt3NtugzAQRdG+JP//ye1DIyHLM77FZuawl4QaEqA2E19p/fMDAAAAAAAAAAAAAAAAAACUvf629//2MvbL98utPOZ1NAfw7IjFe8M1MWdHLIhvHMR33LUduv4sX5fv3UGpfrb6B7UYrNzzmfPu6pN4aS37V9fNEzEvNbPpnIkv5XfdaF5Ol9+yLqmNV7z63hvr1MYzn/1aWnrTbL0/mh/rdWssVn424mR8I1mNbxYn6+dIiO+e86Igvj7Kbw60v985LirK73eOi+r0+LccI/SME7zzWnM41phiNb61NFtjIO9z6xhvTDiC+Y05WfJysv8c8Z7Mzk9GzMs3jv/w6kZv/uYOO2JxV168Or8Wg+z9hx48H9S24zv8hHKRBfHV5j23afW9vGdAiM9rR2lj82uVX+RG+dXW+tss5ObFkPKbH/HVRv9KG/HVRv9KG+2vNuKrjfhqo3+ljf6VNuaftdH+aqP91Ub7q43yq434aqP/rI3+szb6V9pof7XR/mqj/dVGfLVRP2uj/5yft+Zjq3721nFBDCvr54xcc7fWujrW2g3qanVwxvhmWrPoJJX4zvxOyu/8Nb3/76+tV1b7rGett+v+qCfEd7X9zXyPMqe9lxXf3jXNMt+jzGnvtVo/Z75HmdPei/pZ20j5nVmLMrLMae/15Pr5CePfHWNdbyxjjZtq80/WMdY1RhHfufOzzG8Q37nz77hvxLduNY9R4uuttV2r62fnvLJpzflZz2WsdpDngwAAAAAA5PALIuILyQ==
   </data>
  </layer>
- <objectgroup id="7" name="Object">
-  <object id="1" name="CharacterPoint" x="600" y="1284"/>
- </objectgroup>
- <objectgroup id="8" name="ObjectManager">
-  <object id="2" name="Manager2" x="2452" y="1255" width="15" height="15"/>
-  <object id="3" name="Manager1" x="2463" y="3186" width="31" height="19"/>
- </objectgroup>
- <objectgroup id="9" name="ObjectPortal">
-  <object id="4" name="Portal" x="4343.33" y="3181.33"/>
- </objectgroup>
- <objectgroup id="10" name="ObjectSpeed">
-  <object id="5" name="Speed" x="2269" y="1465" width="22" height="24"/>
-  <object id="6" name="Speed2" x="2625" y="1061" width="26" height="26"/>
- </objectgroup>
- <objectgroup id="11" name="ObjectTreasure">
-  <object id="7" name="Treasure1" x="4341" y="1262" width="32" height="28"/>
- </objectgroup>
 </map>

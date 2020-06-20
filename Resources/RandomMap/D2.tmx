@@ -20,7 +20,7 @@
  <tileset firstgid="16" name="木箱" tilewidth="40" tileheight="60">
   <image source="木箱.png" width="40" height="60"/>
  </tileset>
- <layer name="Meta" width="22" height="16" visible="0">
+ <layer name="Meta" width="22" height="16">
   <data encoding="base64" compression="zlib">
    eJxjZ2BgYKcDZkCiSQX0MhebPCWAGubi0o9PnJC/yDGXWDCYzSU2fAaLeweruaQAephLTHonx1xc5hObx4jRCwBLdwMD
   </data>

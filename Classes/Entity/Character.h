@@ -40,9 +40,6 @@ public:
 
 public:
 	void setViewPointByCharacter();
-
-	
-
 	virtual void setTagPosition(int x,int y);
 	void setTiledMap(TMXTiledMap* map);
 
@@ -53,11 +50,13 @@ public:
 	void die();//顾名思义，嗝屁了
 	bool isInvincible;//是否处于无敌状态
 	bool isKnockBack;//是否处于被击退状态
+	bool isAlive;//是否活着
 	int max_HP;//生命上限
 	int max_MP;//蓝量上限
 	int max_Armor;//护甲上限
-	bool isAlive;//是否活着
-
+	bool isTakingDamage;//是否最近受到过伤害？
+	float timeToRestoreCount;//计算恢复时间
+	float timeToRestorePerArmorCount;
 private:
 	Weapon* m_Weapon1;
 	Weapon* m_Weapon2;
@@ -69,8 +68,6 @@ private:
 	TMXLayer* meta;
 	Point tileCoordForPosition(Point pos);
 
-
-	
 	
 	
 private:

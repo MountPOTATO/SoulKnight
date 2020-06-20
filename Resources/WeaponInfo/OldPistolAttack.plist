@@ -11,7 +11,7 @@
             <key>HardStrikeRate</key>
             <real>0.15</real>
             <key>BulletFlyingSpeed</key>
-            <real>750.0</real>
+            <real>600.0</real>
       </dict>       
 </array>
 </plist>

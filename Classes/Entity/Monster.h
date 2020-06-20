@@ -4,8 +4,6 @@
 #include "Entity/Character.h"
 USING_NS_CC;
 
-class HelloWorld;
-
 class Monster :public Entity {
 public:
 	CREATE_FUNC(Monster);
@@ -23,36 +21,20 @@ public:
 	void setSpeed(int speed);
 	void setAtkSpeed(float atkSpeed);
 	void setAtk(int atk);
-
+	int attack();
 	void setTiledMap(TMXTiledMap* map);
-
-	virtual void attack(HelloWorld* scene);
+	void bindCharacter(Character* character);
 	Point tileCoordForPosition(Point pos);
 	bool isActivated;//怪物是否处于活动状态
 	float lastAAttackTime;
 	TMXTiledMap* m_map;
 	TMXLayer* meta;
-	void bindCharacter(Character* character);
-	HelloWorld* currentScene;
 
 	Character* m_character;
-
-	int getMonsterID()const { return m_monsterID; }
-	bool getIsUsed()const { return m_isUsed; }
-
 
 private:
 	int m_HP;
 	int m_Speed;
 	float m_AtkSpeed;//两次攻击间隔
 	int m_Atk;//攻击力
-
-
-	
-	float _lastAttackTime;
-	float _attackTimeSpace = 2.0f;
-
-protected:
-	int m_monsterID;
-	int m_isUsed = false;
 };

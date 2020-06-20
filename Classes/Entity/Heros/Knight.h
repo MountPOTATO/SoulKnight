@@ -8,7 +8,7 @@ public:
 
 public:
 	bool UseSkill();
-
+	
 private:
 	int HeroID = 1;//仅仅是个标识，应该没什么实际用处
 

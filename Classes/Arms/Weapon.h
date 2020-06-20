@@ -134,8 +134,8 @@ public:
 	virtual Point getWeaponTagPosition()const { return getPosition(); }
 	virtual void setViewPointByWeapon();//以武器为中心设计视角
 
-	void setLastAttackTiime(float dt) { _lastAttackTime = dt; }
-	
+
+
 public:
 
 	void setWeaponOwner(Character* owner) { if(owner)_owner = owner; }

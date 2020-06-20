@@ -25,7 +25,7 @@
  <tileset firstgid="15" name="上下门（关）" tilewidth="40" tileheight="40">
   <image source="上下门（关）.png" width="40" height="80"/>
  </tileset>
- <layer name="Meta" width="22" height="22" visible="0">
+ <layer name="Meta" width="22" height="22">
   <data encoding="base64" compression="zlib">
    eJxjZWBgYMWDcQF8egjpJRcgm0tNO9HNRRenl7nEhiUucxlwiBHrfnqYi0ueXHNJkadWmiQl3kixcyDMxSY+GM3FpY6UOCbXXFqmX1LL2MFsLrlgqJhLTJ1Hab0JADOVAsw=
   </data>

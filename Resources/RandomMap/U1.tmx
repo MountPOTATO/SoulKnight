@@ -17,7 +17,7 @@
    </properties>
   </tile>
  </tileset>
- <layer name="Meta" width="14" height="14" visible="0">
+ <layer name="Meta" width="14" height="14">
   <data encoding="base64" compression="zlib">
    eJzjZGBg4ETCuAAnFkwqGNU3qo+e+sjBADOSAZ8=
   </data>

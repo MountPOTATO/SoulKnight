@@ -1,7 +1,7 @@
 #include "Gun.h"
 #include "HelloWorldScene.h"
 #include "LongRangeAttack/Bullet.h"
-#include "SimpleAudioEngine.h"
+
 
 Gun* Gun::create
 (const char* weaponImageName1, const char* weaponImageName2,
@@ -116,8 +116,6 @@ bool Gun::attack() {
 		_currentScene->addChild(bullet);
 	}
 	
-	auto audioEffect = CocosDenshion::SimpleAudioEngine::getInstance();
-	audioEffect->playEffect("Audio/Bullet.mp3", false);
 	//TODO:SceneÀàÌí¼Ó×Óµ¯ÈİÆ÷
 
 

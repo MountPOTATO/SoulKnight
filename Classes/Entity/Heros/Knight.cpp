@@ -9,9 +9,10 @@ bool Knight::init() {
 	setMP(max_MP);
 	setArmor(max_Armor);
 	setSpeed(KNIGHT_SPEED);
-	
+	isTakingDamage = false;
 	isInvincible = false;
 	isAlive = true;
+	
 	Sprite* sprite=Sprite::create("Characters/Knight.png");
 	this->setAnchorPoint(Point(0.5f, 0.5f));
 	this->bindSprite(sprite);
@@ -21,3 +22,4 @@ bool Knight::init() {
 bool Knight::UseSkill() {
 	return true;
 }
+

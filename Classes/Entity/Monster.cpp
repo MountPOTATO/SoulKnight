@@ -1,16 +1,16 @@
 #include "Entity/Monster.h"
-#include "LongRangeAttack/Bullet.h"
-#include "HelloWorldScene.h"
 
-float MyMathGetRad(Point point1, Point point2);
 
 bool Monster::init() {
 
 	return true;
 }
+void Monster::bindCharacter(Character* character) {
+	m_character = character;
+}
 void Monster::setTiledMap(TMXTiledMap* map) {
 	m_map = map;
-	this->meta = m_map->getLayer("MonsterMeta");
+	this->meta = m_map->getLayer("Meta");
 	this->meta->setVisible(false);
 }
 
@@ -46,48 +46,9 @@ void Monster::setAtkSpeed(float atkSpeed) {
 void Monster::setAtk(int atk){
 	m_Atk = atk;
 }
+int Monster::attack() {
+	return 0;
 
-void Monster::attack(HelloWorld* currentScene) {
-	auto currentTime = GetCurrentTime() / 1000.f;
-
-	if (currentTime - _lastAttackTime <= _attackTimeSpace) return;
-
-	_lastAttackTime = currentTime;
-	_attackTimeSpace = CCRANDOM_0_1() * 4 + 4;
-
-	if (currentScene) {
-		if (this->m_monsterID == 1) {
-			Bullet* bullet = Bullet::create("BulletImage\\RangerBullet.png", 450.f,
-				this, MyMathGetRad(this->getPosition(), currentScene->getHero()->getPosition())
-			);
-			if (bullet) {
-				bullet->setVisible(true);
-				bullet->setScale(1.2f);
-				bullet->setTiledMap(this->m_map);
-				currentScene->addChild(bullet);
-				currentScene->_enemyBullet.pushBack(bullet);
-			}
-		}
-		if (this->m_monsterID == 2) {
-			for (int i = 0; i < 8; i++) {
-				Bullet* bullet = Bullet::create("BulletImage\\TowerBullet.png", 200.f,
-					this, i*PI/4);
-				if (bullet) {
-					bullet->setVisible(true);
-					bullet->setScale(1.2f);
-					bullet->setTiledMap(this->m_map);
-					currentScene->addChild(bullet);
-					currentScene->_enemyBullet.pushBack(bullet);
-				}
-			}
-		}
-	}
-
-
-}
-
-void Monster::bindCharacter(Character* character) {
-	m_character = character;
 }
 
 Point Monster::tileCoordForPosition(Point pos) {
@@ -99,21 +60,4 @@ Point Monster::tileCoordForPosition(Point pos) {
 
 
 	return Point(x, y);
-}
-
-float MyMathGetRad(Point point1, Point point2) {
-	//获得两点x,y距离
-	float xd = point2.x - point1.x;
-	float yd = point1.y - point2.y;
-	//斜边长度计算
-	float hypo = sqrt(pow(xd, 2) + pow(yd, 2));
-	//获得余弦值
-	float cos = xd / hypo;
-	//获得rad
-	float rad = acos(cos);
-	//取反ss
-	if (yd > 0) {
-		rad = -rad;
-	}
-	return rad;
 }

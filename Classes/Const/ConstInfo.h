@@ -71,7 +71,43 @@ enum EEntityBuffEffect {
 	EbuffClean			//默认状态
 
 };
+//GlobalConst
+#define HIT_WHEN_COLLIDE_WITH_ENEMY 1 //与普通敌人相撞扣血量
+#define KNOCKBACK_DISTANCE 80//被击退后退的距离
+#define KNOCKBACK_TIME 0.1f//被击退持续的时间
 
+
+#define INVINCIBLE_TIME 2.0f //受伤后的无敌时间
+#define TIME_TO_START_RESTORE_ARMOR 5.0f //数秒未收到伤害则开始恢复护甲
+#define TIME_TO_RESTORE_PER_ARMOR 2.0f //恢复一点护甲所需要的时间
+
+
+//Knight
+#define KNIGHT_HP 10
+#define KNIGHT_MP 200
+#define KNIGHT_SPEED 6
+#define KNIGHT_ARMOR 5
+
+
+
+
+
+//Ranger
+#define RANGER_HP 10
+#define RANGER_SPEED 5
+#define RANGER_ATK 3
+#define RANGER_MAX_MOVES_ROUND 50//每次进行移动时最大移动的距离 为 MAX_MOVES_ROUND*RANGER_SPEED 
+#define RANGER_MOVE_PAUSE_TIME 3.0f//进行完一轮移动后原地等待的时间
+
+
+//Charger
+#define CHARGER_HP 10
+#define CHARGER_SPEED 1
+#define CHARGER_CHARGE_SPEED 2
+#define CHARGER_ATK 0 //预想的是直接用碰撞伤害 
+#define CHARGER_MAX_MOVES_ROUND 50
+#define CHARGER_MAX_CHARGES_ROUND 100//最大冲撞距离
+#define CHARGER_MOVE_PAUSE_TIME 3.0f
 
 enum MovingDir {
 	left,
@@ -83,54 +119,6 @@ enum MovingDir {
 	down,
 	downLeft,
 };
-//GlobalConst
-#define HIT_WHEN_COLLIDE_WITH_ENEMY 1 //与普通敌人相撞扣血量
-#define KNOCKBACK_DISTANCE 20//被击退后退的距离
-#define KNOCKBACK_TIME 0.1f//被击退持续的时间
-
-
-#define INVINCIBLE_TIME 2.0f //受伤后的无敌时间
-//Knight
-#define KNIGHT_HP 10
-#define KNIGHT_MP 200
-#define KNIGHT_SPEED 6
-#define KNIGHT_ARMOR 5
-
-
-
-
-
-#define CHARGER_HP 25
-#define CHARGER_SPEED 1
-#define CHARGER_CHARGE_SPEED 2
-#define CHARGER_ATK 0 //预想的是直接用碰撞伤害 
-#define CHARGER_MAX_MOVES_ROUND 50
-#define CHARGER_MAX_CHARGES_ROUND 100//最大冲撞距离
-#define CHARGER_MOVE_PAUSE_TIME 3.0f
-
-#define MUMMY_HP 8
-#define MUMMY_SPEED 2
-#define MUMMY_CHARGE_SPEED 5
-#define MUMMY_ATK 0 //预想的是直接用碰撞伤害 
-#define MUMMY_MAX_MOVES_ROUND 50
-#define MUMMY_MAX_CHARGES_ROUND 300//最大冲撞距离
-#define MUMMY_MOVE_PAUSE_TIME 3.0f
-
-
-//Ranger
-#define RANGER_HP 15
-#define RANGER_SPEED 2
-#define RANGER_ATK 3
-
-#define RANGER_MAX_MOVES_ROUND 50//每次进行移动时最大移动的距离 为 MAX_MOVES_ROUND*RANGER_SPEED 
-#define RANGER_MOVE_PAUSE_TIME 3.0f//进行完一轮移动后原地等待的时间
-
-#define TOWER_HP 25
-#define TOWER_SPEED 2
-#define TOWER_ATK 4
-
-#define TOWER_MAX_MOVES_ROUND 50//每次进行移动时最大移动的距离 为 MAX_MOVES_ROUND*RANGER_SPEED 
-#define TOWER_MOVE_PAUSE_TIME 3.0f//进行完一轮移动后原地等待的时间
 
 
 //武器类型名与所属名
@@ -155,8 +143,6 @@ enum MovingDir {
 
 //controller的标识
 #define CONTROLLER_TAG 9999
-//pause的标识
-#define PAUSE_TAG 8999
 
 //加速区域加速后的速度
 #define ACCELERATE_KNIGHT_SPEED 9
@@ -165,24 +151,6 @@ enum MovingDir {
 #define ACCELERATE_TIME 1.2f
 #define ACCELERATE_TOUCHRANGE  27.0f
 
-//状态框创建标识
-<<<<<<< HEAD
-#define QHP 1
-#define QARMOR 2
-#define QMP 3
-
-//状态框标识
-#define STATUS_BOX_TAG 7999
-=======
-#define HP 1
-#define ARMOR 2
-#define MP 3
-
-//状态框标识
-#define STATUS_BOX_TAG 7999
-
-
->>>>>>> 5ee7058665984be474fea769690cefecb80807d2
 
 struct HeroInfo {
 	int hp;
@@ -209,10 +177,6 @@ struct HeroInfo {
 #define E_UNAPPENDED 1
 #define E_APPENDED 2
 
-////placeSize
-#define PLACE_SIZE 4
-
-
 #define DOWN 1
 #define RIGHT 2
 #define UP 3
@@ -223,16 +187,11 @@ struct HeroInfo {
 #define APPOINTED 2
 
 
-
-
 extern std::vector<std::string> exitRightMaps;
 extern std::vector<std::string> exitLeftMaps;
 extern std::vector<std::string> exitUpMaps;
 extern std::vector<std::string> exitDownMaps;
 extern std::vector<std::string>  corridors;
-
-
-
 
 
 #endif

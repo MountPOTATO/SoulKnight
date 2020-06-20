@@ -1,5 +1,4 @@
 #include "Character.h"
-#include "SimpleAudioEngine.h"
 
 Character::Character() {}
 Character::~Character() {}
@@ -53,7 +52,6 @@ void Character::setMaxArmor(int armor) {
 void Character::setTiledMap(TMXTiledMap* map) {
 	m_map = map;
 	this->meta = m_map->getLayer("Meta");
-
 	this->meta->setVisible(false);
 }
 void Character::setIsKnockBack(bool status) {
@@ -132,12 +130,11 @@ bool Character::isPosBlocked(Point dstPos) {
 Point Character::tileCoordForPosition(Point pos) {
 	Size mapTiledNum = m_map->getMapSize();
 	Size tiledSize = m_map->getTileSize();
-	Point mapPos = m_map->getPosition();
+
 	int x = pos.x / tiledSize.width;
 	int y = (mapTiledNum.height * tiledSize.height - pos.y) / tiledSize.height;
 
-	int x = (pos.x - mapPos.x) / tiledSize.width;
-	int y = (mapTiledNum.height * tiledSize.height - (pos.y - mapPos.y)) / tiledSize.height;
+
 	return Point(x, y);
 }
 
@@ -160,14 +157,13 @@ void Character::hit(int damage,Point enemyPos) {
 
 	
 	//造成伤害 有护甲先扣护甲，没护甲再扣血
+	//受到伤害，打断回血计时
+	timeToRestoreCount = 0; timeToRestorePerArmorCount = 0;
 	if (m_Armor >= damage) { m_Armor-=damage; }
 	else {
 		int overKill = damage - m_Armor;
 		m_Armor=0;
 		m_HP-=overKill;
-/*
-		auto audioEffect = CocosDenshion::SimpleAudioEngine::getInstance();
-		audioEffect->playEffect("Audio/HeroHit.mp3", false);*/
 	}//护甲值先消耗殆尽，多余伤害由红条承受
 	
 	if (m_HP <= 0) { m_HP = 0; this->die(); }
@@ -237,10 +233,6 @@ void Character::hit(int damage,Point enemyPos) {
 		y = curPos.y + knockPos.y;
 	}
 	//生成击退动作
-
-	auto audioEffect = CocosDenshion::SimpleAudioEngine::getInstance();
-	audioEffect->playEffect("Audio/HeroHit.mp3", false);
-
 	auto knockBackMove = MoveBy::create(KNOCKBACK_TIME, knockPos);
 	auto smoothViewMove = MoveBy::create(KNOCKBACK_TIME, -knockPos);
 	CallFunc* callFunc = CallFunc::create(resetKnockBackStatus);//动画结束后将击退状态设为f
@@ -252,15 +244,21 @@ void Character::hit(int damage,Point enemyPos) {
 }
 
 void Character::update(float delta) {
-	
+	timeToRestoreCount += delta;
+	if (timeToRestoreCount >= TIME_TO_START_RESTORE_ARMOR) {
+		timeToRestorePerArmorCount += delta;
+		if (timeToRestorePerArmorCount >= TIME_TO_RESTORE_PER_ARMOR) {
+			if (m_Armor < KNIGHT_ARMOR) { m_Armor += 1; timeToRestorePerArmorCount = 0; }
+		}
+	}
 }
 
 void Character::die() {
 	this->setIsInvincible(true);//死了之后就保持无敌状态吧，尸体不会被撞来撞去
 
 	//播放死亡动画
-	/*auto bounceUp = JumpBy::create(0.5f, Point(0, 0), 40, 1);
+	auto bounceUp = JumpBy::create(0.5f, Point(0, 0), 40, 1);
 
-	this->setColor(Color3B(150, 150, 150));*/
+	this->setColor(Color3B(150, 150, 150));
 
 }

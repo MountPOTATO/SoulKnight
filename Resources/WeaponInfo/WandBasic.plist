@@ -5,7 +5,7 @@
 <array>
        <dict>
             <key>Attack</key>
-            <integer>16</integer>
+            <integer>12</integer>
             <key>Precision</key>
             <integer>0</integer>
             <key>EnergyCost</key>

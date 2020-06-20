@@ -35,7 +35,7 @@ bool LoseScene::init()
 	);
 
 	if (startMenu == nullptr || startMenu->getContentSize().width <= 0 || startMenu->getContentSize().height <= 0) {
-		problemLoading("'startMenu.png'");
+		problemLoading("'LoseScene.png'");
 	}
 	else {
 
@@ -56,7 +56,7 @@ bool LoseScene::init()
 		endMenu->setPosition(Vec2(visibleSize.width / 2 - 80, visibleSize.height / 2 - 222));
 	}
 
-
+	
 
 
 	Menu* menu = Menu::create(startMenu, endMenu, NULL);
@@ -65,7 +65,7 @@ bool LoseScene::init()
 
 
 	//background
-	auto background = Sprite::create("Scenes/StartScene/WinScene.png");
+	auto background = Sprite::create("Scenes/StartScene/LoseScene.png");
 	if (background == nullptr)
 	{
 		problemLoading("'LoseScene.png'");
@@ -74,8 +74,6 @@ bool LoseScene::init()
 		background->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
 		this->addChild(background, 0);
 	}
-
-	return true;
 
 	return true;
 }

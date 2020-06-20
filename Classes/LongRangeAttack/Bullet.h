@@ -19,8 +19,6 @@ private:
 	CC_SYNTHESIZE(float,_flyingSpeed, FlyingSpeed);
 	CC_SYNTHESIZE(Weapon*, _shooter, Shooter);
 
-	CC_SYNTHESIZE(INT32, _initMethod, InitMethod);
-
 	CC_SYNTHESIZE(WeaponBuff*,_buff, Buff);
 
 	CC_SYNTHESIZE(float, _initAngle, InitAngle);
@@ -49,7 +47,8 @@ public:
 	void calDistance();
 
 	//获取子弹的攻击力，造成伤害
-	INT32 getBulletAttack();
+	INT32 getBulletAttack()const { return _attack; }
+
 	void stopBullet();
 
 	bool isPosBlocked(Point dstPos);
